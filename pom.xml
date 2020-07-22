@@ -4,7 +4,7 @@
 
     <groupId>net.zileo</groupId>
     <artifactId>weblith</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>Weblith</name>
     <url>https://github.com/zileo-net/weblith</url>
 
@@ -36,7 +36,7 @@
         <connection>scm:git:https://github.com/zileo-net/weblith.git</connection>
         <developerConnection>scm:git:git@github.com:zileo-net/weblith.git</developerConnection>
         <url>https://github.com/zileo-net/weblith</url>
-        <tag>weblith-0.1.0-quarkus-hackathon</tag>
+        <tag>weblith-0.1.0-SNAPSHOT-quarkus-hackathon</tag>
     </scm>
 
     <properties>
