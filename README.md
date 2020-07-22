@@ -265,10 +265,6 @@ Thats means you can protect your pages via properties configuration or `@RolesAl
 
 ## Roadmap
 
-### Before and after comparison
-
-
-
 ### Future plans
 
 As said before, the current status of the project is a **Preview Release**. Several *existing* code parts of the original Weblith project must still be migrated.
