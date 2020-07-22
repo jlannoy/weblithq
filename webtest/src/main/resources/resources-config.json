@@ -1,0 +1,13 @@
+{
+  "resources": [
+    {
+      "pattern": "i18n\\.*\\.properties$"
+    },
+    {
+      "pattern": "templates\\.*\\.ftlh$"
+    },
+    {
+      "pattern": ".*\\.sql$"
+    }
+  ]
+}

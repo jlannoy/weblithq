@@ -1,0 +1,7 @@
+.ui.main.container {
+    margin-top: 70px;
+}
+
+.ui.fixed.labels.item.list .ui.fixed.label {
+    width: 11rem;
+}
