@@ -4,8 +4,9 @@
 
     <groupId>net.zileo</groupId>
     <artifactId>weblith</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <name>Weblith</name>
+    <description>Java web application powered by Quarkus</description>
     <url>https://github.com/zileo-net/weblith</url>
 
     <packaging>pom</packaging>
