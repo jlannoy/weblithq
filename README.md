@@ -1,6 +1,9 @@
 # Weblith.io
 > Quarkus-powered Java Web Application Framework
 
+** Current version ** : 0.1.0. A preview release made for the Quarkus Hackathon. *You can use it as a showcase of what Weblith could be, but at this time is still too experimental to start a production target project.*
+
+## Table of content
 
  * [A little bit of history](#a-little-bit-of-history)
  * [Routes & Results](#routes-and-results)
@@ -178,7 +181,7 @@ Refer to the [Freemarker](https://freemarker.apache.org/docs/index.html) documen
 
 ### Injecting templates
 
-A better way to use templates is to inject instances of `FreemarkerTemplate` in the controllers. This way, template paths are checked at build-time and template instances are cached during runtime.
+A better way to use templates is to inject instances of `FreemarkerTemplate` in the controllers. This way, template paths are checked at build-time.
 
 ```java
 @Controller
@@ -209,7 +212,34 @@ While a `Messages` interface can be injected in any controller of internal servi
 
 ### Fomantic UI templating
 
+One third Quarkus extension, that will be your real time-saver for building web applications, is a set of Freemarker tags that will allow you to quickly have a nice UI that fits with your Weblith backend code. The archetype you can use to boostrap your application will even offer a primary structure for your own base templates.
+
 ### Fomantic UI components
+
+Sadly, this documentation draft do not enter into each component details (too early). But take a quick look at the two following example, as they are pretty clear on what they will produce.
+
+```html
+<@page.app title='User list' selectedIcon='users'>
+    <@layout.title />
+    <@t.table rows=Users align='left' noButtons=true>
+        <@t.column name='role' title='Role' align='center' />
+        <@t.column name='title' title='Title' />
+        <@t.column name='email' title='E-mail' interpret='<@layout.mailto value />' />
+    </@t.table>
+</@page.app>
+```
+
+```html
+<@f.form 'SimpleEntity' SimpleEntity.id>
+    <@f.text name='name' label='Name' required=true />
+    <@f.text name='quantity' label='Quantity' type='number' />
+    <@f.calendar name='date' label='Date' />
+    <@f.buttonBar>
+        <@f.cancel />
+        <@f.submit />
+    </@>
+</@>
+```
 
 ## How to use it
 
@@ -217,9 +247,9 @@ A Maven archetype exists, so that you can easily bootstrap a Weblith showcase ap
 
 ```
 mvn archetype:generate                      \
-  -DarchetypeGroupId=io.weblith             \
-  -DarchetypeArtifactId=weblith-archetype  \
-  -DarchetypeVersion=0.0.1-SNAPSHOT         \
+  -DarchetypeGroupId=net.zileo              \
+  -DarchetypeArtifactId=weblith-archetype   \
+  -DarchetypeVersion=0.1.0                  \
   -Dversion=1.0.0-SNAPSHOT                  \
   -DgroupId=org.acme                        \
   -DartifactId=my-weblith
@@ -229,13 +259,23 @@ Then you should be able to `cd my-weblith` and run `mvn compile quarkus:dev`.
 
 ## Authentication
 
+The archetype immediately work with `quarkus-security-jpa`. A set of different User with roles will be created at startup and be available for login through the `FormAuthenticationMechanism` provided by Quarkus. Weblith only supplies the corresponding front end paths and login page. It should also integrates well with other security extensions available for Quarkus ; you'll find in the archetype `application.properties` an example block defining an OIDC connection to Auth0.
 
+Thats means you can protect your pages via properties configuration or `@RolesAllowed` annotations, like any other Quakrus application. The archetype provide a showcase page for this part. Getting back relevant `SecurityIdentify` information must still be analyzed.
 
 ## Roadmap
 
-The current status of the projet is a **Preview Release**. Several *exsting* code parts of the original Weblith project must still be migrated.
+### Before and after comparison
 
-1. *Router* : with reverse routing available in templates
+
+
+### Future plans
+
+As said before, the current status of the project is a **Preview Release**. Several *existing* code parts of the original Weblith project must still be migrated.
+
+1. *Extensive documentation* : Each Weblith concept should be documented appart with more details and configuration properties.
+1. *UI components documentation* : The goal is to analyze the relavance of `Storybook` - allowing serverside components since last version - for showcasing all Weblith UI components.
+1. *Router* : In the original project, there is a central Router allowing for example reverse routing in templates.
 1. *Multitenancy* : domain management + dynamic tenant configuration
 1. *Unit tests* : a lot of unit tests must still be reused
 

@@ -1,0 +1,10 @@
+{
+    "build": {
+        "type": "maven", 
+        "goal":"package -DskipTests"
+    }, 
+    "deploy": {
+        "type": "jar", 
+        "jarName": "target/weblith-webtest-0.1.1-SNAPSHOT-runner.jar"
+    }
+}
