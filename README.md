@@ -1,7 +1,10 @@
 # Weblith.io
 > Quarkus-powered Java Web Application Framework
 
-** Current version ** : 0.1.0. A preview release made for the Quarkus Hackathon. *You can use it as a showcase of what Weblith could be, but at this time is still too experimental to start a production target project.*
+**Current version** : 0.1.0. A preview release made for the Quarkus Hackathon. *You can use it as a showcase of what Weblith could be, but at this time is still too experimental to start a production target project.*
+
+
+**Quarkus Hackathon category winner !!** Follow us on [twitter](https://twitter.com/weblith_io) for more updates about this projet.
 
 ## Table of content
 
