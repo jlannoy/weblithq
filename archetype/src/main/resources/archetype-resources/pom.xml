@@ -37,17 +37,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.zileo</groupId>
+            <groupId>io.weblith</groupId>
             <artifactId>weblith-core</artifactId>
             <version>${weblith.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.zileo</groupId>
+            <groupId>io.weblith</groupId>
             <artifactId>weblith-freemarker</artifactId>
             <version>${weblith.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.zileo</groupId>
+            <groupId>io.weblith</groupId>
             <artifactId>weblith-fomantic-ui</artifactId>
             <version>${weblith.version}</version>
         </dependency>
