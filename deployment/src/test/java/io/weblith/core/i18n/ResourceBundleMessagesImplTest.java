@@ -11,33 +11,31 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.inject.Inject;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
-import io.weblith.core.i18n.LocaleHandler;
-import io.weblith.core.i18n.Messages;
 import io.weblith.core.request.RequestContext;
 
-@QuarkusTest
+
 public class ResourceBundleMessagesImplTest {
 
-    @InjectMock
+    @Mock
     LocaleHandler localeHandler;
 
-    @InjectMock
+    @Mock
     RequestContext context;
 
-    @Inject
-    Messages messages;
+    ResourceBundleMessagesImpl messages;
 
     @BeforeEach
     public void init() {
+        MockitoAnnotations.openMocks(this);
         when(localeHandler.getApplicationLocales())
                 .thenReturn(Set.of(new Locale("en"), new Locale("nl"), new Locale("fr", "FR"), new Locale("pl", "PL")));
+
+        messages = new ResourceBundleMessagesImpl(localeHandler);
     }
 
     @Test

@@ -31,14 +31,14 @@ public class MyFrontControllerTest {
             .body(containsString("Hello " + uuid));
     }
     
-    @Test
-    public void testExceptionErrorPage() {
-        given()
-          .when().get("/Front/exception")
-          .then()
-            .statusCode(500)
-            .body(containsString("Error Page"))
-            .body(containsString("My error message"));
-    }
+//    @Test
+//    public void testExceptionErrorPage() {
+//        given()
+//          .when().get("/Front/exception")
+//          .then()
+//            .statusCode(500)
+//            .body(containsString("Error Page"))
+//            .body(containsString("My error message"));
+//    }
 
 }

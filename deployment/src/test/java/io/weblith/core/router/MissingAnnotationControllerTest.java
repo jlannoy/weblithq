@@ -23,7 +23,7 @@ public class MissingAnnotationControllerTest {
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClasses(MissingAnnotationWeblithController.class)
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                    .addAsResource(new StringAsset("quarkus.http.test-port=8888"), "application.properties"));
+                    .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
 
     public class MissingAnnotationWeblithController {
 

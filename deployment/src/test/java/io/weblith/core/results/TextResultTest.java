@@ -1,6 +1,6 @@
 package io.weblith.core.results;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.Map;
@@ -8,8 +8,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Maps;
-
-import io.weblith.core.results.TextResult;
 
 public class TextResultTest {
 

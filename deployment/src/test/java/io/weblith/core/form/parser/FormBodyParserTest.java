@@ -29,7 +29,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -37,36 +36,35 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import io.weblith.core.form.Form;
 import io.weblith.core.form.parsing.BodyParserObjectMapperProvider;
 import io.weblith.core.form.parsing.FormBodyParser;
 import io.weblith.core.form.validating.Violation;
-import io.weblith.core.i18n.LocaleHandler;
+import io.weblith.core.i18n.LocaleHandlerImpl;
 import io.weblith.core.request.RequestContext;
 
-@QuarkusTest
 public class FormBodyParserTest {
 
     private final Logger LOGGER = Logger.getLogger(FormBodyParserTest.class);
 
-    @InjectMock
+    @Mock
     RequestContext requestContext;
 
-    @InjectMock
-    LocaleHandler localeHandler;
+    @Mock
+    LocaleHandlerImpl localeHandler;
 
     private Form<Object> currentForm;
 
-    @Inject
     FormBodyParser bodyParser;
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         when(localeHandler.current()).thenReturn(Locale.ENGLISH);
         when(requestContext.locale()).thenReturn(localeHandler);
 
@@ -168,10 +166,8 @@ public class FormBodyParserTest {
         assertThat(testObject.localDate, equalTo(LocalDate.of(2020, 5, 3)));
         assertThat(testObject.localTime, equalTo(LocalTime.of(7, 0, 30)));
         assertThat(testObject.localDateTime, equalTo(LocalDateTime.of(2020, 5, 3, 7, 8, 9)));
-        assertThat(testObject.timestamp,
-                equalTo(Date.from(LocalDateTime.of(2020, 5, 3, 7, 8, 9).atZone(ZoneId.systemDefault()).toInstant())));
-        assertThat(testObject.date,
-                equalTo(Date.from(LocalDate.of(2020, 03, 01).atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        assertThat(testObject.timestamp, equalTo(Date.from(LocalDateTime.of(2020, 5, 3, 7, 8, 9).atZone(ZoneId.systemDefault()).toInstant())));
+        assertThat(testObject.date, equalTo(Date.from(LocalDate.of(2020, 03, 01).atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         assertThat(sdf.format(testObject.timestamp), equalTo("07:08"));
@@ -222,10 +218,8 @@ public class FormBodyParserTest {
         assertThat(testObject.localDate, equalTo(LocalDate.of(2020, 5, 3)));
         assertThat(testObject.localTime, equalTo(LocalTime.of(7, 0, 30)));
         assertThat(testObject.localDateTime, equalTo(LocalDateTime.of(2020, 5, 3, 7, 8, 9)));
-        assertThat(testObject.timestamp,
-                equalTo(Date.from(LocalDateTime.of(2020, 5, 3, 7, 8, 9).atZone(ZoneId.systemDefault()).toInstant())));
-        assertThat(testObject.date,
-                equalTo(Date.from(LocalDate.of(2020, 03, 01).atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        assertThat(testObject.timestamp, equalTo(Date.from(LocalDateTime.of(2020, 5, 3, 7, 8, 9).atZone(ZoneId.systemDefault()).toInstant())));
+        assertThat(testObject.date, equalTo(Date.from(LocalDate.of(2020, 03, 01).atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         assertThat(sdf.format(testObject.timestamp), equalTo("07:08"));
@@ -280,8 +274,7 @@ public class FormBodyParserTest {
         assertThat(testObject.floatObject, equalTo(2.345F));
         assertThat(testObject.localDate, equalTo(LocalDate.of(2020, 2, 20)));
         assertThat(testObject.localTime, equalTo(LocalTime.of(7, 0, 0)));
-        assertThat(testObject.date,
-                equalTo(Date.from(LocalDate.of(2020, 03, 01).atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        assertThat(testObject.date, equalTo(Date.from(LocalDate.of(2020, 03, 01).atStartOfDay(ZoneId.systemDefault()).toInstant())));
 
         for (Violation cv : currentForm.getViolations()) {
             LOGGER.info(cv.getDefaultMessage());
@@ -784,8 +777,7 @@ public class FormBodyParserTest {
 
         public String value;
 
-        public TestObjectWithId() {
-        }
+        public TestObjectWithId() {}
 
         public TestObjectWithId(String id) {
             this.id = id;
@@ -797,8 +789,7 @@ public class FormBodyParserTest {
 
         private UUID id;
 
-        public TestParentObject() {
-        }
+        public TestParentObject() {}
 
         public UUID getId() {
             return id;
@@ -814,15 +805,12 @@ public class FormBodyParserTest {
 
         public String value;
 
-        public TestObjectWithUuid() {
-        }
+        public TestObjectWithUuid() {}
 
     }
 
     public static enum MyEnum {
-        VALUE_A,
-        VALUE_B,
-        VALUE_C
+        VALUE_A, VALUE_B, VALUE_C
     }
 
     public static class TestObjectWithEnum {

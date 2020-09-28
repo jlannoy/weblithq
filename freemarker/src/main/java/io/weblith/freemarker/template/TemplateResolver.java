@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
+
 import freemarker.template.Configuration;
 import io.weblith.core.request.RequestContext;
 import io.weblith.freemarker.config.FreemarkerConfig;
@@ -13,6 +15,8 @@ import io.weblith.freemarker.response.HtmlResult;
 @ApplicationScoped
 public class TemplateResolver {
 
+    private static final Logger LOGGER = Logger.getLogger(TemplateResolver.class);
+    
     @Inject
     FreemarkerConfig freemarkerConfig;
 
@@ -31,30 +35,39 @@ public class TemplateResolver {
     }
 
     public freemarker.template.Template resolve(String path) throws IOException {
-        return freemarker.getTemplate(buildTemplateLocation(path));
+        return loadTemplate(buildTemplateLocation(path));
     }
 
     public freemarker.template.Template resolve(String directory, String name) throws IOException {
-        return freemarker.getTemplate(buildTemplateLocation(directory, name));
+        return loadTemplate(buildTemplateLocation(directory, name, freemarkerConfig.template.suffix));
+    }
+    
+    protected freemarker.template.Template loadTemplate(String templatePath) throws IOException {
+        LOGGER.infov("Loading template at {0}", templatePath);
+        try {
+            
+        freemarker.template.Template template = freemarker.getTemplate(templatePath);
+        LOGGER.infov("Loaded template {0}", template.getName());
+        return template;
+        } catch(IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     protected String buildTemplateLocation(HtmlResult result) {
         return buildTemplateLocation(
-                result.getTemplateDirectory().orElse(context.controller().getSimpleName()),
+                result.getTemplateDirectory().orElseGet(() -> context.controller().getSimpleName()),
                 result.getTemplateName().orElseThrow(),
-                result.getTemplateSuffix().orElse(freemarkerConfig.template.suffix));
+                result.getTemplateSuffix().orElseGet(() -> freemarkerConfig.template.suffix));
     }
 
     protected String buildTemplateLocation(String path) {
-        return String.format("%s/%s", freemarkerConfig.template.directory, path);
-    }
-
-    protected String buildTemplateLocation(String directory, String name) {
-        return buildTemplateLocation(directory, name, freemarkerConfig.template.suffix);
+        return String.format("/%s/%s", freemarkerConfig.template.directory, path);
     }
 
     protected String buildTemplateLocation(String directory, String name, String suffix) {
-        return String.format("%s/%s/%s%s", freemarkerConfig.template.directory, directory, name, suffix);
+        return String.format("/%s/%s/%s%s", freemarkerConfig.template.directory, directory, name, suffix);
     }
 
 }

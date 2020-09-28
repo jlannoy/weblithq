@@ -67,6 +67,7 @@ public class FreemarkerTemplateProducer {
         try {
             return new FreemarkerTemplate(templateResolver.resolve(templatePath.value()).getName());
         } catch (IOException e) {
+            LOGGER.error(e);
             throw new IllegalStateException(e);
         }
     }

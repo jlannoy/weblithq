@@ -43,15 +43,14 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.parameters>true</maven.compiler.parameters>
-		<!-- <quarkus.version>1.5.2.Final</quarkus.version> -->
-		<quarkus.version>1.6.0.Final</quarkus.version>
 		<compiler-plugin.version>3.8.1</compiler-plugin.version>
 		<surefire-plugin.version>2.22.1</surefire-plugin.version>
 		<archetype-plugin.version>3.2.0</archetype-plugin.version>
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
-		<sonar.projectKey>zileo-net_logback-logdna</sonar.projectKey>
+		<sonar.projectKey>weblith_weblith</sonar.projectKey>
 		<sonar.organization>weblith</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<quarkus.version>1.8.1.Final</quarkus.version>
 	</properties>
 
 	<modules>
@@ -69,7 +68,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>io.quarkus</groupId>
-				<artifactId>quarkus-bom-deployment</artifactId>
+				<artifactId>quarkus-bom</artifactId>
 				<version>${quarkus.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -142,6 +141,7 @@
 								<configuration>
 									<backend>html5</backend>
 									<sourceHighlighter>coderay</sourceHighlighter>
+									<sourceDirectory>docs</sourceDirectory>
 									<attributes>
 										<toc>left</toc>
 										<sectnums>true</sectnums>

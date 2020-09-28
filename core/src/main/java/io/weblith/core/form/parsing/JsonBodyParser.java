@@ -13,7 +13,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.spi.util.Types.ResteasyParameterizedType;
 
@@ -25,7 +24,6 @@ import io.weblith.core.form.Form;
 import io.weblith.core.request.RequestContext;
 
 @SuppressWarnings("rawtypes")
-@Provider
 @ApplicationScoped
 @Consumes(MediaType.APPLICATION_JSON)
 public class JsonBodyParser implements MessageBodyReader<Form> {

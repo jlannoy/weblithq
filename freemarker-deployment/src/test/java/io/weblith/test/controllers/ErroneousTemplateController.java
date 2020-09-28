@@ -9,16 +9,16 @@ import io.weblith.core.router.annotations.Get;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.template.FreemarkerTemplate;
 
-@Controller("/TemplateError")
-@NotLogged
-public class ErroneousTemplateController {
-
-    @Inject
-    FreemarkerTemplate erroneous;
-
-    @Get
-    public HtmlResult hello(@QueryParam("name") String name) {
-        return erroneous.render("name", name);
-    }
-    
-}
+//@Controller("/TemplateError")
+//@NotLogged
+//public class ErroneousTemplateController {
+//
+//    @Inject
+//    FreemarkerTemplate erroneous;
+//
+//    @Get
+//    public HtmlResult hello(@QueryParam("name") String name) {
+//        return erroneous.render("name", name);
+//    }
+//    
+//}

@@ -18,7 +18,6 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.ext.Provider;
 
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.core.ResteasyContext;
@@ -31,7 +30,6 @@ import io.weblith.core.request.RequestContext;
 import io.weblith.core.scopes.CookieBuilder;
 
 @ApplicationScoped
-@Provider
 @Priority(Priorities.HEADER_DECORATOR + 10)
 public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter, ContainerResponseFilter {
 

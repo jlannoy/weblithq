@@ -14,7 +14,7 @@ import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class ResourceBundleMessagesImpl implements Messages {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ResourceBundleMessagesImpl.class);
 
     private final Map<Locale, ResourceBundle> resourceBundles;
@@ -24,7 +24,7 @@ public class ResourceBundleMessagesImpl implements Messages {
     public ResourceBundleMessagesImpl(LocaleHandler localeHandler) {
         this.localeHandler = localeHandler;
         this.resourceBundles = loadResourceBundles(localeHandler);
-        
+
         LOGGER.debugv("{0} ResourceBundles loaded", this.resourceBundles.size());
     }
 

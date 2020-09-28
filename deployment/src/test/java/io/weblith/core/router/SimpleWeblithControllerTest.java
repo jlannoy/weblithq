@@ -31,7 +31,7 @@ public class SimpleWeblithControllerTest {
                     .addClasses(SimpleWeblithController.class)
                     // .addAsResource("application.properties")
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                    .addAsResource(new StringAsset("quarkus.http.test-port=8888"), "application.properties"));
+                    .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
 
     @Test
     public void testGet() {

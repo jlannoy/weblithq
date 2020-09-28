@@ -24,7 +24,7 @@ public class RenderResponseControllerTest {
                     .addClasses(RenderResponseController.class)
                     .addAsResource(MY_UNKNOWN_TYPE_FILE)
                     .addAsResource(MY_TXT_FILE)
-                    .addAsResource(new StringAsset("quarkus.http.test-port=8888"), "application.properties"));
+                    .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
 
     @Test
     public void testTextResult() {

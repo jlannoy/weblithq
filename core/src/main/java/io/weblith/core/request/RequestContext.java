@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
@@ -79,9 +80,8 @@ public class RequestContext {
     }
 
     public SecurityIdentity identity() {
-        return CDI.current().select(SecurityIdentity.class).get();
-        // TODO check with Quarkus team why @Inject doesn't work
-        // return this.identity;
+        Instance<SecurityIdentity> identity = CDI.current().select(SecurityIdentity.class);
+        return identity.isResolvable() ? identity.get() : null;
     }
 
     public LocaleHandler locale() {
@@ -94,6 +94,7 @@ public class RequestContext {
 
     public Class<?> controller() {
         return request().getUri().getMatchedResources().get(0).getClass();
+        //return null;
     }
 
     public HttpRequest request() {

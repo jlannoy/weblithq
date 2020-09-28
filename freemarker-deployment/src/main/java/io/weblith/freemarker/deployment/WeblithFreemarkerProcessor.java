@@ -26,8 +26,6 @@ import io.weblith.freemarker.FreemarkerConfigurationProvider;
 import io.weblith.freemarker.config.FreemarkerConfig;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.response.HtmlResultBodyWriter;
-import io.weblith.freemarker.response.exceptions.AnyExceptionMapper;
-import io.weblith.freemarker.response.exceptions.WebApplicationExceptionMapper;
 import io.weblith.freemarker.template.FreemarkerTemplate;
 import io.weblith.freemarker.template.FreemarkerTemplateProducer;
 import io.weblith.freemarker.template.TemplatePath;
@@ -44,7 +42,7 @@ public class WeblithFreemarkerProcessor {
     public static final DotName HTML_RESULT = DotName.createSimple(HtmlResult.class.getCanonicalName());
 
     public static final DotName TEMPLATE_PATH = DotName.createSimple(TemplatePath.class.getCanonicalName());
-
+    
     @BuildStep
     FeatureBuildItem feature() {
         return new FeatureBuildItem(FEATURE);
@@ -78,31 +76,28 @@ public class WeblithFreemarkerProcessor {
             if (injectionPoint.getRequiredType().name().equals(FREEMARKER_TEMPLATE)) {
 
                 AnnotationInstance resourcePath = injectionPoint.getRequiredQualifier(TEMPLATE_PATH);
-                String path;
-                if (resourcePath != null) {
-                    path = resourcePath.value().asString();
-                } else if (injectionPoint.hasDefaultedQualifier()) {
-                    path = getName(injectionPoint);
-                } else {
-                    path = null;
-                }
-                if (path != null) {
-                    // TODO check template can be found
-                    // validationErrors.produce(new ValidationErrorBuildItem(
-                    //         new IllegalStateException("No template found for " + injectionPoint.getTargetInfo())));
+                
+                String path = resourcePath != null 
+                        ? resourcePath.value().asString() 
+                        : getFieldOrParameterName(injectionPoint);
+                        
+                if (path == null) {
+                    // TODO check if template can really be found
+                     validationErrors.produce(new ValidationErrorBuildItem(
+                             new IllegalStateException("No template found for " + injectionPoint.getTargetInfo())));
                 }
             }
         }
     }
 
-    public static String getName(InjectionPointInfo injectionPoint) {
+    private String getFieldOrParameterName(InjectionPointInfo injectionPoint) {
         if (injectionPoint.isField()) {
             return injectionPoint.getTarget().asField().name();
         } else if (injectionPoint.isParam()) {
             String name = injectionPoint.getTarget().asMethod().parameterName(injectionPoint.getPosition());
             return name == null ? injectionPoint.getTarget().asMethod().name() : name;
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Cannot obtain name for an other injection point for " + injectionPoint.getTarget().kind());
     }
 
     @BuildStep

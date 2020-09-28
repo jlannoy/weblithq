@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response.Status;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,10 @@ public class RedirectControllerTest {
     @RegisterExtension
     static QuarkusUnitTest runner = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(RedirectController.class, WeblithConfiguration.class)
+                    .addClasses(RedirectController.class)
                     .addAsResource("i18n/messages.properties")
-                    .addAsResource(new StringAsset("quarkus.http.test-port=8888\nquarkus.http.root-path=" + CONTEXT_PATH), "application.properties"));
+                    .addAsResource(new StringAsset("quarkus.http.test-port=0\nquarkus.http.root-path=" + CONTEXT_PATH), "application.properties")
+                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
 
     private RequestSender given() {
         return RestAssured.given().config(RestAssured.config().redirect(redirectConfig().followRedirects(false)));
