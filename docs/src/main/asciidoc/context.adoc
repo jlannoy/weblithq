@@ -1,0 +1,9 @@
+== Request Context
+
+While in a controller or any other internal service, you can inject a `RequestContext` instance. This class is a center piece for all request related concepts, and give you access to : 
+
+* `SessionScope` : a client-side cookie-based session (server-side session not supporter by Weblith)
+* `FlashScope` : a specific cookie-based scope that keep data from one request to an other
+* `LocaleHandler` : a handler that can detect the current user-defined locale
+* `seed()` and `get` : a map for storing some objects during the whole request execution
+* `HttpRequest` and `UriInfo` : JAX-RS request information

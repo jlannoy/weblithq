@@ -1,0 +1,32 @@
+== Fomantic UI library
+
+=== Fomantic UI templating
+
+One third Quarkus extension, that will be your real time-saver for building web applications, is a set of Freemarker tags that will allow you to quickly have a nice UI that fits with your Weblith backend code. The archetype you can use to boostrap your application will even offer a primary structure for your own base templates.
+
+=== Fomantic UI components
+
+Sadly, this documentation draft do not enter into each component details (too early). But take a quick look at the two following example, as they are pretty clear on what they will produce.
+
+```html
+<@page.app title='User list' selectedIcon='users'>
+    <@layout.title />
+    <@t.table rows=Users align='left' noButtons=true>
+        <@t.column name='role' title='Role' align='center' />
+        <@t.column name='title' title='Title' />
+        <@t.column name='email' title='E-mail' interpret='<@layout.mailto value />' />
+    </@t.table>
+</@page.app>
+```
+
+```html
+<@f.form 'SimpleEntity' SimpleEntity.id>
+    <@f.text name='name' label='Name' required=true />
+    <@f.text name='quantity' label='Quantity' type='number' />
+    <@f.calendar name='date' label='Date' />
+    <@f.buttonBar>
+        <@f.cancel />
+        <@f.submit />
+    </@>
+</@>
+```

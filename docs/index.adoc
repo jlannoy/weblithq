@@ -1,2 +1,0 @@
-= Weblith Manual
-ifndef::sourcedir[:sourcedir: ..]

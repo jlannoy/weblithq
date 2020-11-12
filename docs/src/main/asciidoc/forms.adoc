@@ -1,0 +1,33 @@
+== Forms Management
+
+=== Form submission
+
+While you can use the standard `@Form` JAX-RS way for getting form information, and the `@Valid` to throws `ConstraintViolationException`, Weblith offers a nicer way to manage your forms. Simply embed your form object in a `Form` parameter like this :
+
+```java
+    @Transactional
+    @Post
+    public Result save(Form<SimpleEntity> form) {
+        SimpleEntity dto = form.getValue();
+        ... map dto field to real entity instance
+        ... save entity
+        return new Redirect("/SimpleEntity/list");
+    }
+```
+
+The `SimpleEntity` object will be filled with your submitted data. It uses a Jackson `ObjectMapper` underneath that maps a `Map` of all parameters to the required object.
+
+=== Form validation
+
+`Form` will allow you to trigger the validation of the filled object. All validation (but also parameter conversion) error messages will then be available as a list of `Violation` objects. Welbith UI components will handle those messages.
+
+```java
+    @Transactional
+    @Post
+    public Result save(Form<SimpleEntity> form) {
+        if (!form.validate()) {
+            return formTemplate.render(form);
+        }
+        ...
+    }
+```

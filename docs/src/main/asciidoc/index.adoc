@@ -1,0 +1,16 @@
+= Weblith Manual
+ifndef::sourcedir[:sourcedir: ..]
+
+include::introduction.adoc[]
+
+include::archetype.adoc[]
+
+include::routing.adoc[]
+
+include::context.adoc[]
+
+include::forms.adoc[]
+
+include::freemarker.adoc[]
+
+include::fomantic.adoc[]

@@ -61,6 +61,7 @@
 		<module>fomantic-ui</module>
 		<module>fomantic-ui-deployment</module>
 		<module>webtest</module>
+		<module>docs</module>
 		<module>archetype</module>
 	</modules>
 
@@ -117,39 +118,6 @@
 								<goals>
 									<goal>report</goal>
 								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>asciidoc</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.asciidoctor</groupId>
-						<artifactId>asciidoctor-maven-plugin</artifactId>
-						<version>1.5.6</version>
-						<executions>
-							<execution>
-								<id>output-html</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>process-asciidoc</goal>
-								</goals>
-								<configuration>
-									<backend>html5</backend>
-									<sourceHighlighter>coderay</sourceHighlighter>
-									<sourceDirectory>docs</sourceDirectory>
-									<attributes>
-										<toc>left</toc>
-										<sectnums>true</sectnums>
-										<revnumber>${project.version}</revnumber>
-										<revdate>${maven.build.timestamp}</revdate>
-										<organization>${project.organization.name}</organization>
-									</attributes>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>

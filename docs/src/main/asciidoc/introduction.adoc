@@ -1,0 +1,15 @@
+== Introduction 
+
+=== A little bit of history
+
+At its early stage, Weblith.io is an internal framework developed at https://zileo.net[Zileo.net] derived from other frameworks like https://spring.io[Spring Boot], http://www.ninjaframework.org[Ninja Framework], https://github.com/svenkubiak/mangooio[MangooIO]. The goal is to provide more . Technically, it is based on stable well-known libraries : Google Guice, Lightbend Config, Undertow, Hibernate ORM, Hibernate Validator, Jackson, Freemarker... Q3-2020 the plan was open source it, by creating the missing documentation and archetype, and make it publicly available through http://weblith.io[Weblith.io].
+
+=== Weblith goal
+
+Weblith has been made to offer a quick and easy way to create **Server Side Rendered** web applications, focusing on developer joy by opinionated decisions allowing to minimize the developer tools needed, reduce boiler plate code, and even offer nice UI components. It uses stable and well-know libraries to avoid a long learning curve. It will produces one single Jar file with an embedded HTTP server that can run with few resources. Not that it doesn't reinvent the *monolithic* applications ; depending on the size of your project you should still use micro or external services when it makes sense, even with a front end application made using Weblith.
+
+=== Why *Quarkus powered* ?
+
+Following news on the Java battlefield, it was very interesting to see https://quarkus.io[Quakus] and http://micronaut.io[Micronaut] emerge. One problem we still wanted to fix with Weblith was the startup time (mainly slowed by Guice and Hibernate). With the **Quarkus Global Hackathon** launched, there was a good opportunity to try migrating some Weblith layers to Quarkus.
+
+WARNING: By this time (July 2020), you are reading a **condensed** documentation of a **Preview Release**, that have been succesfully set up for the Hackathon. If you're interested in this projet, see the Roadmap chapter for more information. Please note that - as requested by the Hackathon rules - no update or issue will be adressed before the end of the Hackathon.
