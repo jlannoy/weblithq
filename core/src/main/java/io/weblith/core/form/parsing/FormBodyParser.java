@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +23,6 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.spi.util.Types.ResteasyParameterizedType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import io.weblith.core.form.Form;
 import io.weblith.core.request.RequestContext;
@@ -46,8 +46,13 @@ public class FormBodyParser implements MessageBodyReader<Form> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Form readFrom(Class<Form> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-            MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
+    public Form readFrom(Class<Form> type,
+                         Type genericType,
+                         Annotation[] annotations,
+                         MediaType mediaType,
+                         MultivaluedMap<String, String> httpHeaders,
+                         InputStream entityStream)
+            throws IOException, WebApplicationException {
 
         try {
 
@@ -83,7 +88,7 @@ public class FormBodyParser implements MessageBodyReader<Form> {
     }
 
     protected Map<String, Object> parseFormData(MultivaluedMap<String, String> formData) {
-        Map<String, Object> parameters = Maps.newHashMap();
+        Map<String, Object> parameters = new HashMap<>();
         formData.entrySet().forEach(entry -> {
             // Do not register empty single valued properties
             // Allows to keep related object as null value
@@ -110,8 +115,8 @@ public class FormBodyParser implements MessageBodyReader<Form> {
                 // TODO getting index in collection
                 property = property.substring(0, property.indexOf('['));
                 if (!map.containsKey(property)) {
-                    List<Map<String, Object>> objects = Lists.newArrayList();
-                    values.forEach(v -> objects.add(Maps.newHashMap()));
+                    List<Map<String, Object>> objects = new ArrayList<>();
+                    values.forEach(v -> objects.add(new HashMap<>()));
                     map.put(property, objects);
                 }
 
@@ -123,7 +128,7 @@ public class FormBodyParser implements MessageBodyReader<Form> {
                 // Nested property of a single object
             } else {
                 if (!map.containsKey(property)) {
-                    map.put(property, Maps.newHashMap());
+                    map.put(property, new HashMap<>());
                 }
                 put((Map<String, Object>) map.get(property), key, values);
             }

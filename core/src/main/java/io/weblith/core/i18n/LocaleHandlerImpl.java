@@ -1,6 +1,7 @@
 package io.weblith.core.i18n;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -21,8 +22,6 @@ import javax.ws.rs.core.NewCookie;
 
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.core.ResteasyContext;
-
-import com.google.common.collect.ImmutableMap;
 
 import io.quarkus.runtime.LocalesBuildTimeConfig;
 import io.weblith.core.config.WeblithConfiguration;
@@ -65,7 +64,7 @@ public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter,
             map.put(l.getLanguage(), l);
             map.put(l.toString(), l);
         });
-        this.byLanguageLocales = ImmutableMap.copyOf(map);
+        this.byLanguageLocales = Collections.unmodifiableMap(map);
 
         LOGGER.debugv("Language map initialized with : {0}", this.byLanguageLocales);
     }
