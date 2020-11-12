@@ -1,3 +1,5 @@
+![Java Build](https://github.com/weblith/weblith/workflows/Java%20Build/badge.svg) 
+
 # Weblith.io
 > Quarkus-powered Java Web Application Framework
 
