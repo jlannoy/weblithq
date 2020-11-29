@@ -1,32 +1,32 @@
+ifndef::core-tests[:core-tests: ../../../../deployment/src/test/java]
+
 == Routes and Results
 
 === Resteasy integration
 
-On a purely Quarkus point of view, Weblith works along with `quarkus-resteasy`. It will automatically register JAX-RS endpoints having to `GET` and `POST` resources. It also means that you can mix Reasteasy code with Weblith.
+On a purely Quarkus point of view, Weblith works along with the `quarkus-resteasy` extension. It will automatically register JAX-RS endpoints for your web application routes, as `GET` and `POST` resources. By the way, it also means that you can mix Reasteasy code with Weblith if really needed.
 
 === Declaring routes
 
-To declare new routes for your application, you only need to know three annotations : `@Controller`, `@Get` and `@Post`. Each annotation can have a value to represent the corresponding `path`, or it will be taken automaticaly from the class name (minus a `Controller` suffix) or method name.
+To declare new routes for your application, you only need to know three annotations : `@Controller`, `@Get` and `@Post`. Each annotation can have a value to represent the corresponding `path`, or it will be taken automatically from the class name (minus a `Controller` suffix) or method name.
 
-```java
-@Controller
-class MyFirstController {
+[source,java]
+----
+include::{core-tests}/test/controllers/MyFirstController.java[tag=class]
+----
+<1> `/MyFirst/myPage` (GET)
 
-    @Get
-    public Response myPage() { ... }
-    
-    @Get
-    public Response myPage2(@PathParam String id) { ... }
-    
-    @Post
-    public Response myAction() { ... }
-    
-}
-```
+
+[source,java]
+----
+toto++; <1>
+----
+<1> zerzerze
 
 Will be recognized as `/MyFirst/myPage`, `/MyFirst/myPage2/{id}`,  (GET) and `/MyFirst/myAction` (POST). `Response` is the standard JAX-RS returned object ; you'll see later that Weblith will help you on that part too.
 
-```java
+[source,java]
+----
 @Controller("/Controller")
 class MySecondController {
 
@@ -40,7 +40,7 @@ class MySecondController {
     public Response myAction() { ... }
     
 }
-```
+----
 
 Will be recognized as `/Controller/page`, `/Controller/page/{id}` (GET) and `/MyFirst/action` (POST).
 
@@ -59,18 +59,20 @@ While you can configure yourself your JAR-RS `Response` objects, Weblith offers 
  
 Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed.
 
-```java
+[source,java]
+----
     @Get
     public Result myPage() {
         return new TextResult("Hello World").charset(StandardCharsets.UTF_8);
     }
-```
+----
 
 One last very import one is the `Redirect` result. All your POST actions will be CSRF-protected (unless marked with @NotCsrfProtected). So GET methods should never be used to modify things ; and successful POST actions should never directly render results, but rather redirect to a GET method, with some optional information. The `Redirect` result will help you this way.
 
-```java
+[source,java]
+----
     @Post
     public Result doIt() {
         return new Redirect("/Test/myPage").withSuccess("You did it !");
     }
-```
+----

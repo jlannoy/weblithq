@@ -8,12 +8,13 @@ During our migration to Quarkus, we tried to reimplement our Freemarker componen
 
 Simply return a `HtmlResult` to render Freemarker template. This result must point to a template name, and a directory (or the controller name, by default).
 
-```java
+[source,java]
+----
     @Get("/")
     public HtmlResult home() {
         return new HtmlResult("Main", "home").render("MyData","MyValue");
     }
-```
+----
 
 This will render the template `templates/Main/home.ftlh` (stored in the classpath, so in `src/main/resources`), with a `MyData` available variable. Some default variables are always added by Weblith :
 
@@ -28,7 +29,8 @@ Refer to the [Freemarker](https://freemarker.apache.org/docs/index.html) documen
 
 A better way to use templates is to inject instances of `FreemarkerTemplate` in the controllers. This way, template paths are checked at build-time.
 
-```java
+[source,java]
+----
 @Controller
 public class SimpleEntityController {
 
@@ -41,7 +43,7 @@ public class SimpleEntityController {
     }
     
 }
-```
+----
 
 The path of the template will automatically set to `templates/SimpleEntityController/list.ftlh`. It can be changed by using the `@TemplatePath` annotation.
 

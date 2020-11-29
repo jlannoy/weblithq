@@ -51,7 +51,7 @@ public class RequestLoggingFilter implements ContainerResponseFilter {
                 MDCLoggingUtil.putRequestDetails(context.request(), responseContext);
             }
 
-            if (config.requestLogs.requestUser) {
+            if (config.requestLogs.requestUser && context.identity() != null) {
                 MDCLoggingUtil.putCurrentUser(context.identity());
             }
 

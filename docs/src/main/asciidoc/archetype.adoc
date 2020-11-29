@@ -2,14 +2,15 @@
 
 A Maven archetype exists, so that you can easily bootstrap a Weblith showcase application. Run this method :
 
-```
+[source,shell,subs=attributes]
+----
 mvn archetype:generate                      \
   -DarchetypeGroupId=net.zileo              \
   -DarchetypeArtifactId=weblith-archetype   \
-  -DarchetypeVersion=0.1.0                  \
+  -DarchetypeVersion={revnumber}         \
   -Dversion=1.0.0-SNAPSHOT                  \
   -DgroupId=org.acme                        \
   -DartifactId=my-weblith
-```
+----
 
 Then you should be able to `cd my-weblith` and run `mvn compile quarkus:dev`.

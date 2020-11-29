@@ -8,7 +8,8 @@ One third Quarkus extension, that will be your real time-saver for building web 
 
 Sadly, this documentation draft do not enter into each component details (too early). But take a quick look at the two following example, as they are pretty clear on what they will produce.
 
-```html
+[source,html]
+----
 <@page.app title='User list' selectedIcon='users'>
     <@layout.title />
     <@t.table rows=Users align='left' noButtons=true>
@@ -17,9 +18,10 @@ Sadly, this documentation draft do not enter into each component details (too ea
         <@t.column name='email' title='E-mail' interpret='<@layout.mailto value />' />
     </@t.table>
 </@page.app>
-```
+----
 
-```html
+[source,html]
+----
 <@f.form 'SimpleEntity' SimpleEntity.id>
     <@f.text name='name' label='Name' required=true />
     <@f.text name='quantity' label='Quantity' type='number' />
@@ -29,4 +31,4 @@ Sadly, this documentation draft do not enter into each component details (too ea
         <@f.submit />
     </@>
 </@>
-```
+----

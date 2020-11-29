@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>io.weblith</groupId>
-        <artifactId>weblith</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.weblith</groupId>
+		<artifactId>weblith</artifactId>
+		<version>0.1.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
-    <artifactId>weblith-docs</artifactId>
-    <name>Weblith - Documentation</name>
+	<artifactId>weblith-docs</artifactId>
+	<name>Weblith - Documentation</name>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.6</version>
-                <executions>
-                    <execution>
-                        <id>output-html</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html5</backend>
-                            <sourceHighlighter>coderay</sourceHighlighter>
-                            <attributes>
-                                <toc>left</toc>
-                                <sectnums>true</sectnums>
-                                <revnumber>${project.version}</revnumber>
-                                <revdate>${maven.build.timestamp}</revdate>
-                                <organization>${project.organization.name}</organization>
-                            </attributes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>2.1.0</version>
+				<configuration>
+					<logHandler>
+						<failIf>
+							<severity>WARN</severity>
+						</failIf>
+					</logHandler>
+					<sourceDirectory>src/main/asciidoc</sourceDirectory>
+					<preserveDirectories>true</preserveDirectories>
+					<attributes>
+						<toc>left</toc>
+						<sectnums>true</sectnums>
+						<revnumber>${project.version}</revnumber>
+						<revdate>${maven.build.timestamp}</revdate>
+						<organization>${project.organization.name}</organization>
+					</attributes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>output-html</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html5</backend>
+							<attributes>
+								<sourceHighlighter>coderay</sourceHighlighter>
+								<linkcss>true</linkcss>
+								<copycss>true</copycss>
+							</attributes>
+						</configuration>
+					</execution>
+					<!-- <execution>
+						<id>output-live</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>http</goal>
+						</goals>
+						<configuration>
+							<port>8080</port>
+							<attributes>
+								<source-highlighter>coderay</source-highlighter>
+								<linkcss>true</linkcss>
+								<copycss>true</copycss>
+							</attributes>
+						</configuration>
+					</execution> -->
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

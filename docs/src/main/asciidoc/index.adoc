@@ -1,5 +1,4 @@
 = Weblith Manual
-ifndef::sourcedir[:sourcedir: ..]
 
 include::introduction.adoc[]
 
