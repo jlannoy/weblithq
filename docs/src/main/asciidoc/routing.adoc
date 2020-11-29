@@ -10,20 +10,17 @@ On a purely Quarkus point of view, Weblith works along with the `quarkus-resteas
 
 To declare new routes for your application, you only need to know three annotations : `@Controller`, `@Get` and `@Post`. Each annotation can have a value to represent the corresponding `path`, or it will be taken automatically from the class name (minus a `Controller` suffix) or method name.
 
-[source,java]
+[source,java,subs="verbatim"]
 ----
 include::{core-tests}/test/controllers/MyFirstController.java[tag=class]
 ----
-<1> `/MyFirst/myPage` (GET)
+<1> Will produce a `/MyFirst/myPage` GET route
+<2> Will produce a `/MyFirst/myPage2/{id}` GET route
+<3> Will produce a `/MyFirst/myAction` POST route
 
+`Response` is the standard JAX-RS returned object ; you'll see later that Weblith will help you on that part too.
 
-[source,java]
-----
-toto++; <1>
-----
-<1> zerzerze
-
-Will be recognized as `/MyFirst/myPage`, `/MyFirst/myPage2/{id}`,  (GET) and `/MyFirst/myAction` (POST). `Response` is the standard JAX-RS returned object ; you'll see later that Weblith will help you on that part too.
+Webltith uses Class, methods and arguments names as default values, but you can always be more specific by providing a value to the corresponding annotation.
 
 [source,java]
 ----

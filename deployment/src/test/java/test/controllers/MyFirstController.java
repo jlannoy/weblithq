@@ -19,13 +19,13 @@ public class MyFirstController {
     }
 
     @Get
-    public Response myPage2(@PathParam String id) {
+    public Response myPage2(@PathParam String id) { // <2>
         return Response.ok(id).build();
     }
 
     @Post
     @NotCsrfProtected
-    public Response myAction() {
+    public Response myAction() { // <3>
         return Response.ok().build();
     }
 

@@ -29,6 +29,7 @@
 					<preserveDirectories>true</preserveDirectories>
 					<attributes>
 						<toc>left</toc>
+                        <icons>font</icons>
 						<sectnums>true</sectnums>
 						<revnumber>${project.version}</revnumber>
 						<revdate>${maven.build.timestamp}</revdate>
@@ -45,13 +46,14 @@
 						<configuration>
 							<backend>html5</backend>
 							<attributes>
-								<sourceHighlighter>coderay</sourceHighlighter>
+                                <source-highlighter>coderay</source-highlighter>
 								<linkcss>true</linkcss>
 								<copycss>true</copycss>
 							</attributes>
 						</configuration>
 					</execution>
-					<!-- <execution>
+                    <!-- This phase can be used for live editing the documentation by pointing the right file path -->
+					<execution>
 						<id>output-live</id>
 						<phase>generate-resources</phase>
 						<goals>
@@ -65,7 +67,7 @@
 								<copycss>true</copycss>
 							</attributes>
 						</configuration>
-					</execution> -->
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
