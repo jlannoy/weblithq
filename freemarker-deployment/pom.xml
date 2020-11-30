@@ -59,9 +59,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire-plugin.version}</version>
                 <configuration>
-                    <systemProperties>
-                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                    </systemProperties>
+                    <systemPropertyVariables>
+				        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager> 
+		          		<maven.home>${maven.home}</maven.home>
+				    </systemPropertyVariables>es>
                 </configuration>
             </plugin>
         </plugins>
