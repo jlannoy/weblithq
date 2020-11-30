@@ -10,7 +10,7 @@ import io.weblith.core.results.StreamResult;
 public class HttpCacheConfig {
 
     /**
-     * Enables the HTTP Cache management for all {@link StreamResult}.
+     * Enable the HTTP Cache management for all {@link StreamResult}.
      */
     @ConfigItem(defaultValue = "true")
     public boolean enabled;

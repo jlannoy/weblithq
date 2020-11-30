@@ -9,7 +9,7 @@ import io.weblith.core.router.annotations.Post;
 public class RequestLoggingConfig {
 
     /**
-     * Enables a log for each {@link Post} or {@link Get} method.
+     * Enable a log for each {@link Post} or {@link Get} method.
      */
     @ConfigItem(defaultValue = "true")
     public boolean enabled;
