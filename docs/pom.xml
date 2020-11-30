@@ -29,7 +29,7 @@
 					<preserveDirectories>true</preserveDirectories>
 					<attributes>
 						<toc>left</toc>
-                        <icons>font</icons>
+						<icons>font</icons>
 						<sectnums>true</sectnums>
 						<revnumber>${project.version}</revnumber>
 						<revdate>${maven.build.timestamp}</revdate>
@@ -39,28 +39,12 @@
 				<executions>
 					<execution>
 						<id>output-html</id>
-						<phase>prepare-package</phase>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
 							<backend>html5</backend>
-							<attributes>
-                                <source-highlighter>coderay</source-highlighter>
-								<linkcss>true</linkcss>
-								<copycss>true</copycss>
-							</attributes>
-						</configuration>
-					</execution>
-                    <!-- This phase can be used for live editing the documentation by pointing the right file path -->
-					<execution>
-						<id>output-live</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>http</goal>
-						</goals>
-						<configuration>
-							<port>8080</port>
 							<attributes>
 								<source-highlighter>coderay</source-highlighter>
 								<linkcss>true</linkcss>
@@ -72,4 +56,38 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- Can be used for live editing the documentation -->
+	<profiles>
+		<profile>
+			<id>live-preview</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>output-live</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>http</goal>
+								</goals>
+								<configuration>
+									<port>8080</port>
+									<attributes>
+										<source-highlighter>coderay</source-highlighter>
+										<linkcss>true</linkcss>
+										<copycss>true</copycss>
+									</attributes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

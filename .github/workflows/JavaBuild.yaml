@@ -35,7 +35,7 @@ jobs:
             key: ${{ runner.os }}-sonar
             restore-keys: ${{ runner.os }}-sonar
       -  name: Build with Maven on Java 11
-         run: mvn -B clean package -fn -Pcoverage,asciidoc org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file pom.xml
+         run: mvn -B clean package -fn -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --file pom.xml
          env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
