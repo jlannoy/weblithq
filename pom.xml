@@ -50,7 +50,7 @@
 		<sonar.projectKey>weblith_weblith</sonar.projectKey>
 		<sonar.organization>weblith</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<quarkus.version>1.9.2.Final</quarkus.version>
+		<quarkus.version>1.10.1.Final</quarkus.version>
 	</properties>
 
 	<modules>
