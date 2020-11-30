@@ -9,20 +9,20 @@ import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
 
 // tag::class[]
-@Controller
-public class MyFirstController {
+@Controller("/Controller")
+public class MySecondController {
 
-    @Get
+    @Get("/page")
     public Response myPage() { // <1>
         return Response.ok().build();
     }
 
-    @Get
-    public Response myPage2(@PathParam String id) { // <2>
+    @Get("/page2/{key}")
+    public Response myPage2(@PathParam("key") String id) { // <2>
         return Response.ok(id).build();
     }
 
-    @Post
+    @Post("/action")
     public Response myAction() { // <3>
         return Response.ok().build();
     }

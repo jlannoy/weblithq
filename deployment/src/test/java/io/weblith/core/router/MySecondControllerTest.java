@@ -12,31 +12,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
-import test.controllers.MyFirstController;
+import test.controllers.MySecondController;
 
-public class MyFirstControllerTest {
+public class MySecondControllerTest {
 
     private final static int OK = Status.OK.getStatusCode();
 
     @RegisterExtension
     static QuarkusUnitTest runner = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(MyFirstController.class)
+                    .addClasses(MySecondController.class)
                     .addAsResource(new StringAsset("quarkus.weblith.csrf-protected=false"), "application.properties"));
 
     @Test
     public void testMyPage() {
-        when().get("/MyFirst/myPage").then().statusCode(OK);
+        when().get("/Controller/page").then().statusCode(OK);
     }
     
     @Test
     public void testMyPage2() {
-        when().get("/MyFirst/myPage2/data").then().statusCode(OK).body(is("data"));
+        when().get("/Controller/page2/data").then().statusCode(OK).body(is("data"));
     }
 
     @Test
     public void testMyAction() {
-        when().post("/MyFirst/myAction").then().statusCode(OK);
+        when().post("/Controller/action").then().statusCode(OK);
     }
 
 }

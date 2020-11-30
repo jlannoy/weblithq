@@ -18,28 +18,17 @@ include::{core-tests}/test/controllers/MyFirstController.java[tag=class]
 <2> Will produce a `/MyFirst/myPage2/{id}` GET route
 <3> Will produce a `/MyFirst/myAction` POST route
 
-`Response` is the standard JAX-RS returned object ; you'll see later that Weblith will help you on that part too.
+NOTE: `Response` is the standard JAX-RS returned object ; you'll see later that Weblith will help you on that part too.
 
-Webltith uses Class, methods and arguments names as default values, but you can always be more specific by providing a value to the corresponding annotation.
+In the previous example, Webltith uses Class, methods and arguments names as default values. But you can always be more specific by providing a string value to the corresponding annotation.
 
-[source,java]
+[source,java,subs="verbatim"]
 ----
-@Controller("/Controller")
-class MySecondController {
-
-    @Get("/page")
-    public Response myPage() { ... }
-    
-    @Get("/page2/{id}")
-    public Response myPage2(@PathParam("id") String identifier) { ... }
-    
-    @Post("/action")
-    public Response myAction() { ... }
-    
-}
+include::{core-tests}/test/controllers/MySecondController.java[tag=class]
 ----
-
-Will be recognized as `/Controller/page`, `/Controller/page/{id}` (GET) and `/MyFirst/action` (POST).
+<1> Will produce a `/Controller/page` GET route
+<2> Will produce a `/Controller/page2/{key}` GET route
+<3> Will produce a `/Controller/action` POST route
 
 === Route parameters
 
