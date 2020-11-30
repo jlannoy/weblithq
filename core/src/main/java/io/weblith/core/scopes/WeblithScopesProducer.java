@@ -8,14 +8,14 @@ import javax.ws.rs.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.quarkus.arc.DefaultBean;
-import io.weblith.core.config.WeblithConfiguration;
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 
 @RequestScoped
 public class WeblithScopesProducer {
 
     @Inject
-    WeblithConfiguration weblithConfiguration;
+    WeblithConfig weblithConfiguration;
 
     @DefaultBean
     @Produces

@@ -14,7 +14,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.util.DateUtil;
 
 import io.weblith.core.config.HttpCacheConfig;
-import io.weblith.core.config.WeblithConfiguration;
+import io.weblith.core.config.WeblithConfig;
 
 /**
  * Useful info taken from Heroku documentation : <br>
@@ -28,7 +28,7 @@ public class HttpCacheHelper {
     private final HttpCacheConfig cacheConfig;
 
     @Inject
-    public HttpCacheHelper(WeblithConfiguration weblithConfiguration) {
+    public HttpCacheHelper(WeblithConfig weblithConfiguration) {
         this.cacheConfig = weblithConfiguration.httpCache;
     }
 

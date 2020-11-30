@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.jboss.logging.Logger;
 
-import io.weblith.core.config.WeblithConfiguration;
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.results.Result;
 
@@ -24,7 +24,7 @@ public class FlashScopeHandler implements FlashScope {
 
     private boolean preExistingFlashData;
 
-    public FlashScopeHandler(WeblithConfiguration weblithConfiguration, RequestContext context) {
+    public FlashScopeHandler(WeblithConfig weblithConfiguration, RequestContext context) {
 
         this.cookieBuilder = new CookieBuilder(weblithConfiguration.cookies.session.cookie, context.contextPath());
         this.cookieName = weblithConfiguration.cookies.flashName;

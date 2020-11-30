@@ -2,15 +2,20 @@ package io.weblith.core.security;
 
 import java.lang.reflect.Method;
 
+import javax.inject.Inject;
 import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.ext.Provider;
 
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.router.annotations.Post;
 
 @Provider
 public class AuthenticityTokenDynamicFeature implements DynamicFeature {
+
+    @Inject
+    protected WeblithConfig weblithConfig;
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -21,7 +26,8 @@ public class AuthenticityTokenDynamicFeature implements DynamicFeature {
         if (declaring == null || method == null)
             return;
 
-        if (method.getAnnotation(Post.class) != null &&
+        if (weblithConfig.csrfProtected &&
+                method.getAnnotation(Post.class) != null &&
                 method.getAnnotation(NotCsrfProtected.class) == null &&
                 declaring.getAnnotation(NotCsrfProtected.class) == null) {
 

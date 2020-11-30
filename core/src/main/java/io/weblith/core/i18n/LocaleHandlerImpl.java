@@ -24,7 +24,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.core.ResteasyContext;
 
 import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.weblith.core.config.WeblithConfiguration;
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.scopes.CookieBuilder;
 
@@ -49,7 +49,7 @@ public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter,
     private final Map<String, Locale> byLanguageLocales;
 
     @Inject
-    public LocaleHandlerImpl(RequestContext context, WeblithConfiguration weblithConfig, LocalesBuildTimeConfig localesConfig,
+    public LocaleHandlerImpl(RequestContext context, WeblithConfig weblithConfig, LocalesBuildTimeConfig localesConfig,
             CookieBuilder cookieBuilder) {
         super();
         this.context = context;

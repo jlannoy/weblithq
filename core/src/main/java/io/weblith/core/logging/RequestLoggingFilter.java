@@ -19,7 +19,7 @@ import org.jboss.logging.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.weblith.core.config.WeblithConfiguration;
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 
 @ApplicationScoped
@@ -35,7 +35,7 @@ public class RequestLoggingFilter implements ContainerResponseFilter {
     RequestContext context;
 
     @Inject
-    WeblithConfiguration config;
+    WeblithConfig config;
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)

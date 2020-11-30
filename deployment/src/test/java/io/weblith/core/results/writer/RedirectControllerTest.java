@@ -20,7 +20,7 @@ import io.quarkus.test.QuarkusUnitTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSender;
-import io.weblith.core.config.WeblithConfiguration;
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.scopes.CookieBuilder;
 
 public class RedirectControllerTest {
@@ -45,7 +45,7 @@ public class RedirectControllerTest {
     SecurityIdentity securityIdentity;
 
     @Inject
-    WeblithConfiguration config;
+    WeblithConfig config;
 
     @Test
     public void testRootRedirect() {
