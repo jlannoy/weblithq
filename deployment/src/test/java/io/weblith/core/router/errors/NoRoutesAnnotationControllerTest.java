@@ -1,4 +1,4 @@
-package io.weblith.core.router;
+package io.weblith.core.router.errors;
 
 import static io.restassured.RestAssured.when;
 
