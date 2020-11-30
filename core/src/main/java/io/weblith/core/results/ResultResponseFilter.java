@@ -31,11 +31,11 @@ public class ResultResponseFilter implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
-        if (!responseContext.hasEntity() || !Result.class.isAssignableFrom(responseContext.getEntityClass())) {
+        if (!responseContext.hasEntity() || !AbstractResult.class.isAssignableFrom(responseContext.getEntityClass())) {
             return;
         }
 
-        Result result = (Result) responseContext.getEntity();
+        AbstractResult<?> result = (AbstractResult<?>) responseContext.getEntity();
 
         httpCache.setCachingPolicy(requestContext, result);
 
@@ -44,7 +44,7 @@ public class ResultResponseFilter implements ContainerResponseFilter {
         }
 
         if (ConfigureResponse.class.isAssignableFrom(result.getClass())) {
-            ((ConfigureResponse) result).filter(context, responseContext);
+            ((ConfigureResponse) result).configure(context, responseContext);
         } else {
             setDefaultResponseConfiguration(result, responseContext);
         }
@@ -64,7 +64,7 @@ public class ResultResponseFilter implements ContainerResponseFilter {
 
     }
 
-    protected void setDefaultResponseConfiguration(Result result, ContainerResponseContext responseContext) {
+    protected void setDefaultResponseConfiguration(AbstractResult<?> result, ContainerResponseContext responseContext) {
         responseContext.setStatus(result.getStatus().getStatusCode());
 
         if (result.getContentType() == null) {
@@ -72,14 +72,13 @@ public class ResultResponseFilter implements ContainerResponseFilter {
             responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE, "");
             responseContext.setEntity(null);
         } else if (result.getCharset() != null) {
-            responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE,
-                    String.format("%s; charset=%s", result.getContentType(), result.getCharset()));
+            responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE, String.format("%s; charset=%s", result.getContentType(), result.getCharset()));
         } else {
             responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE, result.getContentType());
         }
     }
 
-    protected void manageCookies(Result result, ContainerResponseContext responseContext) throws IOException {
+    protected void manageCookies(AbstractResult<?> result, ContainerResponseContext responseContext) throws IOException {
         if (result.isIncludeScopeCookies()) {
             context.flash().save(result);
             context.session().save(result);

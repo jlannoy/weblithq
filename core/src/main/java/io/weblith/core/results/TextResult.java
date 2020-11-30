@@ -9,12 +9,12 @@ import javax.ws.rs.core.Response.Status;
 
 import io.weblith.core.results.Result.RenderResponse;
 
-public class TextResult extends Result implements RenderResponse {
+public class TextResult extends AbstractResult<TextResult> implements RenderResponse {
 
     protected final String content;
 
     public TextResult(String content) {
-        super(MediaType.TEXT_PLAIN, Status.OK);
+        super(TextResult.class, MediaType.TEXT_PLAIN, Status.OK);
         this.content = content;
     }
 

@@ -14,23 +14,23 @@ import javax.ws.rs.core.Response.Status;
 import io.weblith.core.results.Result.RenderResponse;
 
 /**
- * Convenience class for streaming data as a {@link Result}. Can be build either from a {@link File} or from a {@link URL}. In
- * both cases the content type will be guessed based on the file name.
+ * Convenience class for streaming data as a {@link AbstractResult}. Can be build either from a {@link File} or from a
+ * {@link URL}. In both cases the content type will be guessed based on the file name.
  */
-public class StreamResult extends Result implements RenderResponse {
+public class StreamResult extends AbstractResult<StreamResult> implements RenderResponse {
 
     private final URL url;
 
     private boolean disableHttpCache;
 
     public StreamResult(URL contentUrl) {
-        super(null, Status.OK);
+        super(StreamResult.class, Status.OK);
         this.url = contentUrl;
         this.initialize();
     }
 
     public StreamResult(File file) {
-        super(null, Status.OK);
+        super(StreamResult.class, Status.OK);
         try {
             this.url = file.toURI().toURL();
         } catch (MalformedURLException e) {

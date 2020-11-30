@@ -32,7 +32,7 @@ public class HttpCacheHelper {
         this.cacheConfig = weblithConfiguration.httpCache;
     }
 
-    public void setCachingPolicy(ContainerRequestContext requestContext, Result result) throws IOException {
+    public void setCachingPolicy(ContainerRequestContext requestContext, AbstractResult<?> result) throws IOException {
         if (StreamResult.class.isAssignableFrom(result.getClass())) {
 
             StreamResult streamResult = (StreamResult) result;
@@ -79,11 +79,11 @@ public class HttpCacheHelper {
 
     }
 
-    public void setCacheControl(Result result, Long lastModified) {
+    public void setCacheControl(AbstractResult<?> result, Long lastModified) {
         setCacheControl(result, lastModified, buildETag(lastModified));
     }
 
-    public void setCacheControl(Result result, Long lastModified, String etag) {
+    public void setCacheControl(AbstractResult<?> result, Long lastModified, String etag) {
 
         if (!cacheConfig.enabled || cacheConfig.cacheControl.isZero()) {
             result.addHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store");

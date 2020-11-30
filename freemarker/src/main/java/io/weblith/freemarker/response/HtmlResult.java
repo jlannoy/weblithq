@@ -8,10 +8,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import io.weblith.core.form.Form;
-import io.weblith.core.results.Result;
+import io.weblith.core.results.AbstractResult;
 import io.weblith.freemarker.template.FreemarkerTemplate;
 
-public class HtmlResult extends Result {
+public class HtmlResult extends AbstractResult<HtmlResult> {
 
     private final Optional<String> templatePath, templateDirectory, templateName, templateSuffix;
 
@@ -30,7 +30,7 @@ public class HtmlResult extends Result {
     }
 
     private HtmlResult(String templatePath, String templateDirectory, String templateName, String templateSuffix) {
-        super(MediaType.TEXT_HTML, Status.OK);
+        super(HtmlResult.class, MediaType.TEXT_HTML, Status.OK);
         this.templatePath = Optional.ofNullable(templatePath);
         this.templateDirectory = Optional.ofNullable(templateDirectory);
         this.templateName = Optional.ofNullable(templateName);

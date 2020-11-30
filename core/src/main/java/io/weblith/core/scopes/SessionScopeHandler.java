@@ -11,7 +11,7 @@ import org.jboss.logging.Logger;
 import io.weblith.core.config.SessionConfig;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
-import io.weblith.core.results.Result;
+import io.weblith.core.results.AbstractResult;
 
 /**
  * Default SessionScope implementation.
@@ -58,7 +58,7 @@ public class SessionScopeHandler implements SessionScope {
     }
 
     @Override
-    public void save(Result result) {
+    public void save(AbstractResult<?> result) {
 
         if (data.isEmpty()) {
 

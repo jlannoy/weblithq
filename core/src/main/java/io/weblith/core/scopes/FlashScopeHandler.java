@@ -8,7 +8,7 @@ import org.jboss.logging.Logger;
 
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
-import io.weblith.core.results.Result;
+import io.weblith.core.results.AbstractResult;
 
 public class FlashScopeHandler implements FlashScope {
 
@@ -43,7 +43,7 @@ public class FlashScopeHandler implements FlashScope {
     }
 
     @Override
-    public void save(Result result) throws IOException {
+    public void save(AbstractResult<?> result) throws IOException {
 
         if (nextRequestData.isEmpty()) {
 

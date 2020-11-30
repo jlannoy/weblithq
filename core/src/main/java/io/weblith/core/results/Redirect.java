@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response.Status;
 
 import io.weblith.core.request.RequestContext;
 
-public class Redirect extends Result implements Result.ConfigureResponse {
+public class Redirect extends AbstractResult<Redirect> implements AbstractResult.ConfigureResponse {
 
     private final String url;
 
@@ -17,13 +17,12 @@ public class Redirect extends Result implements Result.ConfigureResponse {
     private RedirectMessage message = null;
 
     public Redirect(String url) {
-        super(null, Status.SEE_OTHER);
+        super(Redirect.class, Status.SEE_OTHER);
         this.url = url;
     }
 
     public Redirect(URL url) {
-        super(null, Status.SEE_OTHER);
-        this.url = url.toExternalForm();
+        this(url.toExternalForm());
     }
 
     public Redirect withHashTag(String hashTag) {
@@ -72,7 +71,7 @@ public class Redirect extends Result implements Result.ConfigureResponse {
     }
 
     @Override
-    public void filter(RequestContext requestContext, ContainerResponseContext responseContext) {
+    public void configure(RequestContext requestContext, ContainerResponseContext responseContext) {
 
         String path = url != null ? url : "/";
         if (!path.startsWith("http") && !path.startsWith(requestContext.contextPath())) {
@@ -83,8 +82,7 @@ public class Redirect extends Result implements Result.ConfigureResponse {
         }
 
         if (message != null) {
-            requestContext.flash().put(message.type,
-                    requestContext.messages().getWithDefault(message.key, message.key, message.args));
+            requestContext.flash().put(message.type, requestContext.messages().getWithDefault(message.key, message.key, message.args));
         }
 
         responseContext.setStatus(getStatus().getStatusCode());

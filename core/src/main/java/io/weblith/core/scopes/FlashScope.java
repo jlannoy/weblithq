@@ -3,7 +3,7 @@ package io.weblith.core.scopes;
 import java.io.IOException;
 import java.util.Map;
 
-import io.weblith.core.results.Result;
+import io.weblith.core.results.AbstractResult;
 
 /**
  * Flash Scope consists of two kinds of data: "current" and "outgoing". Current data will only exist for the current
@@ -73,6 +73,6 @@ public interface FlashScope {
 
     Map<String, String> getNextRequestData();
 
-    void save(Result result) throws IOException;
+    void save(AbstractResult<?> result) throws IOException;
 
 }

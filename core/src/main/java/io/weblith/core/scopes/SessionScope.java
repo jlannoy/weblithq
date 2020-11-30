@@ -2,7 +2,7 @@ package io.weblith.core.scopes;
 
 import java.util.Optional;
 
-import io.weblith.core.results.Result;
+import io.weblith.core.results.AbstractResult;
 
 public interface SessionScope {
 
@@ -12,7 +12,7 @@ public interface SessionScope {
      * To finally send this session to the user this method has to be called. It basically serializes the session into
      * the header of the response.
      */
-    public void save(Result result);
+    public void save(AbstractResult<?> result);
 
     /**
      * Puts key / value into the session. PLEASE NOTICE: If value == null the key will be removed!

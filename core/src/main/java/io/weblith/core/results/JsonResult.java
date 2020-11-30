@@ -7,17 +7,17 @@ import javax.ws.rs.core.Response.Status;
 
 import io.weblith.core.request.RequestContext;
 
-public class JsonResult extends Result implements Result.ConfigureResponse {
+public class JsonResult extends AbstractResult<JsonResult> implements Result.ConfigureResponse {
 
     protected final Object toRender;
 
     public JsonResult(Object toRender) {
-        super(MediaType.APPLICATION_JSON, Status.OK);
+        super(JsonResult.class, MediaType.APPLICATION_JSON, Status.OK);
         this.toRender = toRender;
     }
 
     @Override
-    public void filter(RequestContext requestContext, ContainerResponseContext responseContext) {
+    public void configure(RequestContext requestContext, ContainerResponseContext responseContext) {
 
         // Delegate Json rendering to Resteasy
         responseContext.setStatus(getStatus().getStatusCode());
