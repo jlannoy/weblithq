@@ -1,6 +1,10 @@
 package test.controllers;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import io.weblith.core.results.TextResult;
 import io.weblith.core.router.annotations.Controller;
@@ -17,7 +21,10 @@ public class TextResultsController {
 
     @Get
     public TextResult getTextResultFromObject() {
-        return new TextResult(Arrays.asList("Hello", "there", "!"));
+        Object anObject = Arrays.asList("Hello", "there", "!");
+        return new TextResult(anObject).contentType(MediaType.APPLICATION_JSON)
+                                       .charset(StandardCharsets.US_ASCII)
+                                       .status(Status.ACCEPTED);
     }
     // end::examples[]
 

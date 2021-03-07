@@ -1,9 +1,9 @@
 package io.weblith.core.results;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
@@ -28,16 +28,8 @@ public class TextResult extends AbstractResult<TextResult> implements RenderResp
 
     @Override
     public void write(OutputStream entityStream) throws Exception {
-
-        try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, this.getCharset())) {
-
-            writer.write(content);
-            writer.flush();
-
-        } catch (Exception cause) {
-
-            throw new WebApplicationException(cause);
-
+        try (InputStream inputStream = new ByteArrayInputStream(content.getBytes())) {
+            inputStream.transferTo(entityStream);
         }
     }
 

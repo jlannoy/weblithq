@@ -8,7 +8,7 @@ On a purely Quarkus point of view, Weblith works along with the `quarkus-resteas
 
 === Declaring routes
 
-To declare new routes for your application, you only need to know three annotations : `@Controller`, `@Get` and `@Post`. Each annotation can have a value to represent the corresponding `path`, or it will be taken automatically from the class name (minus a `Controller` suffix) or method name.
+To declare new routes for your application, you only need to know three annotations : `@Controller`, `@Get` and `@Post`. Each annotation can have a value to represent the corresponding `path`, otherwise it will be taken automatically from the class name (minus the `Controller` suffix) or method name.
 
 [source,java]
 ----
@@ -36,13 +36,13 @@ There is no specific annotation for managing parameters of your routes. As you m
 
 === Route results
 
-While you can configure yourself your JAR-RS `Response` objects, Weblith offers an handy way (for a server-side rendered web application) to manage the results of your routes. It can be done via different types of `Result` objects : 
+While you can configure yourself your JAR-RS `Response` objects, Weblith offers an handy way (at least for a server-side rendered web application) to manage the different results of your routes. It can be done via different types of `io.weblith.core.results.Result` objects, for example : 
 
- * `TextResult` to render plain text
- * `RawResult` to render bytes
- * `StreamResult` to render a `File` or an `URL`
- * `JsonResult` to render some JSON
- * `HtmlResult` will be addressed in the [Freemarker Templates](=freemarker-templates) chapter
+* `TextResult` to render plain text
+* `RawResult` to render bytes
+* `StreamResult` to render a `File` or an `URL`
+* `JsonResult` to render some JSON
+* `HtmlResult` will be addressed in the [Freemarker Templates](=freemarker-templates) chapter
  
 Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed. Here are some usefull examples...
 

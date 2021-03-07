@@ -8,12 +8,11 @@ import javax.ws.rs.core.MediaType;
 import org.jboss.resteasy.spi.metadata.MethodParameter;
 import org.jboss.resteasy.spi.metadata.Parameter;
 import org.jboss.resteasy.spi.metadata.Parameter.ParamType;
+import org.jboss.resteasy.spi.metadata.ResourceBuilder;
 
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
-
-import org.jboss.resteasy.spi.metadata.ResourceBuilder;
 
 public class WeblithResourceBuilder extends ResourceBuilder {
 
@@ -91,26 +90,26 @@ public class WeblithResourceBuilder extends ResourceBuilder {
 
     }
 
-    //    private void handleConsumes(ResourceClassBuilder resourceClassBuilder, Method method,
-    //            ResourceMethodBuilder resourceMethodBuilder) {
-    //        final RequestMappingData requestMapping = getRequestMapping(resourceClassBuilder,
-    //                method);
-    //        if (requestMapping != null && requestMapping.getConsumes().length > 0)
-    //            resourceMethodBuilder.consumes(requestMapping.getConsumes());
-    //    }
-    //
-    //    private void handleProduces(ResourceClassBuilder resourceClassBuilder, Method method,
-    //            ResourceMethodBuilder resourceMethodBuilder) {
-    //        final RequestMappingData requestMapping = getRequestMapping(resourceClassBuilder,
-    //                method);
-    //        if (requestMapping != null && requestMapping.getProduces().length > 0)
-    //            resourceMethodBuilder.produces(requestMapping.getProduces());
-    //        else {
-    //            if (!String.class.equals(method.getReturnType()) && !void.class.equals(method.getReturnType())) {
-    //                resourceMethodBuilder.produces(MediaType.APPLICATION_JSON_TYPE);
-    //            }
-    //        }
-    //    }
+//        private void handleConsumes(ResourceClassBuilder resourceClassBuilder, Method method,
+//                ResourceMethodBuilder resourceMethodBuilder) {
+//            final RequestMappingData requestMapping = getRequestMapping(resourceClassBuilder,
+//                    method);
+//            if (requestMapping != null && requestMapping.getConsumes().length > 0)
+//                resourceMethodBuilder.consumes(requestMapping.getConsumes());
+//        }
+//    
+//        private void handleProduces(ResourceClassBuilder resourceClassBuilder, Method method,
+//                ResourceMethodBuilder resourceMethodBuilder) {
+//            final RequestMappingData requestMapping = getRequestMapping(resourceClassBuilder,
+//                    method);
+//            if (requestMapping != null && requestMapping.getProduces().length > 0)
+//                resourceMethodBuilder.produces(requestMapping.getProduces());
+//            else {
+//                if (!String.class.equals(method.getReturnType()) && !void.class.equals(method.getReturnType())) {
+//                    resourceMethodBuilder.produces(MediaType.APPLICATION_JSON_TYPE);
+//                }
+//            }
+//        }
 
     @Override
     public Method getAnnotatedMethod(final Class<?> root, final Method implementation) {

@@ -13,6 +13,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.ext.Provider;
 
+import org.jboss.resteasy.core.interception.jaxrs.SuspendableContainerResponseContext;
+
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.results.Result.ConfigureResponse;
 import io.weblith.core.results.Result.RenderResponse;
@@ -35,53 +37,69 @@ public class ResultResponseFilter implements ContainerResponseFilter {
             return;
         }
 
-        AbstractResult<?> result = (AbstractResult<?>) responseContext.getEntity();
+        SuspendableContainerResponseContext ctx = (SuspendableContainerResponseContext) responseContext;
+        ctx.suspend();
+        try {
 
-        httpCache.setCachingPolicy(requestContext, result);
+            AbstractResult<?> result = (AbstractResult<?>) responseContext.getEntity();
 
-        for (Entry<String, Object> header : result.getHeaders().entrySet()) {
-            responseContext.getHeaders().add(header.getKey(), header.getValue());
-        }
+            httpCache.setCachingPolicy(requestContext, result);
 
-        if (ConfigureResponse.class.isAssignableFrom(result.getClass())) {
-            ((ConfigureResponse) result).configure(context, responseContext);
-        } else {
-            setDefaultResponseConfiguration(result, responseContext);
-        }
-
-        if (RenderResponse.class.isAssignableFrom(result.getClass())) {
-            responseContext.setEntity(null);
-            try {
-                ((RenderResponse) result).write(responseContext.getEntityStream());
-            } catch (WebApplicationException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new WebApplicationException(e.getMessage(), e);
+            for (Entry<String, Object> header : result.getHeaders()
+                                                      .entrySet()) {
+                responseContext.getHeaders()
+                               .add(header.getKey(), header.getValue());
             }
+
+            if (ConfigureResponse.class.isAssignableFrom(result.getClass())) {
+                ((ConfigureResponse) result).configure(context, responseContext);
+            } else {
+                setDefaultResponseConfiguration(result, responseContext);
+            }
+
+            if (RenderResponse.class.isAssignableFrom(result.getClass())) {
+                responseContext.setEntity(null);
+                try {
+                    ((RenderResponse) result).write(responseContext.getEntityStream());
+                } catch (WebApplicationException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new WebApplicationException(e.getMessage(), e);
+                }
+            }
+
+            manageCookies(result, responseContext);
+
+            ctx.resume();
+        } catch (Throwable t) {
+            ctx.resume(t);
         }
-
-        manageCookies(result, responseContext);
-
     }
 
     protected void setDefaultResponseConfiguration(AbstractResult<?> result, ContainerResponseContext responseContext) {
-        responseContext.setStatus(result.getStatus().getStatusCode());
+        responseContext.setStatus(result.getStatus()
+                                        .getStatusCode());
 
         if (result.getContentType() == null) {
-            // Resteasy absolutely needs a header to be filled
-            responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE, "");
+            // Resteasy seems to absolutely need a header to be filled
+            responseContext.getHeaders()
+                           .putSingle(HttpHeaders.CONTENT_TYPE, "");
             responseContext.setEntity(null);
         } else if (result.getCharset() != null) {
-            responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE, String.format("%s; charset=%s", result.getContentType(), result.getCharset()));
+            responseContext.getHeaders()
+                           .putSingle(HttpHeaders.CONTENT_TYPE, String.format("%s; charset=%s", result.getContentType(), result.getCharset()));
         } else {
-            responseContext.getHeaders().putSingle(HttpHeaders.CONTENT_TYPE, result.getContentType());
+            responseContext.getHeaders()
+                           .putSingle(HttpHeaders.CONTENT_TYPE, result.getContentType());
         }
     }
 
     protected void manageCookies(AbstractResult<?> result, ContainerResponseContext responseContext) throws IOException {
         if (result.isIncludeScopeCookies()) {
-            context.flash().save(result);
-            context.session().save(result);
+            context.flash()
+                   .save(result);
+            context.session()
+                   .save(result);
         }
         for (NewCookie cookie : result.getCookies()) {
             CookieBuilder.save(responseContext, cookie);
