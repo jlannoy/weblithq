@@ -61,7 +61,7 @@ public class RedirectResultsControllerTest {
     public void testWithSuccessRedirect() {
         given().config(RestAssured.config()
                                   .redirect(redirectConfig().followRedirects(false)))
-               .get("/RedirectResults/withSuccess")
+               .post("/RedirectResults/withSuccess")
                .then()
                .statusCode(SEE_OTHER)
                .header(LOCATION, is("/"))
@@ -73,7 +73,7 @@ public class RedirectResultsControllerTest {
     public void testWithWarningRedirect() {
         given().config(RestAssured.config()
                                   .redirect(redirectConfig().followRedirects(false)))
-               .get("/RedirectResults/withWarning")
+               .post("/RedirectResults/withWarning")
                .then()
                .statusCode(SEE_OTHER)
                .header(LOCATION, is("/"))
@@ -85,7 +85,7 @@ public class RedirectResultsControllerTest {
     public void testWithErrorRedirect() {
         given().config(RestAssured.config()
                                   .redirect(redirectConfig().followRedirects(false)))
-               .get("/RedirectResults/withError")
+               .post("/RedirectResults/withError")
                .then()
                .statusCode(SEE_OTHER)
                .header(LOCATION, is("/"))

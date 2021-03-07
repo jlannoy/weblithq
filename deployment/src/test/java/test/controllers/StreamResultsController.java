@@ -17,23 +17,24 @@ public class StreamResultsController {
 
     public final static String MY_TXT_FILE = "META-INF/resources/my-file.txt";
 
-    public final static String MY_UNKNOWN_TYPE_FILE = "META-INF/resources/my-file.properties";
-
+    // tag::examples[]
     @Get
     public Result file() throws URISyntaxException {
-        URL path = this.getClass()
-                       .getResource("/" + MY_TXT_FILE);
-        Objects.requireNonNull(path);
-        return new StreamResult(new File(path.toURI()));
+        File file = new File(this.getClass()
+                                 .getResource("/META-INF/resources/my-file.txt")
+                                 .toURI());
+        return new StreamResult(file);
     }
 
     @Get
     public Result url() {
         URL path = this.getClass()
-                       .getResource("/" + MY_TXT_FILE);
-        Objects.requireNonNull(path);
+                       .getResource("/META-INF/resources/my-file.txt");
         return new StreamResult(path);
     }
+    // end::examples[]
+
+    public final static String MY_UNKNOWN_TYPE_FILE = "META-INF/resources/my-file.properties";
 
     @Get
     public Result unknownTypeFile() throws URISyntaxException {

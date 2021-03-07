@@ -28,7 +28,7 @@ public class TextResultsControllerTest {
 
     @Test
     public void testSimpleTextResult() {
-        when().get("/TextResults/getSimpleTextResult")
+        when().get("/TextResults/simpleText")
               .then()
               .statusCode(OK)
               .body(is("Hello there!"))
@@ -37,16 +37,16 @@ public class TextResultsControllerTest {
 
     @Test
     public void testTextResultFromObject() {
-        when().get("/TextResults/getTextResultFromObject")
+        when().get("/TextResults/textFromObject")
               .then()
               .statusCode(Status.ACCEPTED.getStatusCode())
               .body(is("[Hello, there, !]"))
-              .header(HttpHeaders.CONTENT_TYPE, is("text/javascript; charset=US-ASCII"));
+              .header(HttpHeaders.CONTENT_TYPE, is("application/json; charset=US-ASCII"));
     }
 
     @Test
     public void testTextResultFromException() {
-        when().get("/TextResults/getTextResultFromException")
+        when().get("/TextResults/textFromException")
               .then()
               .statusCode(OK)
               .body(is("No hello there..."));

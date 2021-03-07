@@ -44,7 +44,7 @@ While you can configure yourself your JAR-RS `Response` objects, Weblith offers 
 * `JsonResult` to render some JSON
 * `HtmlResult` will be addressed in the [Freemarker Templates](=freemarker-templates) chapter
  
-Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed. Here are some usefull examples...
+Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed. Here are some useful examples...
 
 [source,java]
 ----
@@ -53,16 +53,29 @@ include::{core-tests}/test/controllers/TextResultsController.java[tag=examples]
 
 [source,java]
 ----
-include::{core-tests}/test/controllers/RedirectResultsController.java[tag=examples]
+include::{core-tests}/test/controllers/StreamResultsController.java[tag=examples]
 ----
-
-
-One last very import one is the `Redirect` result. All your POST actions will be CSRF-protected (unless marked with @NotCsrfProtected). So GET methods should never be used to modify things ; and successful POST actions should never directly render results, but rather redirect to a GET method, with some optional information. The `Redirect` result will help you this way.
 
 [source,java]
 ----
-    @Post
-    public Result doIt() {
-        return new Redirect("/Test/myPage").withSuccess("You did it !");
-    }
+include::{core-tests}/test/controllers/RedirectResultsController.java[tag=examples]
 ----
+
+=== GET and POST
+
+That last one, the `Redirect` result, is an important core concept of Weblith.
+
+* Use distinctly `GET` and `POST` methods like you would do in a RESTful application.
+* Successful POST actions should never directly render results.
+* GET methods should never be used to modify things.
+* All your POST actions will be CSRF-protected (unless marked with the `@NotCsrfProtected` annotation). 
+
+That means all your `POST` methods should end up with a redirection to a `GET` method. The `Redirect` result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the I18N chapter - or the text message to display).
+
+[source,java]
+----
+include::{core-tests}/test/controllers/RedirectResultsController.java[tag=with]
+----
+<1> Will redirect to `/` with a `You win !` success message (because such key is defined in the `messages.properties`)
+<2> Will redirect to `/` with a `you.lose` warning message
+<3> Will redirect to `/` with a `This is an error` error message

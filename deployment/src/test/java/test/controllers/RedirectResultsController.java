@@ -6,13 +6,14 @@ import io.weblith.core.results.Redirect;
 import io.weblith.core.results.Result;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
+import io.weblith.core.router.annotations.Post;
 
 @Controller
 public class RedirectResultsController {
 
     // tag::examples[]
     @Get
-    public Redirect redirectToHome() {
+    public Result redirectToHome() {
         return new Redirect("/");
     }
     // end::examples[]
@@ -22,18 +23,23 @@ public class RedirectResultsController {
         return new Redirect("/SimpleEntity/list").status(Status.NOT_MODIFIED);
     }
 
-    @Get
+    // tag::with[]
+    @Post
     public Result withSuccess() {
-        return new Redirect("/").withSuccess("you.win");
+        // do my stuff
+        return new Redirect("/").withSuccess("you.win"); // <1>
     }
 
-    @Get
+    @Post
     public Result withWarning() {
-        return new Redirect("/").withWarning("you.lose");
+        // do my stuff
+        return new Redirect("/").withWarning("you.lose"); // <2>
     }
 
-    @Get
+    @Post
     public Result withError() {
-        return new Redirect("/").withError("This is an error");
+        // do my stuff
+        return new Redirect("/").withError("This is an error"); // <3>
     }
+    // end::with[]
 }
