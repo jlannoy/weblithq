@@ -63,14 +63,14 @@ include::{core-tests}/test/controllers/RedirectResultsController.java[tag=exampl
 
 === GET and POST
 
-That last one, the `Redirect` result, is an important core concept of Weblith.
+The last one, the `Redirect` result, is an important core concept of Weblith. Weblith require the following rules:
 
-* Use distinctly `GET` and `POST` methods like you would do in a RESTful application.
+* `GET` and `POST` methods should be distinctly used like you would do in a RESTful application.
 * Successful POST actions should never directly render results.
 * GET methods should never be used to modify things.
-* All your POST actions will be CSRF-protected (unless marked with the `@NotCsrfProtected` annotation). 
+* All POST actions will be CSRF-protected (unless marked with the `@NotCsrfProtected` annotation). 
 
-That means all your `POST` methods should end up with a redirection to a `GET` method. The `Redirect` result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the I18N chapter - or the text message to display).
+That means all the `POST` annotated methods should end up with a redirection to a `GET` annotated method. The `Redirect` result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the I18N chapter - or the text message to display).
 
 [source,java]
 ----
