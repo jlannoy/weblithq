@@ -9,6 +9,9 @@ import javax.validation.Validator;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.weblith.core.form.validating.ViolationsHolder;
 
+/**
+ * Holder for Class form and value.
+ */
 @RegisterForReflection
 public final class Form<T> extends ViolationsHolder {
 
@@ -16,9 +19,9 @@ public final class Form<T> extends ViolationsHolder {
 
     private Optional<T> content;
 
-    private Form(Class<T> contentClass) {
+    private Form(Class<T> valueClass) {
         super();
-        this.valueClass = contentClass;
+        this.valueClass = valueClass;
         this.content = Optional.empty();
     }
 
@@ -62,8 +65,7 @@ public final class Form<T> extends ViolationsHolder {
         if (this.content.isPresent()) {
             Validator validator = CDI.current().select(Validator.class).get();
 
-            validator.validate(this.content.get())
-                    .forEach(cv -> this.addViolation(io.weblith.core.form.validating.Violation.of(cv)));
+            validator.validate(this.content.get()).forEach(cv -> this.addViolation(io.weblith.core.form.validating.Violation.of(cv)));
         }
         return !this.hasViolations();
     }
