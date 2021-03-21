@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.weblith</groupId>
-        <artifactId>weblith</artifactId>
+        <artifactId>weblithq</artifactId>
         <version>0.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>weblith-core</artifactId>
+    <artifactId>weblithq-core</artifactId>
     <name>Weblith - Core - Quarkus Runtime</name>
 
     <dependencies>
@@ -55,7 +55,7 @@
                             <goal>extension-descriptor</goal>
                         </goals>
                         <configuration>
-                            <deployment>${project.groupId}:weblith-deployment:${project.version}</deployment>
+                            <deployment>${project.groupId}:weblithq-deployment:${project.version}</deployment>
                         </configuration>
                     </execution>
                 </executions>

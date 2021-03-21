@@ -5,18 +5,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.weblith</groupId>
-		<artifactId>weblith</artifactId>
+		<artifactId>weblithq</artifactId>
 		<version>0.1.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>weblith-fomantic-ui</artifactId>
+	<artifactId>weblithq-fomantic-ui</artifactId>
 	<name>Weblith - Fomantic UI - Quarkus Runtime</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>weblith-freemarker</artifactId>
+			<artifactId>weblithq-freemarker</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
@@ -46,7 +46,7 @@
 							<goal>extension-descriptor</goal>
 						</goals>
 						<configuration>
-							<deployment>${project.groupId}:weblith-fomantic-ui-deployment:${project.version}</deployment>
+							<deployment>${project.groupId}:weblithq-fomantic-ui-deployment:${project.version}</deployment>
 						</configuration>
 					</execution>
 				</executions>

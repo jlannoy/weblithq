@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.weblith</groupId>
-        <artifactId>weblith</artifactId>
+        <artifactId>weblithq</artifactId>
         <version>0.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>weblith-archetype</artifactId>
+    <artifactId>weblithq-archetype</artifactId>
     <name>Weblith - Maven Archetype</name>
 
     <properties>

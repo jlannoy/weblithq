@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.weblith</groupId>
-	<artifactId>weblith</artifactId>
+	<artifactId>weblithq</artifactId>
 	<version>0.1.1-SNAPSHOT</version>
-	<name>Weblith</name>
-	<description>Java web application powered by Quarkus</description>
+	<name>Weblith Quarkus</name>
+	<description>Java web application framework - powered by Quarkus</description>
 	<url>https://weblith.io</url>
 
 	<packaging>pom</packaging>
@@ -34,7 +34,7 @@
 		<connection>scm:git:https://github.com/weblith/weblith.git</connection>
 		<developerConnection>scm:git:git@github.com:weblith/weblith.git</developerConnection>
 		<url>https://github.com/weblith/weblith</url>
-		<tag>weblith-0.1.0-SNAPSHOT</tag>
+		<tag>weblithq-0.1.0-SNAPSHOT</tag>
 	</scm>
 
 	<properties>

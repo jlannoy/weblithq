@@ -38,17 +38,17 @@
     <dependencies>
         <dependency>
             <groupId>io.weblith</groupId>
-            <artifactId>weblith-core</artifactId>
+            <artifactId>weblithq-core</artifactId>
             <version>${weblith.version}</version>
         </dependency>
         <dependency>
             <groupId>io.weblith</groupId>
-            <artifactId>weblith-freemarker</artifactId>
+            <artifactId>weblithq-freemarker</artifactId>
             <version>${weblith.version}</version>
         </dependency>
         <dependency>
             <groupId>io.weblith</groupId>
-            <artifactId>weblith-fomantic-ui</artifactId>
+            <artifactId>weblithq-fomantic-ui</artifactId>
             <version>${weblith.version}</version>
         </dependency>
         <dependency>

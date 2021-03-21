@@ -3,28 +3,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.weblith</groupId>
-        <artifactId>weblith</artifactId>
+        <artifactId>weblithq</artifactId>
         <version>0.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>weblith-webtest</artifactId>
+    <artifactId>weblithq-webtest</artifactId>
     <name>Weblith - Test Web Application</name>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>weblith-core</artifactId>
+            <artifactId>weblithq-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>weblith-freemarker</artifactId>
+            <artifactId>weblithq-freemarker</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>weblith-fomantic-ui</artifactId>
+            <artifactId>weblithq-fomantic-ui</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

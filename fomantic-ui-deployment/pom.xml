@@ -4,12 +4,12 @@
 
     <parent>
         <groupId>io.weblith</groupId>
-        <artifactId>weblith</artifactId>
+        <artifactId>weblithq</artifactId>
         <version>0.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>weblith-fomantic-ui-deployment</artifactId>
+    <artifactId>weblithq-fomantic-ui-deployment</artifactId>
     <name>Weblith - Fomantic UI - Quarkus Deployment</name>
 
     <dependencies>
@@ -23,13 +23,13 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>weblith-freemarker-deployment</artifactId>
+            <artifactId>weblithq-freemarker-deployment</artifactId>
             <version>${project.version}</version>
         </dependency>
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>weblith-fomantic-ui</artifactId>
+            <artifactId>weblithq-fomantic-ui</artifactId>
             <version>${project.version}</version>
         </dependency>
 
