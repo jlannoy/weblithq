@@ -31,7 +31,7 @@ public class ResultResponseFilter implements ContainerResponseFilter {
     HttpCacheHelper httpCache;
 
     @Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
 
         if (!responseContext.hasEntity() || !AbstractResult.class.isAssignableFrom(responseContext.getEntityClass())) {
             return;
@@ -57,7 +57,10 @@ public class ResultResponseFilter implements ContainerResponseFilter {
                 setDefaultResponseConfiguration(result, responseContext);
             }
 
-            if (RenderResponse.class.isAssignableFrom(result.getClass())) {
+            if(result.isNotModified()) {
+                responseContext.setEntity(null);
+
+            } else if (RenderResponse.class.isAssignableFrom(result.getClass())) {
                 responseContext.setEntity(null);
                 try {
                     ((RenderResponse) result).write(responseContext.getEntityStream());
@@ -67,6 +70,7 @@ public class ResultResponseFilter implements ContainerResponseFilter {
                     throw new WebApplicationException(e.getMessage(), e);
                 }
             }
+
 
             manageCookies(result, responseContext);
 

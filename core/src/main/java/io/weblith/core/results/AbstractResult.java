@@ -51,7 +51,11 @@ public abstract class AbstractResult<T extends AbstractResult<?>> implements Res
     }
 
     public Status getStatus() {
-        return status;
+        return this.status;
+    }
+
+    public boolean isNotModified() {
+        return Status.NOT_MODIFIED.equals(this.status);
     }
 
     public T status(Status status) {

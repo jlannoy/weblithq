@@ -1,7 +1,5 @@
 package io.weblith.core.results;
 
-import java.io.IOException;
-import java.net.URLConnection;
 import java.util.Date;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -12,10 +10,11 @@ import javax.ws.rs.core.Response.Status;
 
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.util.DateUtil;
+import org.jboss.resteasy.util.DateUtil.DateParseException;
 
 import io.weblith.core.config.HttpCacheConfig;
 import io.weblith.core.config.WeblithConfig;
-
+import io.weblith.core.results.Result.AutomaticCachingPolicy;
 /**
  * Useful info taken from Heroku documentation : <br>
  * https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers
@@ -32,18 +31,17 @@ public class HttpCacheHelper {
         this.cacheConfig = weblithConfiguration.httpCache;
     }
 
-    public void setCachingPolicy(ContainerRequestContext requestContext, AbstractResult<?> result) throws IOException {
-        if (StreamResult.class.isAssignableFrom(result.getClass())) {
+    public void setCachingPolicy(ContainerRequestContext requestContext, AbstractResult<?> result) {
+        if (Result.AutomaticCachingPolicy.class.isAssignableFrom(result.getClass())) {
 
-            StreamResult streamResult = (StreamResult) result;
-            if (streamResult.isHttpCacheEnabled()) {
-                URLConnection urlConnection = streamResult.getUrl().openConnection();
+            AutomaticCachingPolicy autoCachingResult = (AutomaticCachingPolicy) result;
+            if (autoCachingResult.isHttpCacheEnabled()) {
 
-                if (!isModified(requestContext, urlConnection.getLastModified())) {
+                if (!isModified(requestContext, autoCachingResult.getLastModified())) {
                     result.status(Status.NOT_MODIFIED);
                 }
 
-                setCacheControl(result, urlConnection.getLastModified());
+                setCacheControl(result, autoCachingResult.getLastModified());
             }
 
         } else if (result.getContentType() != null && !result.getHeaders().containsKey(HttpHeaders.CACHE_CONTROL)) {
@@ -52,11 +50,11 @@ public class HttpCacheHelper {
         }
     }
 
-    public boolean isModified(ContainerRequestContext request, Long lastModified) {
+    protected boolean isModified(ContainerRequestContext request, Long lastModified) {
         return isModified(request, lastModified, buildETag(lastModified));
     }
 
-    public boolean isModified(ContainerRequestContext request, Long lastModified, String etag) {
+    protected boolean isModified(ContainerRequestContext request, Long lastModified, String etag) {
         if (lastModified == null) {
             return true;
         }
@@ -70,7 +68,7 @@ public class HttpCacheHelper {
         if (ifModifiedSince != null && !ifModifiedSince.isEmpty()) {
             try {
                 return DateUtil.parseDate(ifModifiedSince).getTime() < lastModified;
-            } catch (NullPointerException ex) {
+            } catch (DateParseException ex) {
                 LOGGER.warnv("Cannot parse If-Modified-Since date '{0}'", ifModifiedSince);
             }
         }

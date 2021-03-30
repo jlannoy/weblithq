@@ -13,17 +13,24 @@ import io.weblith.core.request.RequestContext;
 public interface Result {
 
     /**
-     * Will indicate that a result implementation is able to render content as a response.
+     * Indicate that a result implementation is able to render content as a response.
      */
-    public static interface RenderResponse {
+    interface RenderResponse {
         void write(final OutputStream outputStream) throws Exception;
     }
 
     /**
-     * Will indicate that a result implementation is able to configure a response.
+     * Indicate that a result implementation is able to configure a response.
      */
-    public static interface ConfigureResponse {
+    interface ConfigureResponse {
         void configure(RequestContext requestContext, ContainerResponseContext responseContext);
     }
 
+    /**
+     * Indicate that a result implementation is able to set up its caching policy according to a last modified timestamp.
+     */
+    interface AutomaticCachingPolicy {
+        long getLastModified();
+        boolean isHttpCacheEnabled();
+    }
 }

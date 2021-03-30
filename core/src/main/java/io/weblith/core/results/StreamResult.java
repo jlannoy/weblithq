@@ -1,6 +1,7 @@
 package io.weblith.core.results;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -12,12 +13,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import io.weblith.core.results.Result.RenderResponse;
+import io.weblith.core.results.Result.AutomaticCachingPolicy;
 
 /**
  * Convenience class for streaming data as a {@link AbstractResult}. Can be build either from a {@link File} or from a
  * {@link URL}. In both cases the content type will be guessed based on the file name.
  */
-public class StreamResult extends AbstractResult<StreamResult> implements RenderResponse {
+public class StreamResult extends AbstractResult<StreamResult> implements RenderResponse, AutomaticCachingPolicy {
 
     private final URL url;
 
@@ -50,10 +52,6 @@ public class StreamResult extends AbstractResult<StreamResult> implements Render
         return url;
     }
 
-    public boolean isHttpCacheEnabled() {
-        return !disableHttpCache;
-    }
-
     public StreamResult disableHttpCache() {
         this.disableHttpCache = true;
         return this;
@@ -70,4 +68,17 @@ public class StreamResult extends AbstractResult<StreamResult> implements Render
         }
     }
 
+    @Override
+    public boolean isHttpCacheEnabled() {
+        return !disableHttpCache;
+    }
+
+    @Override
+    public long getLastModified() {
+        try {
+            return url.openConnection().getLastModified();
+        } catch (IOException e) {
+            return 0;
+        }
+    }
 }

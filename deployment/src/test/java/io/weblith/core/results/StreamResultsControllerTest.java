@@ -1,13 +1,17 @@
 package io.weblith.core.results;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static test.controllers.StreamResultsController.MY_UNKNOWN_TYPE_FILE;
+import static org.hamcrest.Matchers.*;
 import static test.controllers.StreamResultsController.MY_TXT_FILE;
+import static test.controllers.StreamResultsController.MY_UNKNOWN_TYPE_FILE;
 
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
+import org.apache.http.client.utils.DateUtils;
+import org.jboss.resteasy.core.Headers;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -16,6 +20,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
 import test.controllers.StreamResultsController;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 public class StreamResultsControllerTest {
 
@@ -67,4 +76,15 @@ public class StreamResultsControllerTest {
               .body(is("file content 2"));
     }
 
+    @Test
+    public void testNotModifiedFileStreamResult() {
+        given()
+            .header(HttpHeaders.IF_MODIFIED_SINCE, DateUtils.formatDate(new Date(), DateUtils.PATTERN_RFC1123))
+        .when()
+              .get("/StreamResults/file")
+              .then()
+              .statusCode(Status.NOT_MODIFIED.getStatusCode())
+              .contentType(containsString(MediaType.TEXT_PLAIN))
+              .body(is(emptyOrNullString()));
+    }
 }
