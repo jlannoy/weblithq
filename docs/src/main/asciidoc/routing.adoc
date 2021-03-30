@@ -44,7 +44,7 @@ While you can configure yourself your JAR-RS `Response` objects, Weblith offers 
 * `JsonResult` to render some JSON
 * `HtmlResult` will be addressed in the [Freemarker Templates](=freemarker-templates) chapter
  
-Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed. Here are some useful examples...
+Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed, by using advanced interfaces like `ConfigureResponse`, `RenderResponse` and `AutomaticCachingPolicy`. Here are some useful examples of the predefined result classes.
 
 [source,java]
 ----
