@@ -27,20 +27,20 @@ public class HttpCacheHelperTest {
     @Mock
     ContainerRequestContext request;
 
-    WeblithConfig weblithProperties;
+    WeblithConfig weblithConfig;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        weblithProperties = new WeblithConfig();
-        weblithProperties.httpCache = new HttpCacheConfig();
+        weblithConfig = new WeblithConfig();
+        weblithConfig.httpCache = new HttpCacheConfig();
     }
 
     @Test
     public void testIsModified() {
 
-        HttpCacheHelper httpCacheHelper = new HttpCacheHelper(weblithProperties);
+        HttpCacheHelper httpCacheHelper = new HttpCacheHelper(weblithConfig);
 
         // no header = modified
         assertTrue(httpCacheHelper.isModified(request, 0L));
@@ -70,23 +70,23 @@ public class HttpCacheHelperTest {
     @Test
     public void testCacheControl() {
 
-        weblithProperties.httpCache.enabled = false;
-        HttpCacheHelper httpCacheHelper = new HttpCacheHelper(weblithProperties);
+        weblithConfig.httpCache.enabled = false;
+        HttpCacheHelper httpCacheHelper = new HttpCacheHelper(weblithConfig);
         httpCacheHelper.setCacheControl(result, 0L);
         verify(result).addHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store");
 
         reset(result);
-        weblithProperties.httpCache.enabled = true;
-        weblithProperties.httpCache.cacheControl = Duration.ofSeconds(1234L);
-        httpCacheHelper = new HttpCacheHelper(weblithProperties);
+        weblithConfig.httpCache.enabled = true;
+        weblithConfig.httpCache.cacheControl = Duration.ofSeconds(1234L);
+        httpCacheHelper = new HttpCacheHelper(weblithConfig);
         httpCacheHelper.setCacheControl(result, 0L);
         verify(result).addHeader(HttpHeaders.CACHE_CONTROL, "max-age=1234");
 
         // Cache control = 0 = no-cache
         reset(result);
-        weblithProperties.httpCache.enabled = true;
-        weblithProperties.httpCache.cacheControl = Duration.ofSeconds(0L);
-        httpCacheHelper = new HttpCacheHelper(weblithProperties);
+        weblithConfig.httpCache.enabled = true;
+        weblithConfig.httpCache.cacheControl = Duration.ofSeconds(0L);
+        httpCacheHelper = new HttpCacheHelper(weblithConfig);
         httpCacheHelper.setCacheControl(result, 0L);
         verify(result).addHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store");
 

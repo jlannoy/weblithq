@@ -25,7 +25,7 @@ import io.weblith.core.scopes.CookieBuilder;
 public class ResultResponseFilter implements ContainerResponseFilter {
 
     @Inject
-    RequestContext context;
+    RequestContext requestContext;
 
     @Inject
     HttpCacheHelper httpCache;
@@ -52,7 +52,7 @@ public class ResultResponseFilter implements ContainerResponseFilter {
             }
 
             if (ConfigureResponse.class.isAssignableFrom(result.getClass())) {
-                ((ConfigureResponse) result).configure(context, responseContext);
+                ((ConfigureResponse) result).configure(this.requestContext, responseContext);
             } else {
                 setDefaultResponseConfiguration(result, responseContext);
             }
@@ -100,11 +100,18 @@ public class ResultResponseFilter implements ContainerResponseFilter {
 
     protected void manageCookies(AbstractResult<?> result, ContainerResponseContext responseContext) throws IOException {
         if (result.isIncludeScopeCookies()) {
-            context.flash()
+            requestContext.flash()
                    .save(result);
-            context.session()
+            requestContext.session()
                    .save(result);
         }
+
+        // One NewCookie could have been set up before the Result creation
+        // Special case used for the Locale identification
+        if(requestContext.get(NewCookie.class) != null) {
+            CookieBuilder.save(responseContext, requestContext.get(NewCookie.class));
+        }
+
         for (NewCookie cookie : result.getCookies()) {
             CookieBuilder.save(responseContext, cookie);
         }

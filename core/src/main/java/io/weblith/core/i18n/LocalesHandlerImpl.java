@@ -8,9 +8,10 @@ import java.util.Locale;
 import java.util.Locale.LanguageRange;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -28,29 +29,28 @@ import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.scopes.CookieBuilder;
 
-@ApplicationScoped
 @Priority(Priorities.HEADER_DECORATOR + 10)
-public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter, ContainerResponseFilter {
+public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter, ContainerResponseFilter {
 
-    private static final Logger LOGGER = Logger.getLogger(LocaleHandlerImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(LocalesHandlerImpl.class);
 
     private final static int ONE_YEAR = 60 * 60 * 24 * 365;
 
-    private final String switchLanguageParam;
+    protected final String switchLanguageParam;
 
-    private final String cookieName;
+    protected final String cookieName;
 
-    private final RequestContext context;
+    protected final RequestContext context;
 
-    private final CookieBuilder cookieBuilder;
+    protected final CookieBuilder cookieBuilder;
 
-    private final LocalesBuildTimeConfig localesConfig;
+    protected final LocalesBuildTimeConfig localesConfig;
 
-    private final Map<String, Locale> byLanguageLocales;
+    protected final Map<String, Locale> byLanguageLocales;
 
     @Inject
-    public LocaleHandlerImpl(RequestContext context, WeblithConfig weblithConfig, LocalesBuildTimeConfig localesConfig,
-            CookieBuilder cookieBuilder) {
+    public LocalesHandlerImpl(RequestContext context, WeblithConfig weblithConfig, LocalesBuildTimeConfig localesConfig,
+                              CookieBuilder cookieBuilder) {
         super();
         this.context = context;
         this.cookieBuilder = cookieBuilder;
@@ -58,13 +58,8 @@ public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter,
         this.switchLanguageParam = weblithConfig.switchLanguageParam;
         this.cookieName = weblithConfig.cookies.languageName;
         this.localesConfig = localesConfig;
-
-        Map<String, Locale> map = new HashMap<String, Locale>();
-        this.localesConfig.locales.forEach(l -> {
-            map.put(l.getLanguage(), l);
-            map.put(l.toString(), l);
-        });
-        this.byLanguageLocales = Collections.unmodifiableMap(map);
+        this.byLanguageLocales = this.localesConfig.locales.stream()
+                .collect(Collectors.toUnmodifiableMap(Locale::getLanguage, Function.identity(), (v1, v2) -> v1));
 
         LOGGER.debugv("Language map initialized with : {0}", this.byLanguageLocales);
     }
@@ -74,7 +69,16 @@ public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter,
      * will not be possible to use any locale that have not be defined.
      */
     protected Locale validate(String language) {
-        return byLanguageLocales.get(language);
+        if (language != null) {
+            Locale locale = Locale.forLanguageTag(language);
+            if (this.byLanguageLocales.values().contains(locale)) {
+                return locale;
+            }
+            if (this.byLanguageLocales.containsKey(locale.getLanguage())) {
+                return byLanguageLocales.get(locale.getLanguage());
+            }
+        }
+        return null;
     }
 
     /**
@@ -87,16 +91,19 @@ public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter,
      * </ol>
      */
     public void filter(ContainerRequestContext requestContext) throws IOException {
+        context.seed(Locale.class, identifyCurrentLocale());
+    }
 
+    protected Locale identifyCurrentLocale() {
         boolean setUpCookie = true;
         Locale currentLocale = null;
 
         // Step 1 : Check if change requested
-        currentLocale = context.getParameterValue(switchLanguageParam).map(v -> validate(v)).orElse(null);
+        currentLocale = context.getParameterValue(switchLanguageParam).map(this::validate).orElse(null);
 
         // Step 2 : Check if a cookie value has already been set in past
         if (currentLocale == null) {
-            currentLocale = context.getCookieValue(cookieName).map(v -> validate(v)).orElse(null);
+            currentLocale = context.getCookieValue(cookieName).map(this::validate).orElse(null);
             if (currentLocale != null) {
                 setUpCookie = false;
             }
@@ -123,8 +130,7 @@ public class LocaleHandlerImpl implements LocaleHandler, ContainerRequestFilter,
             context.seed(NewCookie.class, cookieBuilder.build(cookieName, currentLocale.toString(), ONE_YEAR));
         }
 
-        context.seed(Locale.class, currentLocale);
-
+        return currentLocale;
     }
 
     @Override

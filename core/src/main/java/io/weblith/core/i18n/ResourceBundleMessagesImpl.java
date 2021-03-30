@@ -12,7 +12,6 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.logging.Logger;
 
-@ApplicationScoped
 public class ResourceBundleMessagesImpl implements Messages {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceBundleMessagesImpl.class);

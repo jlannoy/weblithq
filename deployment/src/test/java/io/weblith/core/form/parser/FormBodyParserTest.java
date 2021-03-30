@@ -45,7 +45,7 @@ import io.weblith.core.form.Form;
 import io.weblith.core.form.parsing.BodyParserObjectMapperProvider;
 import io.weblith.core.form.parsing.FormBodyParser;
 import io.weblith.core.form.validating.Violation;
-import io.weblith.core.i18n.LocaleHandlerImpl;
+import io.weblith.core.i18n.LocalesHandlerImpl;
 import io.weblith.core.request.RequestContext;
 
 public class FormBodyParserTest {
@@ -56,7 +56,7 @@ public class FormBodyParserTest {
     RequestContext requestContext;
 
     @Mock
-    LocaleHandlerImpl localeHandler;
+    LocalesHandlerImpl localeHandler;
 
     private Form<Object> currentForm;
 

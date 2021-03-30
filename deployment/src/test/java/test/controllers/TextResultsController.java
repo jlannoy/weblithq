@@ -23,7 +23,7 @@ public class TextResultsController {
     @Get
     public Result textFromObject() {
         Object anObject = Arrays.asList("Hello", "there", "!");
-        return new TextResult(anObject).contentType(MediaType.APPLICATION_JSON)
+        return new TextResult(anObject).contentType(MediaType.TEXT_PLAIN)
                                        .charset(StandardCharsets.US_ASCII)
                                        .status(Status.ACCEPTED);
     }

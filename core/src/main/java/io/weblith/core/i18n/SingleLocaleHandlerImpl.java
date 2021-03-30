@@ -1,8 +1,11 @@
 package io.weblith.core.i18n;
 
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
 import java.util.Locale;
 import java.util.Set;
 
+@Priority(Priorities.HEADER_DECORATOR + 10)
 public class SingleLocaleHandlerImpl implements LocaleHandler {
 
     private final Locale locale;
