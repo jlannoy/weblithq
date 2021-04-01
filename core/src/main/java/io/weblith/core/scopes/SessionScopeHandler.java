@@ -18,31 +18,28 @@ import io.weblith.core.results.AbstractResult;
  */
 public class SessionScopeHandler implements SessionScope {
 
-    private final static Logger LOGGER = Logger.getLogger(SessionScopeHandler.class);
+    protected final static Logger LOGGER = Logger.getLogger(SessionScopeHandler.class);
 
-    protected final static String AUTHENTICITY_KEY = "_internal_auth_key";
+    protected final static String AUTHENTICITY_KEY = "_auth";
 
-    protected final static String TIMESTAMP_KEY = "_internal_timestamp_key";
+    protected final static String TIMESTAMP_KEY = "_timestamp";
 
-    private final Map<String, String> data;
+    protected final Map<String, String> data;
 
-    private final CookieBuilder cookieBuilder;
+    protected final CookieBuilder cookieBuilder;
 
-    private final SessionConfig sessionConfig;
+    protected final SessionConfig sessionConfig;
 
-    private final String cookieName;
-
-    private boolean sessionDataChanged;
+    protected boolean sessionDataChanged;
 
     public SessionScopeHandler(WeblithConfig weblithConfiguration, RequestContext context) {
 
-        this.cookieBuilder = new CookieBuilder(weblithConfiguration.cookies.session.cookie, context.contextPath());
-        this.sessionConfig = weblithConfiguration.cookies.session;
-        this.cookieName = weblithConfiguration.cookies.sessionName;
+        SessionConfig s = this.sessionConfig = weblithConfiguration.session;
+        this.cookieBuilder = new CookieBuilder(s.cookieName, s.cookieDomain, s.cookiePath, s.cookieSecure, s.cookieHttpsOnly, context.contextPath());
 
         this.data = new HashMap<String, String>();
         try {
-            context.getCookieValue(cookieName).ifPresent(v -> {
+            context.getCookieValue(sessionConfig.cookieName).ifPresent(v -> {
                 this.data.putAll(CookieBuilder.decryptMap(v, sessionConfig.secret));
             });
         } catch (Exception e) {
@@ -65,7 +62,7 @@ public class SessionScopeHandler implements SessionScope {
             // empty existing cookie, if needed
             if (this.sessionDataChanged) {
                 LOGGER.debugv("Saving empty session cookie");
-                result.addCookie(cookieBuilder.remove(cookieName));
+                result.addCookie(cookieBuilder.remove(sessionConfig.cookieName));
             }
 
         } else if (this.sessionDataChanged || this.shouldBeRenewed()) {
@@ -77,7 +74,7 @@ public class SessionScopeHandler implements SessionScope {
                 put(TIMESTAMP_KEY, Instant.now().toString());
                 String sessionData = CookieBuilder.encryptMap(data, sessionConfig.secret);
 
-                result.addCookie(cookieBuilder.build(cookieName, sessionData, (int) sessionConfig.expire.toSeconds()));
+                result.addCookie(cookieBuilder.build(sessionConfig.cookieName, sessionData, (int) sessionConfig.expire.toSeconds()));
             } catch (Exception e) {
                 LOGGER.error("Encoding cookie exception - this should never happen", e);
             }

@@ -1,5 +1,7 @@
 package io.weblith.core.i18n;
 
+import io.weblith.core.results.AbstractResult;
+
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import java.util.Locale;

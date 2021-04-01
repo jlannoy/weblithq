@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 import java.util.*;
 
 import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.weblith.core.config.CookiesConfig;
+import io.weblith.core.config.SessionConfig;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.scopes.CookieBuilder;
@@ -60,8 +60,8 @@ public class LocalesHandlerImplTest {
     public void init() {
         weblithConfig = new WeblithConfig();
         weblithConfig.switchLanguageParam = switchParameter;
-        weblithConfig.cookies = new CookiesConfig();
-        weblithConfig.cookies.languageName = cookieName;
+        weblithConfig.session = new SessionConfig();
+        weblithConfig.session.cookieName = cookieName;
 
         localesConfig = new LocalesBuildTimeConfig();
         localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en"), new Locale("de"), new Locale("fr", "FR")));
@@ -71,7 +71,7 @@ public class LocalesHandlerImplTest {
 
         when(requestContext.request()).thenReturn(httpRequest);
 
-        this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig, cookieBuilder);
+        this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class LocalesHandlerImplTest {
 
         // Reinit to see changes
         localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en", "US"), new Locale("en", "UK"), new Locale("en", "CA")));
-        this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig, cookieBuilder);
+        this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig);
         assertThat(localeHandler.getApplicationLocales(), contains(new Locale("en", "US"), new Locale("en", "UK"), new Locale("en", "CA")));
         assertThat(localeHandler.byLanguageLocales, aMapWithSize(1));
         assertThat(localeHandler.byLanguageLocales.values(), contains(new Locale("en", "US")));

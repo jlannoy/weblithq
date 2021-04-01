@@ -21,7 +21,9 @@ public class WeblithConfig {
     @ConfigItem(defaultValue = "false")
     public String i18nEnabled;
 
-    public CookiesConfig cookies;
+    public SessionConfig session;
+
+    public FlashConfig flash;
 
     public HttpCacheConfig httpCache;
 

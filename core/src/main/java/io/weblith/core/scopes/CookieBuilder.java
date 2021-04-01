@@ -5,10 +5,7 @@ import static javax.ws.rs.core.Cookie.DEFAULT_VERSION;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.WebApplicationException;
@@ -16,21 +13,28 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.NewCookie;
 
-import io.weblith.core.config.CookieConfig;
-
 public class CookieBuilder {
 
     private final static String KEY_VALUE_SEP = "=";
 
     private final static String ENTRY_SEP = "&";
 
-    private final CookieConfig config;
+    private final String cookieName;
 
-    private final String contextPath;
+    private final String cookieDomain;
 
-    public CookieBuilder(CookieConfig config, String contextPath) {
-        this.config = config;
-        this.contextPath = contextPath;
+    private final String cookiePath;
+
+    private final boolean cookieSecure;
+
+    private final boolean cookieHttpsOnly;
+
+    public CookieBuilder(String cookieName, Optional<String> cookieDomain, Optional<String> cookiePath, boolean cookieSecure, boolean cookieHttpsOnly, String contextPath) {
+        this.cookieName = cookieName;
+        this.cookieDomain = cookieDomain.orElse(null);
+        this.cookiePath = cookiePath.orElse(contextPath);
+        this.cookieSecure = cookieSecure;
+        this.cookieHttpsOnly = cookieHttpsOnly;
     }
 
     // TODO Reuse Cipher as in PersistentLoginManager ??
@@ -45,30 +49,17 @@ public class CookieBuilder {
     //        }
 
     public NewCookie remove(String name) {
-        return new NewCookie(getName(name), "", getPath(), getDomain(), DEFAULT_VERSION, null, 0, null, false, false);
+        return new NewCookie(this.cookieName, "", this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null, 0, null, false, false);
     }
 
     public NewCookie build(String name, String value, int maxAge) {
-        return new NewCookie(getName(name), value, getPath(), getDomain(), DEFAULT_VERSION, null,
-                maxAge, null, config.secure, config.httpsOnly);
+        return new NewCookie(this.cookieName, value, this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null,
+                maxAge, null, this.cookieSecure, this.cookieHttpsOnly);
     }
 
     public NewCookie build(String name, String value, int maxAge, Date expiry) {
-        return new NewCookie(getName(name), value, getPath(), getDomain(), DEFAULT_VERSION, null,
-                maxAge, expiry, config.secure, config.httpsOnly);
-    }
-
-    private String getName(String suffix) {
-        Objects.requireNonNull(suffix, "Missing cookie name");
-        return this.config.prefix.map(p -> p + suffix).orElse(suffix);
-    }
-
-    private String getPath() {
-        return this.config.path.orElse(contextPath);
-    }
-
-    private String getDomain() {
-        return this.config.domain.orElse(null);
+        return new NewCookie(this.cookieName, value, this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null,
+                maxAge, expiry, this.cookieSecure, this.cookieHttpsOnly);
     }
 
     public static Map<String, String> decodeMap(String value) {

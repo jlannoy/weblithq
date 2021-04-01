@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.weblith.core.config.FlashConfig;
 import org.jboss.logging.Logger;
 
 import io.weblith.core.config.WeblithConfig;
@@ -14,26 +15,26 @@ public class FlashScopeHandler implements FlashScope {
 
     private final static Logger LOGGER = Logger.getLogger(FlashScopeHandler.class);
 
-    private final Map<String, String> currentRequestData;
+    protected final Map<String, String> currentRequestData;
 
-    private final Map<String, String> nextRequestData;
+    protected final Map<String, String> nextRequestData;
 
-    private final CookieBuilder cookieBuilder;
+    protected final CookieBuilder cookieBuilder;
 
-    private final String cookieName;
+    protected final FlashConfig flashConfig;
 
-    private boolean preExistingFlashData;
+    protected boolean preExistingFlashData;
 
     public FlashScopeHandler(WeblithConfig weblithConfiguration, RequestContext context) {
 
-        this.cookieBuilder = new CookieBuilder(weblithConfiguration.cookies.session.cookie, context.contextPath());
-        this.cookieName = weblithConfiguration.cookies.flashName;
+        FlashConfig f = this.flashConfig = weblithConfiguration.flash;
+        this.cookieBuilder = new CookieBuilder(f.cookieName, f.cookieDomain, f.cookiePath, f.cookieSecure, f.cookieHttpsOnly, context.contextPath());
 
-        this.currentRequestData = new HashMap<String, String>();
+        this.currentRequestData = new HashMap<>();
         this.nextRequestData = new HashMap<>();
 
         try {
-            context.getCookieValue(cookieName).ifPresent(v -> {
+            context.getCookieValue(flashConfig.cookieName).ifPresent(v -> {
                 this.preExistingFlashData = true;
                 this.currentRequestData.putAll(CookieBuilder.decodeMap(v));
             });
@@ -49,7 +50,7 @@ public class FlashScopeHandler implements FlashScope {
 
             // empty existing cookie, if needed
             if (this.preExistingFlashData) {
-                result.addCookie(cookieBuilder.remove(cookieName));
+                result.addCookie(cookieBuilder.remove(flashConfig.cookieName));
             }
 
         } else {
@@ -57,7 +58,7 @@ public class FlashScopeHandler implements FlashScope {
             // build a cookie with this flash data
             try {
                 String flashData = CookieBuilder.encodeMap(nextRequestData);
-                result.addCookie(cookieBuilder.build(cookieName, flashData, -1));
+                result.addCookie(cookieBuilder.build(flashConfig.cookieName, flashData, -1));
             } catch (Exception e) {
                 LOGGER.error("Encoding cookie exception - this should never happen", e);
             }

@@ -100,10 +100,8 @@ public class ResultResponseFilter implements ContainerResponseFilter {
 
     protected void manageCookies(AbstractResult<?> result, ContainerResponseContext responseContext) throws IOException {
         if (result.isIncludeScopeCookies()) {
-            requestContext.flash()
-                   .save(result);
-            requestContext.session()
-                   .save(result);
+            requestContext.flash().save(result);
+            requestContext.session().save(result);
         }
 
         // One NewCookie could have been set up before the Result creation
