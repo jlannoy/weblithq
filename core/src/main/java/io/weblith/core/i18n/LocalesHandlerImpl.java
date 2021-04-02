@@ -1,32 +1,28 @@
 package io.weblith.core.i18n;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Locale.LanguageRange;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import io.quarkus.runtime.LocalesBuildTimeConfig;
+import io.weblith.core.config.WeblithConfig;
+import io.weblith.core.request.RequestContext;
+import io.weblith.core.scopes.CookieBuilder;
+import org.jboss.logging.Logger;
 
 import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.NewCookie;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import org.jboss.logging.Logger;
-import org.jboss.resteasy.core.ResteasyContext;
-
-import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.weblith.core.config.WeblithConfig;
-import io.weblith.core.request.RequestContext;
-import io.weblith.core.scopes.CookieBuilder;
-
+@ApplicationScoped
 @Priority(Priorities.HEADER_DECORATOR + 10)
 public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter, ContainerResponseFilter {
 
@@ -100,12 +96,14 @@ public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter
 
         // Step 3 : Check if a header value exist
         if (currentLocale == null) {
-            HttpHeaders httpHeaders = ResteasyContext.getContextData(HttpHeaders.class);
-            if (httpHeaders != null) {
-                List<String> acceptLanguageList = httpHeaders.getRequestHeader(HttpHeaders.ACCEPT_LANGUAGE);
-                if (acceptLanguageList != null && !acceptLanguageList.isEmpty()) {
-                    currentLocale = Locale.filter(LanguageRange.parse(acceptLanguageList.get(0)), localesConfig.locales)
-                            .stream().findFirst().orElse(null);
+            for (Locale acceptedLocale : context.request().getHttpHeaders().getAcceptableLanguages()) {
+                if (this.localesConfig.locales.contains(acceptedLocale)) {
+                    currentLocale = acceptedLocale;
+                } else {
+                    currentLocale = validate(acceptedLocale.getLanguage());
+                }
+                if (currentLocale != null) {
+                    break;
                 }
             }
         }

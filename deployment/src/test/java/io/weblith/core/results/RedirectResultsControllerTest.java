@@ -65,8 +65,8 @@ public class RedirectResultsControllerTest {
                .then()
                .statusCode(SEE_OTHER)
                .header(LOCATION, is("/"))
-               .cookie(config.cookies.flashName, containsString("success"))
-               .cookie(config.cookies.flashName, containsString(CookieBuilder.encode("You Win !")));
+               .cookie(config.flash.cookieName, containsString("success"))
+               .cookie(config.flash.cookieName, containsString(CookieBuilder.encode("You Win !")));
     }
 
     @Test
@@ -77,8 +77,8 @@ public class RedirectResultsControllerTest {
                .then()
                .statusCode(SEE_OTHER)
                .header(LOCATION, is("/"))
-               .cookie(config.cookies.flashName, containsString("warning"))
-               .cookie(config.cookies.flashName, containsString(CookieBuilder.encode("warning.you.lose")));
+               .cookie(config.flash.cookieName, containsString("warning"))
+               .cookie(config.flash.cookieName, containsString(CookieBuilder.encode("warning.you.lose")));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class RedirectResultsControllerTest {
                .then()
                .statusCode(SEE_OTHER)
                .header(LOCATION, is("/"))
-               .cookie(config.cookies.flashName, containsString("error"))
-               .cookie(config.cookies.flashName, containsString(CookieBuilder.encode("This is an error")));
+               .cookie(config.flash.cookieName, containsString("error"))
+               .cookie(config.flash.cookieName, containsString(CookieBuilder.encode("This is an error")));
     }
 
 }

@@ -41,7 +41,7 @@ public class TextResultsControllerTest {
               .then()
               .statusCode(Status.ACCEPTED.getStatusCode())
               .body(is("[Hello, there, !]"))
-              .header(HttpHeaders.CONTENT_TYPE, is("application/json; charset=US-ASCII"));
+              .header(HttpHeaders.CONTENT_TYPE, is("text/plain; charset=US-ASCII"));
     }
 
     @Test

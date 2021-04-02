@@ -10,45 +10,50 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.*;
 
 import io.quarkus.runtime.LocalesBuildTimeConfig;
+import io.quarkus.test.Mock;
+import io.quarkus.test.junit.QuarkusMock;
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
 import io.weblith.core.config.SessionConfig;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
-import io.weblith.core.scopes.CookieBuilder;
+import io.weblith.core.scopes.SessionScope;
+import io.weblith.core.scopes.SessionScopeHandler;
+import io.weblith.core.scopes.WeblithScopesProducer;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import com.google.common.collect.Maps;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.HttpHeaders;
 
-import io.undertow.server.handlers.Cookie;
-
-@RunWith(MockitoJUnitRunner.class)
+@QuarkusTest
 public class LocalesHandlerImplTest {
-
-    final static String cookieName = "cookie_LANG";
 
     final static String switchParameter = "my_lang";
 
-    @Mock
-    Provider<Locale> currentLocaleProvider;
+    @Inject
+    WeblithScopesProducer producer;
 
-    @Mock
+    @InjectMock
     RequestContext requestContext;
 
-    @Mock
+    @InjectMock
+    SessionScope sessionScope;
+
     HttpRequest httpRequest;
 
-    @Mock
-    CookieBuilder cookieBuilder;
+    HttpHeaders httpHeaders;
 
-    Map<String, Cookie> cookies = Maps.newHashMap();
+    ContainerRequestContext containerRequestContext;
 
     LocalesHandlerImpl localeHandler;
 
@@ -56,22 +61,24 @@ public class LocalesHandlerImplTest {
 
     LocalesBuildTimeConfig localesConfig;
 
-    @Before
+    @BeforeEach
     public void init() {
-        weblithConfig = new WeblithConfig();
-        weblithConfig.switchLanguageParam = switchParameter;
-        weblithConfig.session = new SessionConfig();
-        weblithConfig.session.cookieName = cookieName;
+        this.weblithConfig = new WeblithConfig();
+        this.weblithConfig.switchLanguageParam = switchParameter;
 
-        localesConfig = new LocalesBuildTimeConfig();
-        localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en"), new Locale("de"), new Locale("fr", "FR")));
-        localesConfig.defaultLocale = localesConfig.locales.iterator().next();
-
-        this.cookies = Maps.newHashMap();
-
-        when(requestContext.request()).thenReturn(httpRequest);
+        this.localesConfig = new LocalesBuildTimeConfig();
+        this.localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en"), new Locale("de"), new Locale("fr", "FR")));
+        this.localesConfig.defaultLocale = localesConfig.locales.iterator().next();
 
         this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig);
+
+        this.httpRequest = Mockito.mock(HttpRequest.class);
+        this.httpHeaders = Mockito.mock(HttpHeaders.class);
+        this.containerRequestContext = Mockito.mock(ContainerRequestContext.class);
+
+        when(requestContext.request()).thenReturn(httpRequest);
+        when(requestContext.session()).thenReturn(sessionScope);
+        when(httpRequest.getHttpHeaders()).thenReturn(httpHeaders);
     }
 
     @Test
@@ -108,76 +115,77 @@ public class LocalesHandlerImplTest {
     }
 
     @Test
-    public void testIdentifyCurrentLocaleFromParameters() {
+    public void testIdentifyCurrentLocaleFromParameters() throws IOException {
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.of("en"));
+        localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-        assertThat(cookies, hasKey(cookieName));
-        cookies.clear();
 
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.of("fr"));
+        localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
-        assertThat(cookies, hasKey(cookieName));
-        cookies.clear();
 
         // fallback on default locale
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.of("nl"));
+        localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-        assertThat(cookies, hasKey(cookieName));
     }
 
     @Test
-    public void testIdentifyCurrentLocaleFromRequestCookies() {
+    public void testIdentifyCurrentLocaleFromSession() throws IOException {
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
 
-        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.of("en"));
-        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-        assertThat(cookies, anEmptyMap());
+        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("en"));
+        localeHandler.filter(containerRequestContext);
+        // assertThat(localeHandler.identifyCurrentLocale(),is(new Locale("en")));
 
-        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.of("fr"));
+        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("fr"));
+        localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
-        assertThat(cookies, anEmptyMap());
+
+        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("fr-FR"));
+        localeHandler.filter(containerRequestContext);
+        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
 
         // fallback on default locale
-        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.of("nl"));
+        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("nl"));
+        localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-        assertThat(cookies, hasKey(cookieName));
     }
 
-//    @Test
-//    public void testIdentifyCurrentLocaleFromHeaderParameter() {
-//        when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
-//        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.empty());
-//
-//        when(requestContext.getRequest().getAcceptLanguage()).thenReturn(Optional.of("en"));
-//        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-//        assertThat(cookies, hasKey(cookieName));
-//        cookies.clear();
-//
-//        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.empty());
-//        when(requestContext.getRequest().getAcceptLanguage()).thenReturn(Optional.of("fr-FR"));
-//        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
-//        assertThat(cookies, hasKey(cookieName));
-//        cookies.clear();
-//
-//        // fallback on default locale
-//        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.empty());
-//        when(requestContext.getRequest().getAcceptLanguage()).thenReturn(Optional.of("nl"));
-//        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-//        assertThat(cookies, hasKey(cookieName));
-//    }
+    @Test
+    public void testIdentifyCurrentLocaleFromHeaderParameter() throws IOException {
+        when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
+        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.empty());
+
+        when(httpHeaders.getAcceptableLanguages()).thenReturn(List.of(new Locale("en")));
+        localeHandler.filter(containerRequestContext);
+        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
+
+        when(httpHeaders.getAcceptableLanguages()).thenReturn(List.of(new Locale("fr")));
+        localeHandler.filter(containerRequestContext);
+        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
+
+        when(httpHeaders.getAcceptableLanguages()).thenReturn(List.of(new Locale("fr-FR")));
+        localeHandler.filter(containerRequestContext);
+        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
+
+        when(httpHeaders.getAcceptableLanguages()).thenReturn(List.of(new Locale("nl"), new Locale("fr")));
+        localeHandler.filter(containerRequestContext);
+        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
+
+        // fallback on default locale
+        when(httpHeaders.getAcceptableLanguages()).thenReturn(List.of(new Locale("nl")));
+        localeHandler.filter(containerRequestContext);
+        assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
+    }
 
     @Test
-    public void testIdentifyCurrentLocaleAsDefaultOne() {
+    public void testIdentifyCurrentLocaleAsDefaultOne() throws IOException {
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
-        when(requestContext.getCookieValue(cookieName)).thenReturn(Optional.empty());
+        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.empty());
         // when(requestContext.getRequest().getAcceptLanguage()).thenReturn(Optional.empty());
 
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
-        assertThat(cookies, hasKey(cookieName));
-
-        Cookie cookie = cookies.get(cookieName);
-        assertThat(cookie.getName(), is(cookieName));
-        assertThat(cookie.getValue(), is("en"));
     }
 
 }
