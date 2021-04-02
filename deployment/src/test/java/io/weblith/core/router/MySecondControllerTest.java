@@ -22,7 +22,7 @@ public class MySecondControllerTest {
     static QuarkusUnitTest runner = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClasses(MySecondController.class)
-                    .addAsResource(new StringAsset("quarkus.weblith.csrf-protected=false"), "application.properties"));
+                    .addAsResource(new StringAsset("quarkus.weblith.csrf-protected=false\nquarkus.http.test-port=0"), "application.properties"));
 
     @Test
     public void testMyPage() {
