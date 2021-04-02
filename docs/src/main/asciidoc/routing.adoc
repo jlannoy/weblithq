@@ -20,7 +20,7 @@ include::{core-tests}/test/controllers/MyFirstController.java[tag=class]
 
 NOTE: `Response` is the standard JAX-RS returned object ; you'll see later that Weblith will help you on that part too by giving you access to practical results classes.
 
-In the previous example, Webltith uses Class, methods and parameters names as default values for building HTTP routes. But you can always be more specific by providing a string value to the corresponding annotation.
+In the previous example, Weblith uses Class, methods and parameters names as default values for building HTTP routes. But you can always be more specific by providing a string value to the corresponding annotation.
 
 [source,java]
 ----
@@ -44,7 +44,7 @@ While you can configure yourself your JAR-RS `Response` objects, Weblith offers 
 * `JsonResult` to render some JSON
 * `HtmlResult` will be addressed in the [Freemarker Templates](=freemarker-templates) chapter
  
-Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). You can also define your own custom `Result` classes if needed, by using advanced interfaces like `ConfigureResponse`, `RenderResponse` and `AutomaticCachingPolicy`. Here are some useful examples of the predefined result classes.
+Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (`UTF-8` by default). Here are some useful examples of the predefined result classes.
 
 [source,java]
 ----
@@ -61,6 +61,8 @@ include::{core-tests}/test/controllers/StreamResultsController.java[tag=examples
 include::{core-tests}/test/controllers/RedirectResultsController.java[tag=examples]
 ----
 
+TIP: You can also define your own custom `Result` classes if needed, by using advanced interfaces like `ConfigureResponse`, `RenderResponse` and `AutomaticCachingPolicy`.
+
 === GET and POST
 
 The last one, the `Redirect` result, is an important core concept of Weblith. Weblith require the following rules:
@@ -70,7 +72,7 @@ The last one, the `Redirect` result, is an important core concept of Weblith. We
 * GET methods should never be used to modify things.
 * All POST actions will be CSRF-protected (unless marked with the `@NotCsrfProtected` annotation). 
 
-That means all the `POST` annotated methods should end up with a redirection to a `GET` annotated method. The `Redirect` result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the I18N chapter - or the text message to display).
+That means all the `POST` annotated methods should end up with a redirection to a `GET` annotated method. The `Redirect` result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the <<i18n,Internationalization>> chapter - or the text message to display).
 
 [source,java]
 ----

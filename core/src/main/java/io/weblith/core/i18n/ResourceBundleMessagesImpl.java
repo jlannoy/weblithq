@@ -10,27 +10,28 @@ import java.util.ResourceBundle;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import io.weblith.core.config.WeblithConfig;
 import org.jboss.logging.Logger;
 
 public class ResourceBundleMessagesImpl implements Messages {
 
-    private static final Logger LOGGER = Logger.getLogger(ResourceBundleMessagesImpl.class);
+    protected static final Logger LOGGER = Logger.getLogger(ResourceBundleMessagesImpl.class);
 
-    private final Map<Locale, ResourceBundle> resourceBundles;
+    protected final Map<Locale, ResourceBundle> resourceBundles;
 
-    private final LocaleHandler localeHandler;
+    protected final LocaleHandler localeHandler;
 
-    public ResourceBundleMessagesImpl(LocaleHandler localeHandler) {
+    public ResourceBundleMessagesImpl(LocaleHandler localeHandler, WeblithConfig weblithConfig) {
         this.localeHandler = localeHandler;
-        this.resourceBundles = loadResourceBundles(localeHandler);
+        this.resourceBundles = loadResourceBundles(localeHandler, weblithConfig.messagesPath);
 
         LOGGER.debugv("{0} ResourceBundles loaded", this.resourceBundles.size());
     }
 
-    private Map<Locale, ResourceBundle> loadResourceBundles(LocaleHandler localeHandler) {
+    private Map<Locale, ResourceBundle> loadResourceBundles(LocaleHandler localeHandler, String path) {
         Map<Locale, ResourceBundle> bundles = new HashMap<Locale, ResourceBundle>();
         localeHandler.getApplicationLocales().forEach(l -> {
-            bundles.put(l, ResourceBundle.getBundle("i18n/messages", l, Thread.currentThread().getContextClassLoader()));
+            bundles.put(l, ResourceBundle.getBundle(path, l, Thread.currentThread().getContextClassLoader()));
         });
         return Collections.unmodifiableMap(bundles);
     }

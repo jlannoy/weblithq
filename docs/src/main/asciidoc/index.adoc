@@ -10,6 +10,8 @@ include::context.adoc[]
 
 include::forms.adoc[]
 
+include::i18n.adoc[]
+
 include::freemarker.adoc[]
 
 include::fomantic.adoc[]

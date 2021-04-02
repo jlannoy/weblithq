@@ -88,8 +88,10 @@ public class SessionScopeHandler implements SessionScope {
 
     @Override
     public void put(String key, String value) {
-        this.sessionDataChanged = true;
-        data.put(key, value);
+        if(!data.containsKey(key) || (value != null && !value.equals(data.get(key)))) {
+            this.sessionDataChanged = true;
+            data.put(key, value);
+        }
     }
 
     @Override

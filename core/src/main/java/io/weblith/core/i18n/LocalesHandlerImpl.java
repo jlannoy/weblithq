@@ -74,8 +74,9 @@ public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter
      * <li>In the query parameters (if allowed via configuration)</li>
      * <li>In the request cookies (if previously set)</li>
      * <li>In the Accept-Language header of the current request</li>
-     * <lI>Else, fallback on the default (meaning first configured) locale</li>
+     * <li>Else, fallback on the default (meaning first configured) locale</li>
      * </ol>
+     * Set the result in the session scope.
      */
     public void filter(ContainerRequestContext requestContext) throws IOException {
         Locale locale = identifyCurrentLocale();

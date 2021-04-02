@@ -51,7 +51,7 @@ public class WeblithScopesProducer {
     @Produces
     @ApplicationScoped
     public Messages messages(LocaleHandler localeHandler) {
-        return new ResourceBundleMessagesImpl(localeHandler);
+        return new ResourceBundleMessagesImpl(localeHandler, weblithConfiguration);
     }
 
 }

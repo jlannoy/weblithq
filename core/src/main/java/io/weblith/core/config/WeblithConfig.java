@@ -16,6 +16,12 @@ public class WeblithConfig {
     public String switchLanguageParam;
 
     /**
+     * Path of the translated messages properties files.
+     */
+    @ConfigItem(defaultValue = "i18n/messages")
+    public String messagesPath;
+
+    /**
      * Enable the use of MessageBundles for translations.
      */
     @ConfigItem(defaultValue = "false")

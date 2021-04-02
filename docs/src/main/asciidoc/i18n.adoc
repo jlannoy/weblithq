@@ -1,0 +1,28 @@
+ifndef::core-tests[:core-tests: ../../../../deployment/src/test/java]
+
+[[i18n]]
+== Internationalization
+
+=== Messages
+
+You can define the locales your application supports via the `quarkus.locales` property ; which will allow you to retrieve translated messages according to the _current_ user language. Next chapter will provide in-depth view of how this language is identified.
+
+Each locale will have its own key-value file for managing your translations. The default `Messages` implementation provided by Weblith is based on standard https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ResourceBundle.html[ResourceBundle] objects. Your application should contain one `i18n/messages` file per defined locale. That default path can be changed via the `quarkus.weblith.messagesPath` property. This implementation supports the http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html[MessageFormat] formatting style, that means you can include parameters in your messages.
+
+[source,java]
+----
+include::{core-tests}/../resources/i18n/messages_en.properties[tag=i18n]
+----
+
+CAUTION: A downside of MessageFormat is that you have to escape (double) your single quotes.
+
+=== Locale handling
+
+For each incoming request, Weblith will look at which is the _current user language_ (meaning, the right locale) that should be used for answering that request. This is done by checking successively the following things until one match to your application locales appears :
+
+1. A query parameter to switch to a specific language have been given. That parameter is defined through the `quarkus.weblith.switchLanguageParam` application property.
+1. A value defined in the current session (from a previous request).
+1. A locale defined in the `Accept-Language` request header.
+1. The default application locale, defined through your `quarkus.defaultLocale` application property.
+
+In other words, to keep things simpler, remember that you'll always have one locale to refer too, and that it can be changed just by calling any URL with an appropriate query parameter.

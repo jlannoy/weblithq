@@ -1,9 +1,14 @@
 == Request Context
 
-While in a controller or any other internal service, you can inject a `RequestContext` instance. This class is a center piece for all request related concepts, and give you access to : 
+While in a controller or any other internal service, you can inject a `RequestContext` instance. This class is a center piece for all request related concepts, and give you access to the following features:
 
-* `SessionScope` : a client-side cookie-based session (server-side session not supporter by Weblith)
-* `FlashScope` : a specific cookie-based scope that keep data from one request to an other
-* `LocaleHandler` : a handler that can detect the current user-defined locale
-* `seed()` and `get` : a map for storing some objects during the whole request execution
-* `HttpRequest` and `UriInfo` : JAX-RS request information
+* `SessionScope` (via `.session()`): a client-side cookie-based session (server-side session not supporter by Weblith)
+* `FlashScope` (via `.flash()`): a specific cookie-based scope that keep data from one request to an other
+* `LocaleHandler` (via `.locale()`): a handler that will detect and provide the current user-defined locale
+* `Messages` (via `.message()`): a handler that will detect and provide the current user-defined locale
+* `seed()`, `lookup()` and `get()`: a map for storing some objects (by type) during the whole request execution
+* `SecurityIdentity`, `HttpRequest` and `UriInfo`: JAX-RS request scoped concepts
+
+This class also have some useful shortcuts like `getContextPath()`, `getParameterValue()` and `getCookieValue()`.
+
+INFO: The `SessionScope` is cookie-based and exist from the first received request. It is not linked to the fact of having an authenticated user.
