@@ -8,20 +8,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.enterprise.context.ApplicationScoped;
-
 import io.weblith.core.config.WeblithConfig;
 import org.jboss.logging.Logger;
 
-public class ResourceBundleMessagesImpl implements Messages {
+public class ResourceBundleMessages implements Messages {
 
-    protected static final Logger LOGGER = Logger.getLogger(ResourceBundleMessagesImpl.class);
+    protected static final Logger LOGGER = Logger.getLogger(ResourceBundleMessages.class);
 
     protected final Map<Locale, ResourceBundle> resourceBundles;
 
     protected final LocaleHandler localeHandler;
 
-    public ResourceBundleMessagesImpl(LocaleHandler localeHandler, WeblithConfig weblithConfig) {
+    public ResourceBundleMessages(LocaleHandler localeHandler, WeblithConfig weblithConfig) {
         this.localeHandler = localeHandler;
         this.resourceBundles = loadResourceBundles(localeHandler, weblithConfig.messagesPath);
 

@@ -2,7 +2,6 @@ package io.weblith.core.i18n;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
@@ -14,19 +13,13 @@ import java.io.IOException;
 import java.util.*;
 
 import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.quarkus.test.Mock;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
-import io.weblith.core.config.SessionConfig;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.scopes.SessionScope;
-import io.weblith.core.scopes.SessionScopeHandler;
 import io.weblith.core.scopes.WeblithScopesProducer;
 import org.jboss.resteasy.spi.HttpRequest;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,7 +29,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.HttpHeaders;
 
 @QuarkusTest
-public class LocalesHandlerImplTest {
+public class ConfiguredLocalesFilterTest {
 
     final static String switchParameter = "my_lang";
 
@@ -55,7 +48,7 @@ public class LocalesHandlerImplTest {
 
     ContainerRequestContext containerRequestContext;
 
-    LocalesHandlerImpl localeHandler;
+    ConfiguredLocalesFilter localeHandler;
 
     WeblithConfig weblithConfig;
 
@@ -70,7 +63,7 @@ public class LocalesHandlerImplTest {
         this.localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en"), new Locale("de"), new Locale("fr", "FR")));
         this.localesConfig.defaultLocale = localesConfig.locales.iterator().next();
 
-        this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig);
+        this.localeHandler = new ConfiguredLocalesFilter(requestContext, weblithConfig, localesConfig);
 
         this.httpRequest = Mockito.mock(HttpRequest.class);
         this.httpHeaders = Mockito.mock(HttpHeaders.class);
@@ -87,7 +80,7 @@ public class LocalesHandlerImplTest {
 
         // Reinit to see changes
         localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en", "US"), new Locale("en", "UK"), new Locale("en", "CA")));
-        this.localeHandler = new LocalesHandlerImpl(requestContext, weblithConfig, localesConfig);
+        this.localeHandler = new ConfiguredLocalesFilter(requestContext, weblithConfig, localesConfig);
         assertThat(localeHandler.getApplicationLocales(), contains(new Locale("en", "US"), new Locale("en", "UK"), new Locale("en", "CA")));
         assertThat(localeHandler.byLanguageLocales, aMapWithSize(1));
         assertThat(localeHandler.byLanguageLocales.values(), contains(new Locale("en", "US")));
@@ -134,20 +127,20 @@ public class LocalesHandlerImplTest {
     public void testIdentifyCurrentLocaleFromSession() throws IOException {
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
 
-        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("en"));
+        when(sessionScope.lookup(ConfiguredLocalesFilter.LANG_SESSION_KEY)).thenReturn(Optional.of("en"));
         localeHandler.filter(containerRequestContext);
         // assertThat(localeHandler.identifyCurrentLocale(),is(new Locale("en")));
 
-        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("fr"));
+        when(sessionScope.lookup(ConfiguredLocalesFilter.LANG_SESSION_KEY)).thenReturn(Optional.of("fr"));
         localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
 
-        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("fr-FR"));
+        when(sessionScope.lookup(ConfiguredLocalesFilter.LANG_SESSION_KEY)).thenReturn(Optional.of("fr-FR"));
         localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("fr", "FR")));
 
         // fallback on default locale
-        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.of("nl"));
+        when(sessionScope.lookup(ConfiguredLocalesFilter.LANG_SESSION_KEY)).thenReturn(Optional.of("nl"));
         localeHandler.filter(containerRequestContext);
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));
     }
@@ -155,7 +148,7 @@ public class LocalesHandlerImplTest {
     @Test
     public void testIdentifyCurrentLocaleFromHeaderParameter() throws IOException {
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
-        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.empty());
+        when(sessionScope.lookup(ConfiguredLocalesFilter.LANG_SESSION_KEY)).thenReturn(Optional.empty());
 
         when(httpHeaders.getAcceptableLanguages()).thenReturn(List.of(new Locale("en")));
         localeHandler.filter(containerRequestContext);
@@ -182,7 +175,7 @@ public class LocalesHandlerImplTest {
     @Test
     public void testIdentifyCurrentLocaleAsDefaultOne() throws IOException {
         when(requestContext.getParameterValue(switchParameter)).thenReturn(Optional.empty());
-        when(sessionScope.lookup(LocalesHandlerImpl.LANG_SESSION_KEY)).thenReturn(Optional.empty());
+        when(sessionScope.lookup(ConfiguredLocalesFilter.LANG_SESSION_KEY)).thenReturn(Optional.empty());
         // when(requestContext.getRequest().getAcceptLanguage()).thenReturn(Optional.empty());
 
         assertThat(localeHandler.identifyCurrentLocale(), is(new Locale("en")));

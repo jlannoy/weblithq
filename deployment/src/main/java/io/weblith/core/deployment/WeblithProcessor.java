@@ -1,18 +1,5 @@
 package io.weblith.core.deployment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.IndexView;
-import org.jboss.jandex.MethodInfo;
-import org.jboss.resteasy.spi.ResteasyDeployment;
-
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.BeanDefiningAnnotationBuildItem;
@@ -24,13 +11,18 @@ import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceDirectoryB
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.RuntimeInitializedClassBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
+import io.quarkus.resteasy.reactive.spi.DynamicFeatureBuildItem;
 import io.quarkus.resteasy.server.common.deployment.ResteasyDeploymentCustomizerBuildItem;
 import io.quarkus.resteasy.server.common.spi.AdditionalJaxRsResourceDefiningAnnotationBuildItem;
 import io.quarkus.resteasy.server.common.spi.AdditionalJaxRsResourceMethodAnnotationsBuildItem;
+import io.quarkus.runtime.LocalesBuildTimeConfig;
 import io.weblith.core.WeblithResourceBuilder;
 import io.weblith.core.form.parsing.FormBodyParser;
 import io.weblith.core.form.parsing.JsonBodyParser;
 import io.weblith.core.form.validating.RequestContextLocaleResolver;
+import io.weblith.core.i18n.ConfiguredLocalesFilter;
+import io.weblith.core.i18n.ConfiguredLocalesFilterDynamicFeature;
+import io.weblith.core.i18n.SingleLocaleHandler;
 import io.weblith.core.logging.RequestLoggingDynamicFeature;
 import io.weblith.core.logging.RequestLoggingFilter;
 import io.weblith.core.parameters.date.ParametersConverterProvider;
@@ -40,6 +32,14 @@ import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
 import io.weblith.core.security.AuthenticityTokenDynamicFeature;
 import io.weblith.core.security.AuthenticityTokenFilter;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.IndexView;
+import org.jboss.jandex.MethodInfo;
+import org.jboss.resteasy.spi.ResteasyDeployment;
+
+import java.util.*;
+import java.util.function.Consumer;
 
 public class WeblithProcessor {
 
@@ -85,8 +85,8 @@ public class WeblithProcessor {
 
     @BuildStep
     public void registerWeblithResourceBuilderForControllers(BeanArchiveIndexBuildItem beanArchiveIndexBuildItem,
-            BuildProducer<ResteasyDeploymentCustomizerBuildItem> deploymentCustomizerProducer,
-            BuildProducer<ReflectiveClassBuildItem> reflectiveClass) {
+                                                             BuildProducer<ResteasyDeploymentCustomizerBuildItem> deploymentCustomizerProducer,
+                                                             BuildProducer<ReflectiveClassBuildItem> reflectiveClass) {
 
         validateControllers(beanArchiveIndexBuildItem);
 
@@ -127,6 +127,25 @@ public class WeblithProcessor {
 
     }
 
+    @BuildStep
+    public void localeHandling(BuildProducer<AdditionalBeanBuildItem> additionalBeans,
+                               BuildProducer<DynamicFeatureBuildItem> dynamicFeatures,
+                               BuildProducer<ResteasyJaxrsProviderBuildItem> resteasyJaxrsProviders,
+                               LocalesBuildTimeConfig localesBuildTimeConfig) {
+
+        if (localesBuildTimeConfig.locales.size() > 1) {
+            additionalBeans.produce(AdditionalBeanBuildItem.builder()
+                    .setUnremovable().setDefaultScope(BuiltinScope.APPLICATION.getName())
+                    .addBeanClass(ConfiguredLocalesFilter.class).build());
+            dynamicFeatures.produce(new DynamicFeatureBuildItem(ConfiguredLocalesFilterDynamicFeature.class.getName()));
+            resteasyJaxrsProviders.produce(new ResteasyJaxrsProviderBuildItem(ConfiguredLocalesFilter.class.getName()));
+
+        } else {
+            additionalBeans.produce(AdditionalBeanBuildItem.builder().addBeanClasses(SingleLocaleHandler.class).build());
+        }
+
+    }
+
     /**
      * Make sure the controllers have the proper annotation and warn if not
      */
@@ -155,7 +174,8 @@ public class WeblithProcessor {
         }
 
         Collection<AnnotationInstance> controllerAnnotations = index.getAnnotations(CONTROLLER_ANNOTATION);
-        nextController: for (AnnotationInstance annotation : controllerAnnotations) {
+        nextController:
+        for (AnnotationInstance annotation : controllerAnnotations) {
             for (MethodInfo method : annotation.target().asClass().methods()) {
                 if (method.hasAnnotation(GET_ANNOTATION) || method.hasAnnotation(POST_ANNOTATION)) {
                     continue nextController;
@@ -175,7 +195,9 @@ public class WeblithProcessor {
 
     @BuildStep
     public void nativeBuild(BuildProducer<NativeImageResourceDirectoryBuildItem> resourceDirectories,
-            BuildProducer<RuntimeInitializedClassBuildItem> runtimeInitialized) {
+                            BuildProducer<RuntimeInitializedClassBuildItem> runtimeInitialized) {
 
     }
+
+
 }

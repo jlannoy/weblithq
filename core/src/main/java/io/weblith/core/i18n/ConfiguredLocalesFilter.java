@@ -13,7 +13,6 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.NewCookie;
 import java.io.IOException;
 import java.util.Locale;
@@ -22,11 +21,10 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@ApplicationScoped
-@Priority(Priorities.HEADER_DECORATOR + 10)
-public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter, ContainerResponseFilter {
+@Priority(Priorities.AUTHENTICATION - 10)
+public class ConfiguredLocalesFilter implements LocaleHandler, ContainerRequestFilter { //, ContainerResponseFilter {
 
-    protected static final Logger LOGGER = Logger.getLogger(LocalesHandlerImpl.class);
+    protected static final Logger LOGGER = Logger.getLogger(ConfiguredLocalesFilter.class);
 
     protected final static String LANG_SESSION_KEY = "_lang";
 
@@ -39,7 +37,7 @@ public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter
     protected final Map<String, Locale> byLanguageLocales;
 
     @Inject
-    public LocalesHandlerImpl(RequestContext context, WeblithConfig weblithConfig, LocalesBuildTimeConfig localesConfig) {
+    public ConfiguredLocalesFilter(RequestContext context, WeblithConfig weblithConfig, LocalesBuildTimeConfig localesConfig) {
         super();
         this.context = context;
 
@@ -69,7 +67,7 @@ public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter
     }
 
     /**
-     * Tries to find any language proposal for the current request:<br>
+     * Filter the incoming request. Try to find any language proposal for the current request:<br>
      * <ol>
      * <li>In the query parameters (if allowed via configuration)</li>
      * <li>In the request cookies (if previously set)</li>
@@ -117,7 +115,10 @@ public class LocalesHandlerImpl implements LocaleHandler, ContainerRequestFilter
         return currentLocale;
     }
 
-    @Override
+    /**
+     * Filter the outgoing response.
+     */
+    // @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         context.lookup(NewCookie.class).ifPresent(nc -> CookieBuilder.save(responseContext, nc));
     }

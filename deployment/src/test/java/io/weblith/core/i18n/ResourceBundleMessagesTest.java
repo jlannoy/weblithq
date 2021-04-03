@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @QuarkusTest
-public class ResourceBundleMessagesImplTest {
+public class ResourceBundleMessagesTest {
 
     @Inject
     WeblithScopesProducer producer;
@@ -33,7 +33,7 @@ public class ResourceBundleMessagesImplTest {
     @InjectMock
     RequestContext context;
 
-    ResourceBundleMessagesImpl messages;
+    ResourceBundleMessages messages;
 
     WeblithConfig weblithConfig;
 
@@ -46,7 +46,7 @@ public class ResourceBundleMessagesImplTest {
         when(localeHandler.getApplicationLocales())
                 .thenReturn(Set.of(new Locale("en"), new Locale("nl"), new Locale("fr", "FR"), new Locale("pl", "PL")));
 
-        messages = new ResourceBundleMessagesImpl(localeHandler, weblithConfig);
+        messages = new ResourceBundleMessages(localeHandler, weblithConfig);
     }
 
     @Test

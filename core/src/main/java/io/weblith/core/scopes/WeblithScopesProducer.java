@@ -37,21 +37,8 @@ public class WeblithScopesProducer {
     @DefaultBean
     @Produces
     @ApplicationScoped
-    public LocaleHandler locale(LocalesBuildTimeConfig localesConfig, RequestContext context) {
-        if (localesConfig.locales.size() > 1) {
-            return new LocalesHandlerImpl(context, weblithConfiguration, localesConfig);
-        } else if (localesConfig.locales.size() == 1) {
-            return new SingleLocaleHandlerImpl(localesConfig.locales.iterator().next());
-        } else {
-            return new SingleLocaleHandlerImpl(Locale.getDefault());
-        }
-    }
-
-    @DefaultBean
-    @Produces
-    @ApplicationScoped
     public Messages messages(LocaleHandler localeHandler) {
-        return new ResourceBundleMessagesImpl(localeHandler, weblithConfiguration);
+        return new ResourceBundleMessages(localeHandler, weblithConfiguration);
     }
 
 }

@@ -19,7 +19,7 @@ import io.weblith.core.request.RequestContext;
  * CSRF protection mechanism.
  */
 @ApplicationScoped
-@Priority(Priorities.AUTHORIZATION)
+@Priority(Priorities.AUTHORIZATION - 10)
 public class AuthenticityTokenFilter implements ContainerRequestFilter {
 
     public static final String AUTHENTICITY_TOKEN = "authenticityToken";
