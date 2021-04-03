@@ -35,6 +35,8 @@ public class WeblithConfig {
 
     public RequestLoggingConfig requestLogs;
 
+    public TenantConfig tenants;
+
     /**
      * Enable a CSRF protection for each {@link Post} method, via an {@link AuthenticityTokenFilter}.
      */

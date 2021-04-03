@@ -3,6 +3,7 @@ package io.weblith.core.deployment;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.BeanDefiningAnnotationBuildItem;
+import io.quarkus.arc.deployment.ContextRegistrationPhaseBuildItem;
 import io.quarkus.arc.processor.BuiltinScope;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -17,6 +18,7 @@ import io.quarkus.resteasy.server.common.spi.AdditionalJaxRsResourceDefiningAnno
 import io.quarkus.resteasy.server.common.spi.AdditionalJaxRsResourceMethodAnnotationsBuildItem;
 import io.quarkus.runtime.LocalesBuildTimeConfig;
 import io.weblith.core.WeblithResourceBuilder;
+import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.form.parsing.FormBodyParser;
 import io.weblith.core.form.parsing.JsonBodyParser;
 import io.weblith.core.form.validating.RequestContextLocaleResolver;
@@ -25,6 +27,10 @@ import io.weblith.core.i18n.ConfiguredLocalesFilterDynamicFeature;
 import io.weblith.core.i18n.SingleLocaleHandler;
 import io.weblith.core.logging.RequestLoggingDynamicFeature;
 import io.weblith.core.logging.RequestLoggingFilter;
+import io.weblith.core.multitenancy.TenantResolverFilter;
+import io.weblith.core.multitenancy.TenantResolverFilterDynamicFeature;
+import io.weblith.core.multitenancy.TenantScopeInjectableContext;
+import io.weblith.core.multitenancy.TenantScoped;
 import io.weblith.core.parameters.date.ParametersConverterProvider;
 import io.weblith.core.results.ResultResponseFilter;
 import io.weblith.core.router.annotations.Controller;
@@ -199,5 +205,9 @@ public class WeblithProcessor {
 
     }
 
-
+    @BuildStep
+    ContextRegistrationPhaseBuildItem.ContextConfiguratorBuildItem registerContext(ContextRegistrationPhaseBuildItem phase) {
+        return new ContextRegistrationPhaseBuildItem.ContextConfiguratorBuildItem(
+                phase.getContext().configure(TenantScoped.class).normal().contextClass(TenantScopeInjectableContext.class));
+    }
 }
