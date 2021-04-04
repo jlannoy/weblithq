@@ -20,6 +20,13 @@ public class SingleLocaleHandler implements LocaleHandler {
         this.locale = localesConfig.locales.iterator().next();
     }
 
+    @Override
+    public Locale validate(String language) {
+        return this.locale.getLanguage().equals(language)
+                || this.locale.toString().equals(language)
+                ? this.locale : null;
+    }
+
     public Set<Locale> getApplicationLocales() {
         return Set.of(this.locale);
     }

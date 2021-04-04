@@ -7,7 +7,7 @@ import io.weblith.core.scopes.CookieBuilder;
 import java.util.Map;
 
 @ConfigGroup
-public class TenantConfig {
+public class TenantsConfig {
 
     /**
      * Domains.

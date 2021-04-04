@@ -53,7 +53,8 @@ public class ConfiguredLocalesFilter implements LocaleHandler, ContainerRequestF
      * Once a language proposal exists, make sure a corresponding locale exists in the application configuration. It
      * will not be possible to use any locale that have not be defined.
      */
-    protected Locale validate(String language) {
+    @Override
+    public Locale validate(String language) {
         if (language != null) {
             Locale locale = Locale.forLanguageTag(language);
             if (this.byLanguageLocales.values().contains(locale)) {
