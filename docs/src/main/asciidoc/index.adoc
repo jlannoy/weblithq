@@ -12,6 +12,8 @@ include::forms.adoc[]
 
 include::i18n.adoc[]
 
+include::multitenancy.adoc[]
+
 include::freemarker.adoc[]
 
 include::fomantic.adoc[]

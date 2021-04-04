@@ -21,8 +21,8 @@ CAUTION: A downside of MessageFormat is that you have to escape (double) your si
 For each incoming request, Weblith will look at which is the _current user language_ (meaning, the right locale) that should be used for answering that request. This is done by checking successively the following things until one match to your application locales appears :
 
 1. A query parameter to switch to a specific language have been given. That parameter is defined through the `quarkus.weblith.switchLanguageParam` application property.
-1. A value defined in the current session (from a previous request).
-1. A locale defined in the `Accept-Language` request header.
-1. The default application locale, defined through your `quarkus.defaultLocale` application property.
+2. A value defined in the current session (from a previous request).
+3. A locale defined in the `Accept-Language` request header.
+4. The default application locale, defined through your `quarkus.defaultLocale` application property.
 
 In other words, to keep things simpler, remember that you'll always have one locale to refer too, and that it can be changed just by calling any URL with an appropriate query parameter.

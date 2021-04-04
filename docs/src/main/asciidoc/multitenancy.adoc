@@ -1,0 +1,7 @@
+== Multitenancy
+
+=== Tenant identification
+
+=== Tenant scope
+
+The same way Quarkus does already provide the `@ApplicationScoped` and `@RequestScoped` annotations, Weblith adds a new scope to the default one throguh the `@TenantScoped` application.

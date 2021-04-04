@@ -1,5 +1,9 @@
 == Introduction 
 
+=== TLDR ~ What is Weblith ?
+
+Weblith is a Java framework powered by https://quarkus.io[Quarkus] for quickly developping **server side web applications**. It provides easy routing, responses management, forms handling, application internationalization, multitenancy management, and finally layout templating with server side components.
+
 === A little bit of history
 
 At its early stage, Weblith was an internal framework developed at https://zileo.net[Zileo.net] and derived from other frameworks like http://www.ninjaframework.org[Ninja Framework], https://github.com/svenkubiak/mangooio[MangooIO], and even https://spring.io[Spring Boot]. The focus was a on rapid (web) application development. Technically, it was based on stable well-known libraries : Google Guice, Lightbend Config, Undertow, Hibernate ORM, Hibernate Validator, Jackson, Freemarker, etc... After one year of production usage, the plan was to open source it (Q3-2020), by creating the missing documentation and archetype, and make it publicly available through http://weblith.io[a dedicated Weblith.io website].
