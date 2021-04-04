@@ -27,10 +27,7 @@ import io.weblith.core.i18n.ConfiguredLocalesFilterDynamicFeature;
 import io.weblith.core.i18n.SingleLocaleHandler;
 import io.weblith.core.logging.RequestLoggingDynamicFeature;
 import io.weblith.core.logging.RequestLoggingFilter;
-import io.weblith.core.multitenancy.TenantResolverFilter;
-import io.weblith.core.multitenancy.TenantResolverFilterDynamicFeature;
-import io.weblith.core.multitenancy.TenantScopeInjectableContext;
-import io.weblith.core.multitenancy.TenantScoped;
+import io.weblith.core.multitenancy.*;
 import io.weblith.core.parameters.date.ParametersConverterProvider;
 import io.weblith.core.results.ResultResponseFilter;
 import io.weblith.core.router.annotations.Controller;
@@ -128,6 +125,8 @@ public class WeblithProcessor {
                 .setUnremovable()
                 .addBeanClasses(AuthenticityTokenFilter.class)
                 .addBeanClasses(RequestLoggingFilter.class)
+                .addBeanClasses(TenantResolverFilter.class)
+                .addBeanClasses(TenantCleanerFilter.class)
                 .addBeanClasses(RequestContextLocaleResolver.class)
                 .build();
 

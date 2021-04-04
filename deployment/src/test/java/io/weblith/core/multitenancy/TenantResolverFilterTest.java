@@ -1,37 +1,102 @@
 package io.weblith.core.multitenancy;
 
-import io.quarkus.test.QuarkusUnitTest;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import io.weblith.core.config.TenantsConfig;
+import io.weblith.core.config.WeblithConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import test.controllers.MultiTenantController;
-import test.controllers.MySecondController;
 
-import javax.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertNull;
 
 public class TenantResolverFilterTest {
 
-    private final static int OK = Status.OK.getStatusCode();
+    WeblithConfig weblithConfig;
 
-    @RegisterExtension
-    static QuarkusUnitTest runner = new QuarkusUnitTest()
-            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addClasses(MultiTenantController.class)
-                    .addAsResource(new StringAsset("quarkus.weblith.tenant.domain.test=localhost\nquarkus.weblith.tenant.domain.test2=127.0.0.1\nquarkus.http.test-port=0"), "application.properties"));
-
-    @Test
-    public void testTenantId() {
-        when().get("/Tenant/id").then().statusCode(OK).body(is("test"));
+    @BeforeEach
+    public void init() {
+        this.weblithConfig = new WeblithConfig();
+        this.weblithConfig.tenants = new TenantsConfig();
+        this.weblithConfig.tenants.defaultTenant = "public";
+        this.weblithConfig.tenants.domains = new HashMap<>();
+        this.weblithConfig.tenants.domain = Optional.empty();
+        this.weblithConfig.tenants.subdomains = Optional.empty();
     }
 
     @Test
-    public void testTenantDomain() {
-        when().get("/Tenant/domain").then().statusCode(OK).body(is("localhost"));
+    public void testDefaultTenant() {
+        TenantResolverFilter filter = new TenantResolverFilter(weblithConfig);
+        assertThat(filter.getApplicationTenants(), hasItem("public"));
+        assertThat(filter.getApplicationTenants(), hasSize(1));
+
+        assertThat(filter.identifyTenant("first-domain.com"), is(Optional.of("public")));
+        assertThat(filter.identifyTenant("second-domain.com"), is(Optional.of("public")));
+        assertThat(filter.identifyTenant("third-domain.com"), is(Optional.of("public")));
     }
 
+    @Test
+    public void testIdentifyingDomains() {
+        weblithConfig.tenants.domains = new HashMap<>();
+        weblithConfig.tenants.domains.put("first", "first-domain.com");
+        weblithConfig.tenants.domains.put("second", "second-domain.com");
+        weblithConfig.tenants.domains.put("third", "third-domain.com");
+
+        TenantResolverFilter filter = new TenantResolverFilter(weblithConfig);
+        assertThat(filter.getApplicationTenants(), hasItems("first", "second", "third"));
+        assertThat(filter.getApplicationTenants(), hasSize(3));
+
+        assertThat(filter.identifyTenant("first-domain.com"), is(Optional.of("first")));
+        assertThat(filter.identifyTenant("second-domain.com"), is(Optional.of("second")));
+        assertThat(filter.identifyTenant("third-domain.com"), is(Optional.of("third")));
+        assertThat(filter.identifyTenant("fourth-domain.com"), is(Optional.empty()));
+    }
+
+    @Test
+    public void testIdentifyingSubdomains() {
+        weblithConfig.tenants.domain = Optional.of("domain.com");
+        weblithConfig.tenants.subdomains = Optional.of(new ArrayList<>());
+        weblithConfig.tenants.subdomains.get().add("first");
+        weblithConfig.tenants.subdomains.get().add("second");
+        weblithConfig.tenants.subdomains.get().add("third");
+
+        TenantResolverFilter filter = new TenantResolverFilter(weblithConfig);
+        assertThat(filter.getApplicationTenants(), hasItems("first", "second", "third"));
+        assertThat(filter.getApplicationTenants(), hasSize(3));
+
+        assertThat(filter.identifyTenant("first.domain.com"), is(Optional.of("first")));
+        assertThat(filter.identifyTenant("second.domain.com"), is(Optional.of("second")));
+        assertThat(filter.identifyTenant("third.domain.com"), is(Optional.of("third")));
+        assertThat(filter.identifyTenant("fourth.domain.com"), is(Optional.empty()));
+    }
+
+    @Test
+    public void testMixingDomainsAndSubdomains() {
+        weblithConfig.tenants.domains = new HashMap<>();
+        weblithConfig.tenants.domains.put("first", "first-domain.com");
+        weblithConfig.tenants.domains.put("second", "second-domain.com");
+        weblithConfig.tenants.domains.put("third", "third-domain.com");
+        weblithConfig.tenants.domains.put("fourth", "fourth-domain.com");
+        weblithConfig.tenants.domain = Optional.of("domain.com");
+        weblithConfig.tenants.subdomains = Optional.of(new ArrayList<>());
+        weblithConfig.tenants.subdomains.get().add("first");
+        weblithConfig.tenants.subdomains.get().add("second");
+        weblithConfig.tenants.subdomains.get().add("third");
+
+        TenantResolverFilter filter = new TenantResolverFilter(weblithConfig);
+        assertThat(filter.getApplicationTenants(), hasItems("first", "second", "third", "fourth"));
+        assertThat(filter.getApplicationTenants(), hasSize(4));
+
+        assertThat(filter.identifyTenant("first-domain.com"), is(Optional.of("first")));
+        assertThat(filter.identifyTenant("second-domain.com"), is(Optional.of("second")));
+        assertThat(filter.identifyTenant("third-domain.com"), is(Optional.of("third")));
+        assertThat(filter.identifyTenant("fourth-domain.com"), is(Optional.of("fourth")));
+        assertThat(filter.identifyTenant("first.domain.com"), is(Optional.of("first")));
+        assertThat(filter.identifyTenant("second.domain.com"), is(Optional.of("second")));
+        assertThat(filter.identifyTenant("third.domain.com"), is(Optional.of("third")));
+        assertThat(filter.identifyTenant("fourth.domain.com"), is(Optional.empty()));
+    }
 }
