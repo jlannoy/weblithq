@@ -33,6 +33,7 @@ public class TenantResolverFilter implements ContainerRequestFilter, TenantHandl
                 ? Collections.unmodifiableSet(Set.of(weblithConfig.tenants.defaultTenant))
                 : this.domains.values().stream().collect(Collectors.toUnmodifiableSet());
 
+        TenantScopeInjectableContext.init(this.tenants);
         LOGGER.debugv("Domains map initialized with : {0}", this.domains);
     }
 

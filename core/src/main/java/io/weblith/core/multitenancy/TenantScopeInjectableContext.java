@@ -4,8 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ContextNotActiveException;
@@ -20,6 +19,10 @@ import io.quarkus.arc.impl.ContextInstanceHandleImpl;
 public class TenantScopeInjectableContext implements InjectableContext {
 
 	static final Map<String, Map<Contextual<?>, ContextInstanceHandle<?>>> TENANT_ACTIVE_SCOPE = new HashMap<>();
+
+	public static void init(Set<String> tenants) {
+		tenants.forEach(id -> TENANT_ACTIVE_SCOPE.put(id, new HashMap<>()));
+	}
 
 	@Override
 	public Class<? extends Annotation> getScope() {

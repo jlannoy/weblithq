@@ -26,20 +26,24 @@ public class TenantResolverFilterControllerTest {
     public void testTenantId() {
         given().baseUri("http://localhost")
                 .when().get("/Tenant/id")
-                .then().statusCode(OK).body(is("test"));
+                .then().statusCode(OK)
+                .body(is("test"));
         given().baseUri("http://127.0.0.1")
                 .when().get("/Tenant/id")
-                .then().statusCode(OK).body(is("test2"));
+                .then().statusCode(OK)
+                .body(is("test2"));
     }
 
     @Test
     public void testTenantDomain() {
         given().baseUri("http://localhost")
                 .when().get("/Tenant/domain")
-                .then().statusCode(OK).body(is("localhost"));
+                .then().statusCode(OK)
+                .body(is("localhost"));
         given().baseUri("http://127.0.0.1")
                 .when().get("/Tenant/domain")
-                .then().statusCode(OK).body(is("127.0.0.1"));
+                .then().statusCode(OK)
+                .body(is("127.0.0.1"));
     }
 
 }
