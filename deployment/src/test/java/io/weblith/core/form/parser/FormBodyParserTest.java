@@ -1,37 +1,12 @@
 package io.weblith.core.form.parser;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.arrayContaining;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.iterableWithSize;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.MultivaluedMap;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.weblith.core.form.Form;
+import io.weblith.core.form.parsing.BodyParserObjectMapperProvider;
+import io.weblith.core.form.parsing.FormBodyParser;
+import io.weblith.core.form.validating.Violation;
+import io.weblith.core.i18n.ConfiguredLocalesFilter;
+import io.weblith.core.request.RequestContext;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,14 +14,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.MultivaluedMap;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.util.*;
 
-import io.weblith.core.form.Form;
-import io.weblith.core.form.parsing.BodyParserObjectMapperProvider;
-import io.weblith.core.form.parsing.FormBodyParser;
-import io.weblith.core.form.validating.Violation;
-import io.weblith.core.i18n.ConfiguredLocalesFilter;
-import io.weblith.core.request.RequestContext;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 public class FormBodyParserTest {
 
@@ -58,7 +36,7 @@ public class FormBodyParserTest {
     @Mock
     ConfiguredLocalesFilter localeHandler;
 
-    private Form<Object> currentForm;
+    Form<Object> currentForm;
 
     FormBodyParser bodyParser;
 
@@ -777,7 +755,8 @@ public class FormBodyParserTest {
 
         public String value;
 
-        public TestObjectWithId() {}
+        public TestObjectWithId() {
+        }
 
         public TestObjectWithId(String id) {
             this.id = id;
@@ -789,7 +768,8 @@ public class FormBodyParserTest {
 
         private UUID id;
 
-        public TestParentObject() {}
+        public TestParentObject() {
+        }
 
         public UUID getId() {
             return id;
@@ -805,7 +785,8 @@ public class FormBodyParserTest {
 
         public String value;
 
-        public TestObjectWithUuid() {}
+        public TestObjectWithUuid() {
+        }
 
     }
 

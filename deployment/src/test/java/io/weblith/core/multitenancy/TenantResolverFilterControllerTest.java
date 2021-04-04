@@ -2,17 +2,14 @@ package io.weblith.core.multitenancy;
 
 import io.quarkus.test.QuarkusUnitTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import test.controllers.MultiTenantController;
-import test.controllers.MySecondController;
 
 import javax.ws.rs.core.Response.Status;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.is;
 
 public class TenantResolverFilterControllerTest {

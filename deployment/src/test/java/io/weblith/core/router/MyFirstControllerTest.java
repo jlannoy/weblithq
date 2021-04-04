@@ -1,18 +1,17 @@
 package io.weblith.core.router;
 
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.is;
-
-import javax.ws.rs.core.Response.Status;
-
+import io.quarkus.test.QuarkusUnitTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import io.quarkus.test.QuarkusUnitTest;
 import test.controllers.MyFirstController;
+
+import javax.ws.rs.core.Response.Status;
+
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.is;
 
 public class MyFirstControllerTest {
 
@@ -28,7 +27,7 @@ public class MyFirstControllerTest {
     public void testMyPage() {
         when().get("/MyFirst/myPage").then().statusCode(OK);
     }
-    
+
     @Test
     public void testMyPage2() {
         when().get("/MyFirst/myPage2/data").then().statusCode(OK).body(is("data"));

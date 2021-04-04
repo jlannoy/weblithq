@@ -1,45 +1,33 @@
 package io.weblith.core.i18n;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.aMapWithSize;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.util.*;
-
 import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.scopes.SessionScope;
-import io.weblith.core.scopes.WeblithScopesProducer;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.HttpHeaders;
+import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
-@QuarkusTest
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
+
 public class ConfiguredLocalesFilterTest {
 
-    final static String switchParameter = "my_lang";
+    private final static String switchParameter = "my_lang";
 
-    @Inject
-    WeblithScopesProducer producer;
-
-    @InjectMock
     RequestContext requestContext;
 
-    @InjectMock
     SessionScope sessionScope;
 
     HttpRequest httpRequest;
@@ -63,8 +51,8 @@ public class ConfiguredLocalesFilterTest {
         this.localesConfig.locales = new LinkedHashSet<>(List.of(new Locale("en"), new Locale("de"), new Locale("fr", "FR")));
         this.localesConfig.defaultLocale = localesConfig.locales.iterator().next();
 
-        this.localeHandler = new ConfiguredLocalesFilter(requestContext, weblithConfig, localesConfig);
-
+        this.requestContext = Mockito.mock(RequestContext.class);
+        this.sessionScope = Mockito.mock(SessionScope.class);
         this.httpRequest = Mockito.mock(HttpRequest.class);
         this.httpHeaders = Mockito.mock(HttpHeaders.class);
         this.containerRequestContext = Mockito.mock(ContainerRequestContext.class);
@@ -72,6 +60,8 @@ public class ConfiguredLocalesFilterTest {
         when(requestContext.request()).thenReturn(httpRequest);
         when(requestContext.session()).thenReturn(sessionScope);
         when(httpRequest.getHttpHeaders()).thenReturn(httpHeaders);
+
+        this.localeHandler = new ConfiguredLocalesFilter(requestContext, weblithConfig, localesConfig);
     }
 
     @Test

@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertNull;
 
 public class TenantResolverFilterTest {
 

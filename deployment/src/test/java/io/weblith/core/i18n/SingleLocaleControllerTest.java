@@ -9,12 +9,10 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import test.controllers.RequestContextAwareController;
 
 import javax.ws.rs.core.Response.Status;
-
 import java.util.Locale;
 
-import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
 public class SingleLocaleControllerTest {
 

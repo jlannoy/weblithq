@@ -1,15 +1,11 @@
 package io.weblith.core.i18n;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
-import io.weblith.core.scopes.WeblithScopesProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 
-import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -21,16 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@QuarkusTest
 public class ResourceBundleMessagesTest {
 
-    @Inject
-    WeblithScopesProducer producer;
-
-    @InjectMock
     LocaleHandler localeHandler;
 
-    @InjectMock
     RequestContext context;
 
     ResourceBundleMessages messages;
@@ -42,7 +32,9 @@ public class ResourceBundleMessagesTest {
         this.weblithConfig = new WeblithConfig();
         this.weblithConfig.messagesPath = "i18n/messages";
 
-        MockitoAnnotations.openMocks(this);
+        this.context = Mockito.mock(RequestContext.class);
+        this.localeHandler = Mockito.mock(ConfiguredLocalesFilter.class);
+
         when(localeHandler.getApplicationLocales())
                 .thenReturn(Set.of(new Locale("en"), new Locale("nl"), new Locale("fr", "FR"), new Locale("pl", "PL")));
 

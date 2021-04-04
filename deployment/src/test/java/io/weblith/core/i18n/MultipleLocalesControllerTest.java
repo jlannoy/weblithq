@@ -3,7 +3,6 @@ package io.weblith.core.i18n;
 import io.quarkus.test.QuarkusUnitTest;
 import io.weblith.core.config.WeblithConfig;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -14,20 +13,20 @@ import javax.ws.rs.core.Response.Status;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
 public class MultipleLocalesControllerTest {
 
     private final static int OK = Status.OK.getStatusCode();
 
-    @Inject
-    WeblithConfig config;
-
     @RegisterExtension
     static QuarkusUnitTest runner = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClasses(RequestContextAwareController.class)
-                    .addAsResource(new StringAsset("quarkus.locales=en,fr,de\nquarkus.default-locale=de\nquarkus.http.test-port=0"), "application.properties"));
+                    .addAsResource("application.properties"));
+
+    @Inject
+    WeblithConfig config;
 
     @Test
     public void testGetDefaultLocale() {
