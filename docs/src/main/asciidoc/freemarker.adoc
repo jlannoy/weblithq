@@ -23,7 +23,7 @@ This will render the template `templates/Main/home.ftlh` (stored in the classpat
  * `lang` : current used defined language
  * `flash` : map with current Flash scope data
 
-Refer to the [Freemarker](https://freemarker.apache.org/docs/index.html) documentation for more information about how to use this engine.
+Refer to the https://freemarker.apache.org/docs/index.html[Freemarker] documentation for more information about how to use this engine.
 
 === Injecting templates
 
