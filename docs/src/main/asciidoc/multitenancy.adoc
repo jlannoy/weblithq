@@ -10,11 +10,10 @@ Weblith offers multiple ways of managing multiple tenants for your web applicati
 
 When a tenant is identified from one of those configurations, the tenant identifier will be available for the current http request using `TenantContext.id()`. That means you can for example configure a multitenancy strategy for your persistence context (check https://www.baeldung.com/hibernate-5-multitenancy[this article] for Hibernate).
 
-Note that for processes that should run outside a http request, `TenantContext` provides an `executeFor` method that takes a tenant identifier and a runnable as parameters.
+If your application doesn't define any configuration, one single tenant called `public` will be identified by default.
+
+TIP: For processes that should run outside a http request, `TenantContext` provides an `executeFor` method that takes a tenant identifier and a runnable as parameters.
 
 === Tenant scope
 
 The same way Quarkus does already provide the `@ApplicationScoped` and `@RequestScoped` annotations, Weblith adds a new scope to the default one through the `@TenantScoped` application. It will allow you to define some specific beans being instanced once for each tenant.
-
-=== Tenant configuration
-
