@@ -46,7 +46,7 @@ public class FreemarkerConfigurationProvider {
     @DefaultBean
     @ApplicationScoped
     public Configuration configureFreemarker() {
-        Configuration freemarker = new Configuration(Configuration.getVersion());
+        Configuration freemarker = new Configuration(Configuration.VERSION_2_3_29);
         freemarker.setDefaultEncoding("UTF-8");
         freemarker.setOutputEncoding("UTF-8");
         freemarker.setLocalizedLookup(false);
@@ -77,7 +77,7 @@ public class FreemarkerConfigurationProvider {
     }
 
     private BeansWrapper createBeansWrapperWithExposedFields() {
-        Java8ObjectWrapper wrapper = new Java8ObjectWrapper(Configuration.getVersion());
+        Java8ObjectWrapper wrapper = new Java8ObjectWrapper(Configuration.VERSION_2_3_29);
         wrapper.setExposeFields(true);
         return wrapper;
     }
@@ -118,6 +118,7 @@ public class FreemarkerConfigurationProvider {
 
     private void configureCommonComponents(Configuration freemarker) {
         try {
+
             freemarker.setSharedVariable("contextPath", this.contextPath.equals("/") ? "" : this.contextPath);
 
             freemarker.setSharedVariable("authenticityToken", components.authenticityToken());
@@ -125,6 +126,7 @@ public class FreemarkerConfigurationProvider {
 
             freemarker.setSharedVariable("i18n", components.i18nMethod());
             freemarker.setSharedVariable("prettyTime", components.prettyTimeMethod());
+
         } catch (TemplateModelException e) {
             throw new IllegalStateException(e);
         }
