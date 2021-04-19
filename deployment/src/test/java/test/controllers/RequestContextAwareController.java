@@ -24,4 +24,9 @@ public class RequestContextAwareController {
         return context.session().getAuthenticityToken();
     }
 
+    @Get
+    public String controllerName() {
+        return context.controller().getSimpleName();
+    }
+
 }

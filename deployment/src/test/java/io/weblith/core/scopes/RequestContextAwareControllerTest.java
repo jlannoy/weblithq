@@ -11,8 +11,7 @@ import test.controllers.RequestContextAwareController;
 import javax.ws.rs.core.Response.Status;
 
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 public class RequestContextAwareControllerTest {
 
@@ -31,4 +30,10 @@ public class RequestContextAwareControllerTest {
                 .then().statusCode(OK).body(not(emptyOrNullString()));
     }
 
+    @Test
+    public void testControllerName() {
+        // Will also checks the session exist
+        when().get("/Ctx/controllerName")
+                .then().statusCode(OK).body(is("RequestContextAwareController"));
+    }
 }
