@@ -41,10 +41,10 @@ public class TemplateResolver {
     }
 
     protected freemarker.template.Template loadTemplate(String templatePath) throws IOException {
-        LOGGER.infov("Loading template at {0}", templatePath);
+        LOGGER.debugv("Loading template at {0}", templatePath);
         try {
             freemarker.template.Template template = freemarker.getTemplate(templatePath);
-            LOGGER.infov("Loaded template {0}", template.getName());
+            LOGGER.debugv("Loaded template {0}", template.getName());
             return template;
         } catch (IOException e) {
             e.printStackTrace();
