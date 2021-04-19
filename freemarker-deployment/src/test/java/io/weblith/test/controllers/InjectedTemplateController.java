@@ -17,7 +17,7 @@ public class InjectedTemplateController {
     @Inject
     FreemarkerTemplate bonjour;
 
-    @TemplatePath("directory/ola.ftlh")
+    @TemplatePath("directory/ola.ftl")
     FreemarkerTemplate pathTemplate;
 
     @Get

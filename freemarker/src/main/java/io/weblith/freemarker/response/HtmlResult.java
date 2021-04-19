@@ -1,15 +1,14 @@
 package io.weblith.freemarker.response;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
 import io.weblith.core.form.Form;
 import io.weblith.core.results.AbstractResult;
 import io.weblith.freemarker.template.FreemarkerTemplate;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class HtmlResult extends AbstractResult<HtmlResult> {
 
@@ -18,20 +17,16 @@ public class HtmlResult extends AbstractResult<HtmlResult> {
     private final Map<String, Object> templateParameters;
 
     public HtmlResult(String templateName) {
-        this(null, null, templateName, null);
+        this(null, templateName, null);
     }
 
     public HtmlResult(String templateDirectory, String templateName) {
-        this(null, templateDirectory, templateName, null);
+        this(templateDirectory, templateName, null);
     }
 
     public HtmlResult(String templateDirectory, String templateName, String templateSuffix) {
-        this(null, templateDirectory, templateName, null);
-    }
-
-    private HtmlResult(String templatePath, String templateDirectory, String templateName, String templateSuffix) {
         super(HtmlResult.class, MediaType.TEXT_HTML, Status.OK);
-        this.templatePath = Optional.ofNullable(templatePath);
+        this.templatePath = Optional.empty();
         this.templateDirectory = Optional.ofNullable(templateDirectory);
         this.templateName = Optional.ofNullable(templateName);
         this.templateSuffix = Optional.ofNullable(templateSuffix);
@@ -39,7 +34,12 @@ public class HtmlResult extends AbstractResult<HtmlResult> {
     }
 
     public HtmlResult(FreemarkerTemplate template) {
-        this(template.getTemplatePath(), null, null, null);
+        super(HtmlResult.class, MediaType.TEXT_HTML, Status.OK);
+        this.templatePath = Optional.ofNullable(template.getTemplatePath());
+        this.templateDirectory = Optional.empty();
+        this.templateName = Optional.empty();
+        this.templateSuffix = Optional.empty();
+        this.templateParameters = new HashMap<String, Object>();
     }
 
     public Optional<String> getTemplatePath() {

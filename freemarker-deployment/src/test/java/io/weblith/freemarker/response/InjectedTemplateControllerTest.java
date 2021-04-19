@@ -19,7 +19,7 @@ public class InjectedTemplateControllerTest {
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClass(InjectedTemplateController.class)
                     .addAsResource("templates/InjectedTemplateController/bonjour.ftlh")
-                    .addAsResource("templates/directory/ola.ftlh")
+                    .addAsResource("templates/directory/ola.ftl")
                     .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
     
     

@@ -6,7 +6,9 @@ During our migration to Quarkus, we tried to reimplement our Freemarker componen
 
 === Rendering templates
 
-Simply return a `HtmlResult` to render Freemarker template. This result must point to a template name, and a directory (or the controller name, by default).
+Do you remember the different `Result` classes Weblith was offering? THat's the same case here. Simply return a `HtmlResult` to render a Freemarker template. This result must point to a template directory followed by a template name.
+
+TIP: Giving only a template name will use the current controller's name as the template directory.
 
 [source,java]
 ----
@@ -18,12 +20,12 @@ Simply return a `HtmlResult` to render Freemarker template. This result must poi
 
 This will render the template `templates/Main/home.ftlh` (stored in the classpath, so in `src/main/resources`), with a `MyData` available variable. Some default variables are always added by Weblith :
 
- * `hostname`, `requesPath` and `params` : relative to the current request
+ * `hostname`, `requestPath` and `params` : relative to the current request
  * `contextPath` : value of `quarkus.http.root-path`
  * `lang` : current used defined language
  * `flash` : map with current Flash scope data
 
-Refer to the https://freemarker.apache.org/docs/index.html[Freemarker] documentation for more information about how to use this engine.
+Refer to the https://freemarker.apache.org/docs/index.html[Freemarker] documentation for more information about how to use this template engine.
 
 === Injecting templates
 
@@ -54,3 +56,5 @@ The path of the template will automatically set to `templates/SimpleEntityContro
 While a `Messages` interface can be injected in any controller of internal service, two methods are also available in the templates :
  * `i18n(key,param1,param2,...)` : translates the given key
  * `prettyTime(date)` : displays date relatively
+
+=== Other included directives
