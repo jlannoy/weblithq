@@ -25,11 +25,14 @@ Then you should be able to `cd my-weblith` and run `mvn compile quarkus:dev`.
 
 ## Roadmap
 
-The current status of the project is a **Preview Release**. Several *existing* code parts of the original Weblith project must still be migrated.
+Missing features or implementations:
+1. Session scope encryption
+1. UI components documentation + showcase
+   
+## Original project
 
-1. *Extensive documentation* : Each Weblith concept should be documented appart with more details and configuration properties.
-1. *UI components documentation* : The goal is to analyze the relavance of `Storybook` - allowing serverside components since last version - for showcasing all Weblith UI components.
-1. *Router* : In the original project, there is a central Router allowing for example reverse routing in templates.
-1. *Multitenancy* : domain management + dynamic tenant configuration
-1. *Unit tests* : a lot of unit tests must still be reused
+There are some features that could still be bringed back from the original project. Like: 
+1. *Router* : Central Router allowing for example reverse routing in templates.
+1. *TenantConfiguration* : dynamic tenant configuration
+1. *Flyway tenants* : classes allowing migrations regarding configured tenants
 
