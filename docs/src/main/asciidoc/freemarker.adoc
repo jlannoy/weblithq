@@ -2,11 +2,13 @@
 
 === Why Freemarker ?
 
-During our migration to Quarkus, we tried to reimplement our Freemarker components with Qute, the template engine proposed but the Quarkus team. But it was lacking some features needed for it. As the components base was already well-defined and stable, the choice have been made to continue using Freemarker. **The downsides will be the lack of reactive support (but not intended for Weblith) and the native build support that seems hard to get working.**
+During our migration to Quarkus, we tried to reimplement our Freemarker components with Qute, the template engine proposed by the Quarkus team. But it was lacking some features needed for it. As the Weblith UI components base was already well-defined and stable, the choice have been made to continue using Freemarker, using the https://quarkiverse.github.io/quarkiverse-docs/quarkiverse-freemarker/dev/index.html[Quarkiverse Freemarker extension]. Be sure to check that extension documentation to discover the Freemarker dedicated configuration properties.
+
+TIP: Refer to the https://freemarker.apache.org/docs/index.html[Freemarker] documentation for more information about how to use this template engine.
 
 === Rendering templates
 
-Do you remember the different `Result` classes Weblith was offering? THat's the same case here. Simply return a `HtmlResult` to render a Freemarker template. This result must point to a template directory followed by a template name.
+Do you remember the different `Result` classes Weblith was offering? That's the same case here. Simply return a `HtmlResult` to render a Freemarker template. This result must point to a template directory followed by a template name.
 
 TIP: Giving only a template name will use the current controller's name as the template directory.
 
@@ -14,18 +16,12 @@ TIP: Giving only a template name will use the current controller's name as the t
 ----
     @Get("/")
     public HtmlResult home() {
-        return new HtmlResult("Main", "home").render("MyData","MyValue");
+        return new HtmlResult("Main", "home") <1>
+            .render("MyData","MyValue"); <2>
     }
 ----
-
-This will render the template `templates/Main/home.ftlh` (stored in the classpath, so in `src/main/resources`), with a `MyData` available variable. Some default variables are always added by Weblith :
-
- * `hostname`, `requestPath` and `params` : relative to the current request
- * `contextPath` : value of `quarkus.http.root-path`
- * `lang` : current used defined language
- * `flash` : map with current Flash scope data
-
-Refer to the https://freemarker.apache.org/docs/index.html[Freemarker] documentation for more information about how to use this template engine.
+<1> Will render the template `Main/home.ftlh` (located by default in your `freemarker/templates` resources).
+<2> With a `MyData` available variable.
 
 === Injecting templates
 
@@ -37,7 +33,7 @@ A better way to use templates is to inject instances of `FreemarkerTemplate` in 
 public class SimpleEntityController {
 
     @Inject
-    FreemarkerTemplate list;
+    FreemarkerTemplate list; <1>
     
     @Get
     public HtmlResult list() {
@@ -46,8 +42,16 @@ public class SimpleEntityController {
     
 }
 ----
+<1> The path of the template will automatically set to `SimpleEntityController/list.ftlh`. It can be changed by using the `@TemplatePath` annotation.
 
-The path of the template will automatically set to `templates/SimpleEntityController/list.ftlh`. It can be changed by using the `@TemplatePath` annotation.
+=== Default variables
+
+Some default variables are always added by Weblith to the Freemarker rendering context:
+
+* `hostname`, `requestPath` and `params`: relative to the current request
+* `contextPath`: value of `quarkus.http.root-path`
+* `lang`: current used defined language
+* `flash`: map with current Flash scope data
 
 === Internationalization support
 
