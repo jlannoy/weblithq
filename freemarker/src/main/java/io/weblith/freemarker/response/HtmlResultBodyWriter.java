@@ -56,11 +56,9 @@ public class HtmlResultBodyWriter implements MessageBodyWriter<HtmlResult> {
             writer.flush();
 
         } catch (TemplateNotFoundException e) {
-            e.printStackTrace();
             throw new FreemarkerRenderingException(e);
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new FreemarkerRenderingException(e);
 
         }

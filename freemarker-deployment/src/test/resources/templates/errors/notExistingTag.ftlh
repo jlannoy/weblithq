@@ -2,11 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bonjour</title> 
+<title>Hello</title>
 </head>
 <body>
-    <h1>Bonjour ${name!'World'}</h1>
+    <h1>Hello ${name!'World'}</h1>
     <@notExistingTag />
-    <#if>
 </body>
 </html>

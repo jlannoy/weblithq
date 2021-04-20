@@ -16,8 +16,12 @@ public class AnyExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
+        System.out.println("****************");
+
         HtmlResult htmlResult = new HtmlResult("layout", "error", "ftlh").render("message", exception.getMessage());
+        htmlResult.status(Response.Status.INTERNAL_SERVER_ERROR);
         return Response.serverError().entity(htmlResult).build();
+        // return Response.serverError().build();
     }
 
 }

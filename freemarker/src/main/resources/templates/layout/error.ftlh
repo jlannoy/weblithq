@@ -1,6 +1,6 @@
 <html lang="${lang!''}">
 <head>
-    <title>Weblith Auth0 simulator</title>
+    <title>Weblith Error</title>
     <style type="text/css">
     body {
       background-color: #E0E0E0;

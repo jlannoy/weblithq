@@ -20,7 +20,7 @@ public class InjectedTemplateControllerTest {
                     .addClass(InjectedTemplateController.class)
                     .addAsResource("templates/InjectedTemplateController/bonjour.ftlh")
                     .addAsResource("templates/directory/ola.ftl")
-                    .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
+                    .addAsResource("application.properties"));
     
     
     @Test

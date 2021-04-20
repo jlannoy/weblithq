@@ -22,7 +22,7 @@ public class MyFrontEndControllerTest {
                     .addAsResource("templates/MyFrontEndController/hello.ftlh")
                     .addAsResource("templates/InjectedTemplateController/bonjour.ftlh")
                     .addAsResource("templates/directory/ola.ftl")
-                    .addAsResource(new StringAsset("quarkus.http.test-port=8888"), "application.properties"));
+                    .addAsResource("application.properties"));
 
     @Test
     public void testHelloPage() {

@@ -42,14 +42,9 @@ public class TemplateResolver {
 
     protected freemarker.template.Template loadTemplate(String templatePath) throws IOException {
         LOGGER.debugv("Loading template at {0}", templatePath);
-        try {
-            freemarker.template.Template template = freemarker.getTemplate(templatePath);
-            LOGGER.debugv("Loaded template {0}", template.getName());
-            return template;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        }
+        freemarker.template.Template template = freemarker.getTemplate(templatePath);
+        LOGGER.debugv("Loaded template {0}", template.getName());
+        return template;
     }
 
     protected String buildTemplateLocation(HtmlResult result) {

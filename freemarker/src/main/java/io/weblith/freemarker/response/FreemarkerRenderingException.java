@@ -1,23 +1,24 @@
 package io.weblith.freemarker.response;
 
-public class FreemarkerRenderingException extends RuntimeException {
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
-    private static final long serialVersionUID = -583028846189879984L;
+public class FreemarkerRenderingException extends WebApplicationException {
 
     public FreemarkerRenderingException() {
-        super();
+        super(Response.Status.INTERNAL_SERVER_ERROR);
     }
 
     public FreemarkerRenderingException(String message, Throwable cause) {
-        super(message, cause);
+        super(message, cause, Response.Status.INTERNAL_SERVER_ERROR);
     }
 
     public FreemarkerRenderingException(String message) {
-        super(message);
+        super(message, Response.Status.INTERNAL_SERVER_ERROR);
     }
 
     public FreemarkerRenderingException(Throwable cause) {
-        super(cause);
+        super(cause, Response.Status.INTERNAL_SERVER_ERROR);
     }
 
 }
