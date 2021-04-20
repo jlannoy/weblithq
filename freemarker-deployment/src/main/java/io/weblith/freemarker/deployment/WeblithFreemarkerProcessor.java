@@ -26,23 +26,16 @@ import io.weblith.freemarker.FreemarkerConfigurationProvider;
 import io.weblith.freemarker.config.FreemarkerConfig;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.response.HtmlResultBodyWriter;
-import io.weblith.freemarker.template.FreemarkerTemplate;
-import io.weblith.freemarker.template.FreemarkerTemplateProducer;
-import io.weblith.freemarker.template.TemplatePath;
 import io.weblith.freemarker.template.TemplateResolver;
 
 public class WeblithFreemarkerProcessor {
 
-    private final static String FEATURE = "freemarker";
+    private final static String FEATURE = "weblith-freemarker";
 
     public static final DotName TEMPLATE = DotName.createSimple(Template.class.getCanonicalName());
 
-    public static final DotName FREEMARKER_TEMPLATE = DotName.createSimple(FreemarkerTemplate.class.getCanonicalName());
-
     public static final DotName HTML_RESULT = DotName.createSimple(HtmlResult.class.getCanonicalName());
 
-    public static final DotName TEMPLATE_PATH = DotName.createSimple(TemplatePath.class.getCanonicalName());
-    
     @BuildStep
     FeatureBuildItem feature() {
         return new FeatureBuildItem(FEATURE);
@@ -60,34 +53,8 @@ public class WeblithFreemarkerProcessor {
         return AdditionalBeanBuildItem.builder()
                 .setUnremovable()
                 .addBeanClasses(FreemarkerConfigurationProvider.class,
-                        TemplateResolver.class,
-                        FreemarkerTemplateProducer.class,
-                        TemplatePath.class)
+                        TemplateResolver.class)
                 .build();
-    }
-
-    @BuildStep
-    void validateTemplateInjectionPoints(FreemarkerConfig config,
-            ValidationPhaseBuildItem validationPhase,
-            BuildProducer<ValidationErrorBuildItem> validationErrors) {
-
-        for (InjectionPointInfo injectionPoint : validationPhase.getContext().get(BuildExtension.Key.INJECTION_POINTS)) {
-
-            if (injectionPoint.getRequiredType().name().equals(FREEMARKER_TEMPLATE)) {
-
-                AnnotationInstance resourcePath = injectionPoint.getRequiredQualifier(TEMPLATE_PATH);
-                
-                String path = resourcePath != null 
-                        ? resourcePath.value().asString() 
-                        : getFieldOrParameterName(injectionPoint);
-                        
-                if (path == null) {
-                    // TODO check if template can really be found
-                     validationErrors.produce(new ValidationErrorBuildItem(
-                             new IllegalStateException("No template found for " + injectionPoint.getTargetInfo())));
-                }
-            }
-        }
     }
 
     private String getFieldOrParameterName(InjectionPointInfo injectionPoint) {
@@ -119,8 +86,6 @@ public class WeblithFreemarkerProcessor {
             BuildProducer<ReflectiveClassBuildItem> reflectiveClass,
             BuildProducer<ReflectiveHierarchyIgnoreWarningBuildItem> ignoreWarnings) {
 
-        reflectiveHierarchy.produce(
-                new ReflectiveHierarchyBuildItem(Type.create(FREEMARKER_TEMPLATE, Type.Kind.CLASS)));
         reflectiveHierarchy.produce(
                 new ReflectiveHierarchyBuildItem(Type.create(HTML_RESULT, Type.Kind.CLASS)));
 

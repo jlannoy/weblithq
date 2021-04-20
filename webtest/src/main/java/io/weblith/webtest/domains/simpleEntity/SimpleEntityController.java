@@ -3,6 +3,7 @@ package io.weblith.webtest.domains.simpleEntity;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import io.weblith.freemarker.template.FreemarkerTemplate;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
@@ -15,7 +16,6 @@ import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
 import io.weblith.freemarker.response.HtmlResult;
-import io.weblith.freemarker.template.FreemarkerTemplate;
 import io.weblith.webtest.DummyDataGenerator;
 import io.weblith.webtest.domains.simpleEntity.SimpleEntitiesForm.NestedForm;
 import io.weblith.webtest.domains.simpleEntity.SimpleEntity.Type;

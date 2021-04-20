@@ -19,9 +19,9 @@ public class MyFrontEndControllerTest {
     static QuarkusUnitTest runner = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClass(MyFrontEndController.class)
-                    .addAsResource("templates/MyFrontEndController/hello.ftlh")
-                    .addAsResource("templates/InjectedTemplateController/bonjour.ftlh")
-                    .addAsResource("templates/directory/ola.ftl")
+                    .addAsResource("freemarker/templates/MyFrontEndController/hello.ftlh")
+                    .addAsResource("freemarker/templates/InjectedTemplateController/bonjour.ftlh")
+                    .addAsResource("freemarker/templates/directory/ola.ftl")
                     .addAsResource("application.properties"));
 
     @Test

@@ -9,7 +9,6 @@ import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.template.FreemarkerTemplate;
-import io.weblith.freemarker.template.TemplatePath;
 import io.weblith.webtest.domains.user.UserRole;
 
 @Controller
@@ -18,7 +17,6 @@ public class RestrictedAccessController {
     @Inject
     SecurityIdentity identity;
 
-    @TemplatePath("RestrictedAccessController/access.ftlh")
     FreemarkerTemplate myTemplate;
 
     @Get

@@ -1,5 +1,6 @@
 package io.weblith.freemarker.config;
 
+import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 
@@ -7,8 +8,9 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 public final class FreemarkerConfig {
 
     /**
-     * Templates configuration.
+     * Freemarker templates default suffix
      */
-    public TemplateConfig template;
+    @ConfigItem(defaultValue = ".ftlh")
+    public String defaultTemplateSuffix;
 
 }

@@ -18,6 +18,11 @@
             <artifactId>quarkus-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkiverse.freemarker</groupId>
+            <artifactId>quarkus-freemarker</artifactId>
+            <version>0.2.7</version>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>weblithq-core</artifactId>
             <version>${project.version}</version>

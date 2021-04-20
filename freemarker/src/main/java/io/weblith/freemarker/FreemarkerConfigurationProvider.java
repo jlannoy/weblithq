@@ -27,8 +27,8 @@ import io.quarkus.runtime.configuration.ProfileManager;
 import io.weblith.freemarker.config.FreemarkerConfig;
 import no.api.freemarker.java8.Java8ObjectWrapper;
 
-@Startup(Interceptor.Priority.PLATFORM_BEFORE)
-@Singleton
+// @Startup(Interceptor.Priority.PLATFORM_BEFORE)
+// @Singleton
 public class FreemarkerConfigurationProvider {
 
     private final static Logger LOGGER = Logger.getLogger(FreemarkerConfigurationProvider.class);
@@ -42,9 +42,9 @@ public class FreemarkerConfigurationProvider {
     @Inject
     FreemarkerComponentsProvider components;
 
-    @Produces
-    @DefaultBean
-    @ApplicationScoped
+//    @Produces
+//    @DefaultBean
+//    @ApplicationScoped
     public Configuration configureFreemarker() {
         Configuration freemarker = new Configuration(Configuration.VERSION_2_3_29);
         freemarker.setDefaultEncoding("UTF-8");

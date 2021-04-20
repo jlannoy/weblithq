@@ -1,8 +1,8 @@
 package io.weblith.freemarker.response;
 
+import freemarker.template.Template;
 import io.weblith.core.form.Form;
 import io.weblith.core.results.AbstractResult;
-import io.weblith.freemarker.template.FreemarkerTemplate;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
@@ -12,7 +12,9 @@ import java.util.Optional;
 
 public class HtmlResult extends AbstractResult<HtmlResult> {
 
-    private final Optional<String> templatePath, templateDirectory, templateName, templateSuffix;
+    private final Optional<Template> template;
+
+    private final Optional<String> templateDirectory, templateName, templateSuffix;
 
     private final Map<String, Object> templateParameters;
 
@@ -26,24 +28,24 @@ public class HtmlResult extends AbstractResult<HtmlResult> {
 
     public HtmlResult(String templateDirectory, String templateName, String templateSuffix) {
         super(HtmlResult.class, MediaType.TEXT_HTML, Status.OK);
-        this.templatePath = Optional.empty();
+        this.template = Optional.empty();
         this.templateDirectory = Optional.ofNullable(templateDirectory);
         this.templateName = Optional.ofNullable(templateName);
         this.templateSuffix = Optional.ofNullable(templateSuffix);
         this.templateParameters = new HashMap<String, Object>();
     }
 
-    public HtmlResult(FreemarkerTemplate template) {
+    public HtmlResult(Template template) {
         super(HtmlResult.class, MediaType.TEXT_HTML, Status.OK);
-        this.templatePath = Optional.ofNullable(template.getTemplatePath());
+        this.template = Optional.ofNullable(template);
         this.templateDirectory = Optional.empty();
         this.templateName = Optional.empty();
         this.templateSuffix = Optional.empty();
         this.templateParameters = new HashMap<String, Object>();
     }
 
-    public Optional<String> getTemplatePath() {
-        return templatePath;
+    public Optional<Template> getTemplate() {
+        return template;
     }
 
     public Optional<String> getTemplateDirectory() {

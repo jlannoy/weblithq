@@ -4,11 +4,12 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+import freemarker.template.Template;
+import io.quarkiverse.freemarker.TemplatePath;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.freemarker.response.HtmlResult;
-import io.weblith.freemarker.template.FreemarkerTemplate;
 
 @Controller
 public class UserController {
@@ -17,7 +18,8 @@ public class UserController {
     RequestContext context;
 
     @Inject
-    FreemarkerTemplate list;
+            @TemplatePath("UserController/list.ftlh")
+    Template list;
 
     @Get
     public HtmlResult list() {
@@ -25,7 +27,7 @@ public class UserController {
         String lastVisit = context.session().get("last-visit");
         context.session().put("last-visit", new Date().toString());
 
-        return list.render("Users", User.listAll()).render("lastVisit", lastVisit);
+        return new HtmlResult(list).render("Users", User.listAll()).render("lastVisit", lastVisit);
     }
 
 }

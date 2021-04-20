@@ -18,13 +18,14 @@ public class InjectedTemplateControllerTest {
     static QuarkusUnitTest runner = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
                     .addClass(InjectedTemplateController.class)
-                    .addAsResource("templates/InjectedTemplateController/bonjour.ftlh")
-                    .addAsResource("templates/directory/ola.ftl")
+                    .addAsResource("freemarker/templates/InjectedTemplateController/bonjour.ftlh")
+                    .addAsResource("freemarker/templates/MyFrontEndController/hello.ftlh")
+                    .addAsResource("freemarker/templates/directory/ola.ftl")
                     .addAsResource("application.properties"));
     
     
     @Test
-    public void testBonjourPage() {
+    public void testAutoLocatedTemplate() {
         given()
           .when().get("/Front/bonjour")
           .then()
@@ -33,12 +34,21 @@ public class InjectedTemplateControllerTest {
     }
     
     @Test
-    public void testOlaPage() {
+    public void testPathDefinedTemplate() {
         given()
           .when().get("/Front/ola")
           .then()
              .statusCode(200)
              .body(containsString("Ola World"));
+    }
+
+    @Test
+    public void testOriginalFreemarkerTemplate() {
+        given()
+                .when().get("/Front/hello")
+                .then()
+                .statusCode(200)
+                .body(containsString("Hello World"));
     }
 
 }

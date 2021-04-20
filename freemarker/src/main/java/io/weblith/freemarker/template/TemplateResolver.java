@@ -8,6 +8,8 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 @ApplicationScoped
@@ -24,42 +26,39 @@ public class TemplateResolver {
     @Inject
     RequestContext context;
 
-    public freemarker.template.Template resolve(HtmlResult result) throws IOException {
-        if (result.getTemplatePath().isPresent()) {
-            return loadTemplate(result.getTemplatePath().get());
-        } else {
-            return loadTemplate(buildTemplateLocation(result));
-        }
+    public freemarker.template.Template resolve(HtmlResult result) {
+        return result.getTemplate().orElseGet(() -> loadTemplate(buildTemplateLocation(result)));
     }
 
     public freemarker.template.Template resolve(String path) throws IOException {
-        return loadTemplate(buildTemplateLocation(path));
+        return loadTemplate(path);
     }
 
     public freemarker.template.Template resolve(String directory, String name) throws IOException {
-        return loadTemplate(buildTemplateLocation(directory, name, freemarkerConfig.template.suffix));
+        return loadTemplate(buildTemplateLocation(directory, name, freemarkerConfig.defaultTemplateSuffix));
     }
 
-    protected freemarker.template.Template loadTemplate(String templatePath) throws IOException {
+    protected freemarker.template.Template loadTemplate(String templatePath) {
         LOGGER.debugv("Loading template at {0}", templatePath);
-        freemarker.template.Template template = freemarker.getTemplate(templatePath);
-        LOGGER.debugv("Loaded template {0}", template.getName());
-        return template;
+        try {
+            freemarker.template.Template template = freemarker.getTemplate(templatePath);
+            LOGGER.debugv("Loaded template {0}", template.getName());
+            return template;
+        } catch(IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 
     protected String buildTemplateLocation(HtmlResult result) {
         return buildTemplateLocation(
                 result.getTemplateDirectory().orElseGet(() -> context.controller().getSimpleName()),
                 result.getTemplateName().orElseThrow(),
-                result.getTemplateSuffix().orElseGet(() -> freemarkerConfig.template.suffix));
-    }
-
-    protected String buildTemplateLocation(String path) {
-        return String.format("/%s/%s", freemarkerConfig.template.directory, path);
+                result.getTemplateSuffix().orElseGet(() -> freemarkerConfig.defaultTemplateSuffix));
     }
 
     protected String buildTemplateLocation(String directory, String name, String suffix) {
-        return String.format("/%s/%s/%s%s", freemarkerConfig.template.directory, directory, name, suffix.startsWith(".") ? suffix : "." + suffix);
+        return String.format("/%s/%s%s", directory, name, suffix.startsWith(".") ? suffix : "." + suffix);
     }
 
 }

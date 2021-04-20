@@ -9,10 +9,12 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+import io.quarkiverse.freemarker.TemplatePath;
 import org.jboss.logging.Logger;
 
-@ApplicationScoped
+@Singleton
 public class FreemarkerTemplateProducer {
 
     private static final Logger LOGGER = Logger.getLogger(FreemarkerTemplateProducer.class);
@@ -41,7 +43,7 @@ public class FreemarkerTemplateProducer {
 
         try {
             // Fully load the template once
-            return new FreemarkerTemplate(templateResolver.resolve(directory, name).getName());
+            return new FreemarkerTemplate(templateResolver.resolve(directory, name));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -65,11 +67,12 @@ public class FreemarkerTemplateProducer {
         }
 
         try {
-            return new FreemarkerTemplate(templateResolver.resolve(templatePath.value()).getName());
+            return new FreemarkerTemplate(templateResolver.resolve(templatePath.value()));
         } catch (IOException e) {
             LOGGER.error(e);
             throw new IllegalStateException(e);
         }
+
     }
 
 }
