@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Freemarker Templates</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_freemarker_templates">1. Freemarker Templates</a>
+<ul class="sectlevel2">
+<li><a href="#_why_freemarker">1.1. Why Freemarker ?</a></li>
+<li><a href="#_rendering_templates">1.2. Rendering templates</a></li>
+<li><a href="#_injecting_templates">1.3. Injecting templates</a></li>
+<li><a href="#_default_variables">1.4. Default variables</a></li>
+<li><a href="#_internationalization_support">1.5. Internationalization support</a></li>
+<li><a href="#_other_included_directives">1.6. Other included directives</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_freemarker_templates">1. Freemarker Templates</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_why_freemarker">1.1. Why Freemarker ?</h3>
+<div class="paragraph">
+<p>During our migration to Quarkus, we tried to reimplement our Freemarker components with Qute, the template engine proposed by the Quarkus team. But it was lacking some features needed for it. As the Weblith UI components base was already well-defined and stable, the choice have been made to continue using Freemarker, using the <a href="https://quarkiverse.github.io/quarkiverse-docs/quarkiverse-freemarker/dev/index.html">Quarkiverse Freemarker extension</a>. Be sure to check that extension documentation to discover the Freemarker dedicated configuration properties.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Refer to the <a href="https://freemarker.apache.org/docs/index.html">Freemarker</a> documentation for more information about how to use this template engine.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rendering_templates">1.2. Rendering templates</h3>
+<div class="paragraph">
+<p>Do you remember the different <code>Result</code> classes Weblith was offering? That&#8217;s the same case here. Simply return a <code>HtmlResult</code> to render a Freemarker template. This result must point to a template directory followed by a template name.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Giving only a template name will use the current controller&#8217;s name as the template directory.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> HtmlResult home() {
+        <span class="keyword">return</span> <span class="keyword">new</span> HtmlResult(<span class="string"><span class="delimiter">&quot;</span><span class="content">Main</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">home</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="1"></i><b>(1)</b>
+            .render(<span class="string"><span class="delimiter">&quot;</span><span class="content">MyData</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">MyValue</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="2"></i><b>(2)</b>
+    }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will render the template <code>Main/home.ftlh</code> (located by default in your <code>freemarker/templates</code> resources).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>With a <code>MyData</code> available variable.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_injecting_templates">1.3. Injecting templates</h3>
+<div class="paragraph">
+<p>A better way to use templates is to inject instances of <code>FreemarkerTemplate</code> in the controllers. This way, template paths are checked at build-time.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SimpleEntityController</span> {
+
+    <span class="annotation">@Inject</span>
+    FreemarkerTemplate list; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> HtmlResult list() {
+        <span class="keyword">return</span> list.render(<span class="string"><span class="delimiter">&quot;</span><span class="content">SimpleEntities</span><span class="delimiter">&quot;</span></span>, SimpleEntity.listAll());
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The path of the template will automatically set to <code>SimpleEntityController/list.ftlh</code>. It can be changed by using the <code>@TemplatePath</code> annotation.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_default_variables">1.4. Default variables</h3>
+<div class="paragraph">
+<p>Some default variables are always added by Weblith to the Freemarker rendering context:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>hostname</code>, <code>requestPath</code> and <code>params</code>: relative to the current request</p>
+</li>
+<li>
+<p><code>contextPath</code>: value of <code>quarkus.http.root-path</code></p>
+</li>
+<li>
+<p><code>lang</code>: current used defined language</p>
+</li>
+<li>
+<p><code>flash</code>: map with current Flash scope data</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internationalization_support">1.5. Internationalization support</h3>
+<div class="paragraph">
+<p><code>quarkus.locales</code> can be set to the locales supported by the application, and <code>quarkus.default-locale</code> to the default one. Then <code>messages.properties</code> files can be configure in a <code>i18n</code> directory (stored in the classpath, so in <code>src/main/resources</code>). A Weblith <code>LocaleHandler</code> will be used to detect the right language to use, but can be switched by passing a <code>lang</code> parameter to any request (can be changed via <code>quarkus.weblith.switchLanguageParam</code>).</p>
+</div>
+<div class="paragraph">
+<p>While a <code>Messages</code> interface can be injected in any controller of internal service, two methods are also available in the templates :
+ * <code>i18n(key,param1,param2,&#8230;&#8203;)</code> : translates the given key
+ * <code>prettyTime(date)</code> : displays date relatively</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_other_included_directives">1.6. Other included directives</h3>
+
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>HTTP Routes and Results</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_http_routes_and_results">1. HTTP Routes and Results</a>
+<ul class="sectlevel2">
+<li><a href="#_resteasy_integration">1.1. Resteasy integration</a></li>
+<li><a href="#_declaring_routes">1.2. Declaring routes</a></li>
+<li><a href="#_route_parameters">1.3. Route parameters</a></li>
+<li><a href="#_route_results">1.4. Route results</a></li>
+<li><a href="#_get_and_post">1.5. GET and POST</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_http_routes_and_results">1. HTTP Routes and Results</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_resteasy_integration">1.1. Resteasy integration</h3>
+<div class="paragraph">
+<p>On a purely Quarkus point of view, Weblith works along with the <code>quarkus-resteasy</code> extension. It will automatically register JAX-RS endpoints for your web application routes, as <code>GET</code> and <code>POST</code> resources. By the way, it also means that you can mix Reasteasy code with Weblith if really needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_declaring_routes">1.2. Declaring routes</h3>
+<div class="paragraph">
+<p>To declare new routes for your application, you only need to know three annotations : <code>@Controller</code>, <code>@Get</code> and <code>@Post</code>. Each annotation can have a value to represent the corresponding <code>path</code>, otherwise it will be taken automatically from the class name (minus the <code>Controller</code> suffix) or method name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyFirstController</span> {
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> Response myPage() { <i class="conum" data-value="1"></i><b>(1)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> Response myPage2(<span class="annotation">@PathParam</span> <span class="predefined-type">String</span> id) { <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="keyword">return</span> Response.ok(id).build();
+    }
+
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> Response myAction() { <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will produce a <code>/MyFirst/myPage</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Will produce a <code>/MyFirst/myPage2/{id}</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Will produce a <code>/MyFirst/myAction</code> POST route</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Response</code> is the standard JAX-RS returned object ; you&#8217;ll see later that Weblith will help you on that part too by giving you access to practical results classes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the previous example, Weblith uses Class, methods and parameters names as default values for building HTTP routes. But you can always be more specific by providing a string value to the corresponding annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/Controller</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MySecondController</span> {
+
+    <span class="annotation">@Get</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> Response myPage() { <i class="conum" data-value="1"></i><b>(1)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+    <span class="annotation">@Get</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page2/{key}</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> Response myPage2(<span class="annotation">@PathParam</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> id) { <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="keyword">return</span> Response.ok(id).build();
+    }
+
+    <span class="annotation">@Post</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/action</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> Response myAction() { <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will produce a <code>/Controller/page</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Will produce a <code>/Controller/page2/{key}</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Will produce a <code>/Controller/action</code> POST route</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_route_parameters">1.3. Route parameters</h3>
+<div class="paragraph">
+<p>There is no specific annotation for managing parameters of your routes. As you may have noticed on the previous examples, you can use the standard JAX-RS ones : <code>@PathParam</code>, <code>@QueryParam</code>, <code>@HeaderParam</code>, <code>@MatrixParam</code>, <code>@CookieParam</code> and <code>@FormParam</code>. Be sure to import the ones from <code>org.jboss.resteasy.annotations.jaxrs</code> package so that the <code>name</code> of each one is optional (taken from the method parameter name by default). <code>@DefaultValue</code> is also available.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_route_results">1.4. Route results</h3>
+<div class="paragraph">
+<p>While you can configure yourself your JAR-RS <code>Response</code> objects, Weblith offers an handy way (at least for a server-side rendered web application) to manage the different results of your routes. It can be done via different types of <code>io.weblith.core.results.Result</code> objects, for example :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TextResult</code> to render plain text</p>
+</li>
+<li>
+<p><code>RawResult</code> to render bytes</p>
+</li>
+<li>
+<p><code>StreamResult</code> to render a <code>File</code> or an <code>URL</code></p>
+</li>
+<li>
+<p><code>JsonResult</code> to render some JSON</p>
+</li>
+<li>
+<p><code>HtmlResult</code> will be addressed in the [Freemarker Templates](=freemarker-templates) chapter</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (<code>UTF-8</code> by default). Here are some useful examples of the predefined result classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> simpleText() {
+        <span class="keyword">return</span> <span class="keyword">new</span> TextResult(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello there!</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> textFromObject() {
+        <span class="predefined-type">Object</span> anObject = <span class="predefined-type">Arrays</span>.asList(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">there</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">!</span><span class="delimiter">&quot;</span></span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> TextResult(anObject).contentType(MediaType.TEXT_PLAIN)
+                                       .charset(StandardCharsets.US_ASCII)
+                                       .status(Status.ACCEPTED);
+    }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> file() <span class="directive">throws</span> <span class="exception">URISyntaxException</span> {
+        <span class="predefined-type">File</span> file = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="local-variable">this</span>.getClass()
+                                 .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/META-INF/resources/my-file.txt</span><span class="delimiter">&quot;</span></span>)
+                                 .toURI());
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="predefined-type">StreamResult</span>(file);
+    }
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> url() {
+        <span class="predefined-type">URL</span> path = <span class="local-variable">this</span>.getClass()
+                       .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/META-INF/resources/my-file.txt</span><span class="delimiter">&quot;</span></span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="predefined-type">StreamResult</span>(path);
+    }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> redirectToHome() {
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>);
+    }</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can also define your own custom <code>Result</code> classes if needed, by using advanced interfaces like <code>ConfigureResponse</code>, <code>RenderResponse</code> and <code>AutomaticCachingPolicy</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_and_post">1.5. GET and POST</h3>
+<div class="paragraph">
+<p>The last one, the <code>Redirect</code> result, is an important core concept of Weblith. Weblith require the following rules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GET</code> and <code>POST</code> methods should be distinctly used like you would do in a RESTful application.</p>
+</li>
+<li>
+<p>Successful POST actions should never directly render results.</p>
+</li>
+<li>
+<p>GET methods should never be used to modify things.</p>
+</li>
+<li>
+<p>All POST actions will be CSRF-protected (unless marked with the <code>@NotCsrfProtected</code> annotation).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>That means all the <code>POST</code> annotated methods should end up with a redirection to a <code>GET</code> annotated method. The <code>Redirect</code> result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the <a href="#i18n">Internationalization</a> chapter - or the text message to display).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> withSuccess() {
+        <span class="comment">// do my stuff</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).withSuccess(<span class="string"><span class="delimiter">&quot;</span><span class="content">you.win</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> withWarning() {
+        <span class="comment">// do my stuff</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).withWarning(<span class="string"><span class="delimiter">&quot;</span><span class="content">you.lose</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> withError() {
+        <span class="comment">// do my stuff</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).withError(<span class="string"><span class="delimiter">&quot;</span><span class="content">This is an error</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="3"></i><b>(3)</b>
+    }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will redirect to <code>/</code> with a <code>You win !</code> success message (because such key is defined in the <code>messages.properties</code>)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Will redirect to <code>/</code> with a <code>you.lose</code> warning message</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Will redirect to <code>/</code> with a <code>This is an error</code> error message</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</body>
+</html>

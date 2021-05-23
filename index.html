@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Weblith Manual</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Weblith Manual</h1>
+<div class="details">
+<span id="revnumber">version 0.1.1-SNAPSHOT,</span>
+<span id="revdate">2021-05-23T19:21:56Z</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_tldr_what_is_weblith">1.1. TLDR ~ What is Weblith ?</a></li>
+<li><a href="#_a_little_bit_of_history">1.2. A little bit of history</a></li>
+<li><a href="#_weblith_goal">1.3. Weblith goal</a></li>
+<li><a href="#_why_quarkus_powered">1.4. Why <strong>Quarkus powered</strong> ?</a></li>
+</ul>
+</li>
+<li><a href="#_how_to_use_it">2. How to use it</a></li>
+<li><a href="#_http_routes_and_results">3. HTTP Routes and Results</a>
+<ul class="sectlevel2">
+<li><a href="#_resteasy_integration">3.1. Resteasy integration</a></li>
+<li><a href="#_declaring_routes">3.2. Declaring routes</a></li>
+<li><a href="#_route_parameters">3.3. Route parameters</a></li>
+<li><a href="#_route_results">3.4. Route results</a></li>
+<li><a href="#_get_and_post">3.5. GET and POST</a></li>
+</ul>
+</li>
+<li><a href="#_request_context">4. Request Context</a></li>
+<li><a href="#_forms_management">5. Forms Management</a>
+<ul class="sectlevel2">
+<li><a href="#_form_submission">5.1. Form submission</a></li>
+<li><a href="#_form_validation">5.2. Form validation</a></li>
+</ul>
+</li>
+<li><a href="#i18n">6. Internationalization</a>
+<ul class="sectlevel2">
+<li><a href="#_messages">6.1. Messages</a></li>
+<li><a href="#_locale_handling">6.2. Locale handling</a></li>
+</ul>
+</li>
+<li><a href="#_multitenancy">7. Multitenancy</a>
+<ul class="sectlevel2">
+<li><a href="#_tenant_identification">7.1. Tenant identification</a></li>
+<li><a href="#_tenant_scope">7.2. Tenant scope</a></li>
+</ul>
+</li>
+<li><a href="#_freemarker_templates">8. Freemarker Templates</a>
+<ul class="sectlevel2">
+<li><a href="#_why_freemarker">8.1. Why Freemarker ?</a></li>
+<li><a href="#_rendering_templates">8.2. Rendering templates</a></li>
+<li><a href="#_injecting_templates">8.3. Injecting templates</a></li>
+<li><a href="#_default_variables">8.4. Default variables</a></li>
+<li><a href="#_internationalization_support">8.5. Internationalization support</a></li>
+<li><a href="#_other_included_directives">8.6. Other included directives</a></li>
+</ul>
+</li>
+<li><a href="#_fomantic_ui_library">9. Fomantic UI library</a>
+<ul class="sectlevel2">
+<li><a href="#_fomantic_ui_templating">9.1. Fomantic UI templating</a></li>
+<li><a href="#_fomantic_ui_components">9.2. Fomantic UI components</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_tldr_what_is_weblith">1.1. TLDR ~ What is Weblith ?</h3>
+<div class="paragraph">
+<p>Weblith is a Java framework powered by <a href="https://quarkus.io">Quarkus</a> for quickly developping <strong>server side web applications</strong>. It provides easy routing, responses management, forms handling, application internationalization, multitenancy management, and finally layout templating with server side components.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_little_bit_of_history">1.2. A little bit of history</h3>
+<div class="paragraph">
+<p>At its early stage, Weblith was an internal framework developed at <a href="https://zileo.net">Zileo.net</a> and derived from other frameworks like <a href="http://www.ninjaframework.org">Ninja Framework</a>, <a href="https://github.com/svenkubiak/mangooio">MangooIO</a>, and even <a href="https://spring.io">Spring Boot</a>. The focus was a on rapid (web) application development. Technically, it was based on stable well-known libraries : Google Guice, Lightbend Config, Undertow, Hibernate ORM, Hibernate Validator, Jackson, Freemarker, etc&#8230;&#8203; After one year of production usage, the plan was to open source it (Q3-2020), by creating the missing documentation and archetype, and make it publicly available through <a href="http://weblith.io">a dedicated Weblith.io website</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_weblith_goal">1.3. Weblith goal</h3>
+<div class="paragraph">
+<p>Weblith has been made to offer a quick and easy way to create <strong>Server Side Rendered</strong> web applications, focusing on fast delivery and developer joy. Opinionated decisions have been taken, allowing to minimize the developer tools needed, reduce the boiler plate code, and even offer nice reusable UI components. It uses stable and well-know libraries to avoid a long learning curve. It will produces one single Jar file with an embedded HTTP server that can run with few technical resources. Note that it doesn&#8217;t reinvent the <strong>monolithic</strong> applications ; depending on the size of your project you should still use micro or external services when it makes sense, even with a front-end application made using Weblith.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_quarkus_powered">1.4. Why <strong>Quarkus powered</strong> ?</h3>
+<div class="paragraph">
+<p>Following the news on the Java battlefield, it was very interesting to see <a href="https://quarkus.io">Quakus</a> and <a href="http://micronaut.io">Micronaut</a> emerge. One relevant problem with Weblith was the startup time (mainly slowed by Guice and Hibernate). With the <strong>Quarkus Global Hackathon</strong> launched Q3-2020, there was a good opportunity to try migrating some Weblith layers to Quarkus. With some success, as the Weblith project won the Quarkus Hackathon in the <em>modernize an application</em> category! Now it&#8217;s time for making this project real and open to everyone &#127877;</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_use_it">2. How to use it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Maven archetype exists, so that you can easily bootstrap a Weblith showcase application. Run this method :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">mvn archetype:generate                      \
+  -DarchetypeGroupId=net.zileo              \
+  -DarchetypeArtifactId=weblith-archetype   \
+  -DarchetypeVersion=0.1.1-SNAPSHOT         \
+  -Dversion=1.0.0-SNAPSHOT                  \
+  -DgroupId=org.acme                        \
+  -DartifactId=my-weblith</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you should be able to <code>cd my-weblith</code> and run <code>mvn compile quarkus:dev</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_http_routes_and_results">3. HTTP Routes and Results</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_resteasy_integration">3.1. Resteasy integration</h3>
+<div class="paragraph">
+<p>On a purely Quarkus point of view, Weblith works along with the <code>quarkus-resteasy</code> extension. It will automatically register JAX-RS endpoints for your web application routes, as <code>GET</code> and <code>POST</code> resources. By the way, it also means that you can mix Reasteasy code with Weblith if really needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_declaring_routes">3.2. Declaring routes</h3>
+<div class="paragraph">
+<p>To declare new routes for your application, you only need to know three annotations : <code>@Controller</code>, <code>@Get</code> and <code>@Post</code>. Each annotation can have a value to represent the corresponding <code>path</code>, otherwise it will be taken automatically from the class name (minus the <code>Controller</code> suffix) or method name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyFirstController</span> {
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> Response myPage() { <i class="conum" data-value="1"></i><b>(1)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> Response myPage2(<span class="annotation">@PathParam</span> <span class="predefined-type">String</span> id) { <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="keyword">return</span> Response.ok(id).build();
+    }
+
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> Response myAction() { <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will produce a <code>/MyFirst/myPage</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Will produce a <code>/MyFirst/myPage2/{id}</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Will produce a <code>/MyFirst/myAction</code> POST route</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Response</code> is the standard JAX-RS returned object ; you&#8217;ll see later that Weblith will help you on that part too by giving you access to practical results classes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the previous example, Weblith uses Class, methods and parameters names as default values for building HTTP routes. But you can always be more specific by providing a string value to the corresponding annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/Controller</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MySecondController</span> {
+
+    <span class="annotation">@Get</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> Response myPage() { <i class="conum" data-value="1"></i><b>(1)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+    <span class="annotation">@Get</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page2/{key}</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> Response myPage2(<span class="annotation">@PathParam</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> id) { <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="keyword">return</span> Response.ok(id).build();
+    }
+
+    <span class="annotation">@Post</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/action</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> Response myAction() { <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="keyword">return</span> Response.ok().build();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will produce a <code>/Controller/page</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Will produce a <code>/Controller/page2/{key}</code> GET route</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Will produce a <code>/Controller/action</code> POST route</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_route_parameters">3.3. Route parameters</h3>
+<div class="paragraph">
+<p>There is no specific annotation for managing parameters of your routes. As you may have noticed on the previous examples, you can use the standard JAX-RS ones : <code>@PathParam</code>, <code>@QueryParam</code>, <code>@HeaderParam</code>, <code>@MatrixParam</code>, <code>@CookieParam</code> and <code>@FormParam</code>. Be sure to import the ones from <code>org.jboss.resteasy.annotations.jaxrs</code> package so that the <code>name</code> of each one is optional (taken from the method parameter name by default). <code>@DefaultValue</code> is also available.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_route_results">3.4. Route results</h3>
+<div class="paragraph">
+<p>While you can configure yourself your JAR-RS <code>Response</code> objects, Weblith offers an handy way (at least for a server-side rendered web application) to manage the different results of your routes. It can be done via different types of <code>io.weblith.core.results.Result</code> objects, for example :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TextResult</code> to render plain text</p>
+</li>
+<li>
+<p><code>RawResult</code> to render bytes</p>
+</li>
+<li>
+<p><code>StreamResult</code> to render a <code>File</code> or an <code>URL</code></p>
+</li>
+<li>
+<p><code>JsonResult</code> to render some JSON</p>
+</li>
+<li>
+<p><code>HtmlResult</code> will be addressed in the [Freemarker Templates](=freemarker-templates) chapter</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Result classes have some shortcut methods to configure the future response, like adding Cookies and changing the charset (<code>UTF-8</code> by default). Here are some useful examples of the predefined result classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> simpleText() {
+        <span class="keyword">return</span> <span class="keyword">new</span> TextResult(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello there!</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> textFromObject() {
+        <span class="predefined-type">Object</span> anObject = <span class="predefined-type">Arrays</span>.asList(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">there</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">!</span><span class="delimiter">&quot;</span></span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> TextResult(anObject).contentType(MediaType.TEXT_PLAIN)
+                                       .charset(StandardCharsets.US_ASCII)
+                                       .status(Status.ACCEPTED);
+    }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> file() <span class="directive">throws</span> <span class="exception">URISyntaxException</span> {
+        <span class="predefined-type">File</span> file = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="local-variable">this</span>.getClass()
+                                 .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/META-INF/resources/my-file.txt</span><span class="delimiter">&quot;</span></span>)
+                                 .toURI());
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="predefined-type">StreamResult</span>(file);
+    }
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> url() {
+        <span class="predefined-type">URL</span> path = <span class="local-variable">this</span>.getClass()
+                       .getResource(<span class="string"><span class="delimiter">&quot;</span><span class="content">/META-INF/resources/my-file.txt</span><span class="delimiter">&quot;</span></span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="predefined-type">StreamResult</span>(path);
+    }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> redirectToHome() {
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>);
+    }</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can also define your own custom <code>Result</code> classes if needed, by using advanced interfaces like <code>ConfigureResponse</code>, <code>RenderResponse</code> and <code>AutomaticCachingPolicy</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_and_post">3.5. GET and POST</h3>
+<div class="paragraph">
+<p>The last one, the <code>Redirect</code> result, is an important core concept of Weblith. Weblith require the following rules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GET</code> and <code>POST</code> methods should be distinctly used like you would do in a RESTful application.</p>
+</li>
+<li>
+<p>Successful POST actions should never directly render results.</p>
+</li>
+<li>
+<p>GET methods should never be used to modify things.</p>
+</li>
+<li>
+<p>All POST actions will be CSRF-protected (unless marked with the <code>@NotCsrfProtected</code> annotation).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>That means all the <code>POST</code> annotated methods should end up with a redirection to a <code>GET</code> annotated method. The <code>Redirect</code> result will help you this way, by allowing you to specify a human-readable result message (being a message key - check the <a href="#i18n">Internationalization</a> chapter - or the text message to display).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> withSuccess() {
+        <span class="comment">// do my stuff</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).withSuccess(<span class="string"><span class="delimiter">&quot;</span><span class="content">you.win</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> withWarning() {
+        <span class="comment">// do my stuff</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).withWarning(<span class="string"><span class="delimiter">&quot;</span><span class="content">you.lose</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> withError() {
+        <span class="comment">// do my stuff</span>
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).withError(<span class="string"><span class="delimiter">&quot;</span><span class="content">This is an error</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="3"></i><b>(3)</b>
+    }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will redirect to <code>/</code> with a <code>You win !</code> success message (because such key is defined in the <code>messages.properties</code>)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Will redirect to <code>/</code> with a <code>you.lose</code> warning message</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Will redirect to <code>/</code> with a <code>This is an error</code> error message</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request_context">4. Request Context</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While in a controller or any other internal service, you can inject a <code>RequestContext</code> instance. This class is a center piece for all request related concepts, and give you access to the following features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SessionScope</code> (via <code>.session()</code>): a client-side cookie-based session (server-side session not supporter by Weblith)</p>
+</li>
+<li>
+<p><code>FlashScope</code> (via <code>.flash()</code>): a specific cookie-based scope that keep data from one request to an other</p>
+</li>
+<li>
+<p><code>LocaleHandler</code> (via <code>.locale()</code>): a handler that will detect and provide the current user-defined locale</p>
+</li>
+<li>
+<p><code>Messages</code> (via <code>.message()</code>): a handler that will detect and provide the current user-defined locale</p>
+</li>
+<li>
+<p><code>seed()</code>, <code>lookup()</code> and <code>get()</code>: a map for storing some objects (by type) during the whole request execution</p>
+</li>
+<li>
+<p><code>SecurityIdentity</code>, <code>HttpRequest</code> and <code>UriInfo</code>: JAX-RS request scoped concepts</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This class also have some useful shortcuts like <code>getContextPath()</code>, <code>getParameterValue()</code> and <code>getCookieValue()</code>.</p>
+</div>
+<div class="paragraph">
+<p>INFO: The <code>SessionScope</code> is cookie-based and exist from the first received request. It is not linked to the fact of having an authenticated user.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_forms_management">5. Forms Management</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_form_submission">5.1. Form submission</h3>
+<div class="paragraph">
+<p>While you can use the standard <code>@Form</code> JAX-RS way for getting form information, and the <code>@Valid</code> to throws <code>ConstraintViolationException</code>, Weblith offers a nicer way to manage your forms. Simply embed your form object in a <code>Form</code> parameter like this :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Transactional</span>
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> save(Form&lt;SimpleEntity&gt; form) {
+        SimpleEntity dto = form.getValue();
+        ... map dto field to real entity instance
+        ... save entity
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/SimpleEntity/list</span><span class="delimiter">&quot;</span></span>);
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>SimpleEntity</code> object will be filled with your submitted data. It uses a Jackson <code>ObjectMapper</code> underneath that maps a <code>Map</code> of all parameters to the required object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_form_validation">5.2. Form validation</h3>
+<div class="paragraph">
+<p><code>Form</code> will allow you to trigger the validation of the filled object. All validation (but also parameter conversion) error messages will then be available as a list of <code>Violation</code> objects. Welbith UI components will handle those messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Transactional</span>
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> save(Form&lt;SimpleEntity&gt; form) {
+        <span class="keyword">if</span> (!form.validate()) {
+            <span class="keyword">return</span> formTemplate.render(form);
+        }
+        ...
+    }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="i18n">6. Internationalization</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_messages">6.1. Messages</h3>
+<div class="paragraph">
+<p>You can define the locales your application supports via the <code>quarkus.locales</code> property ; which will allow you to retrieve translated messages according to the <em>current</em> user language. Next chapter will provide in-depth view of how this language is identified.</p>
+</div>
+<div class="paragraph">
+<p>Each locale will have its own key-value file for managing your translations. The default <code>Messages</code> implementation provided by Weblith is based on standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ResourceBundle.html">ResourceBundle</a> objects. Your application should contain one <code>i18n/messages</code> file per defined locale. That default path can be changed via the <code>quarkus.weblith.messagesPath</code> property. This implementation supports the <a href="http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html">MessageFormat</a> formatting style, that means you can include parameters in your messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">common.format = Message with {<span class="integer">0</span>}
+common.format_date = Dated {<span class="integer">0</span>, date, medium}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+A downside of MessageFormat is that you have to escape (double) your single quotes.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_locale_handling">6.2. Locale handling</h3>
+<div class="paragraph">
+<p>For each incoming request, Weblith will look at which is the <em>current user language</em> (meaning, the right locale) that should be used for answering that request. This is done by checking successively the following things until one match to your application locales appears :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A query parameter to switch to a specific language have been given. That parameter is defined through the <code>quarkus.weblith.switchLanguageParam</code> application property.</p>
+</li>
+<li>
+<p>A value defined in the current session (from a previous request).</p>
+</li>
+<li>
+<p>A locale defined in the <code>Accept-Language</code> request header.</p>
+</li>
+<li>
+<p>The default application locale, defined through your <code>quarkus.defaultLocale</code> application property.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In other words, to keep things simpler, remember that you&#8217;ll always have one locale to refer too, and that it can be changed just by calling any URL with an appropriate query parameter.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multitenancy">7. Multitenancy</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_tenant_identification">7.1. Tenant identification</h3>
+<div class="paragraph">
+<p>Weblith offers multiple ways of managing multiple tenants for your web application:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Different domain names</p>
+</li>
+<li>
+<p>Different subdomain names</p>
+</li>
+<li>
+<p>Mixing both configurations</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When a tenant is identified from one of those configurations, the tenant identifier will be available for the current http request using <code>TenantContext.id()</code>. That means you can for example configure a multitenancy strategy for your persistence context (check <a href="https://www.baeldung.com/hibernate-5-multitenancy">this article</a> for Hibernate).</p>
+</div>
+<div class="paragraph">
+<p>If your application doesn&#8217;t define any configuration, one single tenant called <code>public</code> will be identified by default.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For processes that should run outside a http request, <code>TenantContext</code> provides an <code>executeFor</code> method that takes a tenant identifier and a runnable as parameters.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tenant_scope">7.2. Tenant scope</h3>
+<div class="paragraph">
+<p>The same way Quarkus does already provide the <code>@ApplicationScoped</code> and <code>@RequestScoped</code> annotations, Weblith adds a new scope to the default one through the <code>@TenantScoped</code> application. It will allow you to define some specific beans being instanced once for each tenant.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_freemarker_templates">8. Freemarker Templates</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_why_freemarker">8.1. Why Freemarker ?</h3>
+<div class="paragraph">
+<p>During our migration to Quarkus, we tried to reimplement our Freemarker components with Qute, the template engine proposed by the Quarkus team. But it was lacking some features needed for it. As the Weblith UI components base was already well-defined and stable, the choice have been made to continue using Freemarker, using the <a href="https://quarkiverse.github.io/quarkiverse-docs/quarkiverse-freemarker/dev/index.html">Quarkiverse Freemarker extension</a>. Be sure to check that extension documentation to discover the Freemarker dedicated configuration properties.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Refer to the <a href="https://freemarker.apache.org/docs/index.html">Freemarker</a> documentation for more information about how to use this template engine.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rendering_templates">8.2. Rendering templates</h3>
+<div class="paragraph">
+<p>Do you remember the different <code>Result</code> classes Weblith was offering? That&#8217;s the same case here. Simply return a <code>HtmlResult</code> to render a Freemarker template. This result must point to a template directory followed by a template name.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Giving only a template name will use the current controller&#8217;s name as the template directory.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Get</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> HtmlResult home() {
+        <span class="keyword">return</span> <span class="keyword">new</span> HtmlResult(<span class="string"><span class="delimiter">&quot;</span><span class="content">Main</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">home</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="1"></i><b>(1)</b>
+            .render(<span class="string"><span class="delimiter">&quot;</span><span class="content">MyData</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">MyValue</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="2"></i><b>(2)</b>
+    }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Will render the template <code>Main/home.ftlh</code> (located by default in your <code>freemarker/templates</code> resources).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>With a <code>MyData</code> available variable.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_injecting_templates">8.3. Injecting templates</h3>
+<div class="paragraph">
+<p>A better way to use templates is to inject instances of <code>FreemarkerTemplate</code> in the controllers. This way, template paths are checked at build-time.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SimpleEntityController</span> {
+
+    <span class="annotation">@Inject</span>
+    FreemarkerTemplate list; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Get</span>
+    <span class="directive">public</span> HtmlResult list() {
+        <span class="keyword">return</span> list.render(<span class="string"><span class="delimiter">&quot;</span><span class="content">SimpleEntities</span><span class="delimiter">&quot;</span></span>, SimpleEntity.listAll());
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The path of the template will automatically set to <code>SimpleEntityController/list.ftlh</code>. It can be changed by using the <code>@TemplatePath</code> annotation.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_default_variables">8.4. Default variables</h3>
+<div class="paragraph">
+<p>Some default variables are always added by Weblith to the Freemarker rendering context:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>hostname</code>, <code>requestPath</code> and <code>params</code>: relative to the current request</p>
+</li>
+<li>
+<p><code>contextPath</code>: value of <code>quarkus.http.root-path</code></p>
+</li>
+<li>
+<p><code>lang</code>: current used defined language</p>
+</li>
+<li>
+<p><code>flash</code>: map with current Flash scope data</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_internationalization_support">8.5. Internationalization support</h3>
+<div class="paragraph">
+<p><code>quarkus.locales</code> can be set to the locales supported by the application, and <code>quarkus.default-locale</code> to the default one. Then <code>messages.properties</code> files can be configure in a <code>i18n</code> directory (stored in the classpath, so in <code>src/main/resources</code>). A Weblith <code>LocaleHandler</code> will be used to detect the right language to use, but can be switched by passing a <code>lang</code> parameter to any request (can be changed via <code>quarkus.weblith.switchLanguageParam</code>).</p>
+</div>
+<div class="paragraph">
+<p>While a <code>Messages</code> interface can be injected in any controller of internal service, two methods are also available in the templates :
+ * <code>i18n(key,param1,param2,&#8230;&#8203;)</code> : translates the given key
+ * <code>prettyTime(date)</code> : displays date relatively</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_other_included_directives">8.6. Other included directives</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fomantic_ui_library">9. Fomantic UI library</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_fomantic_ui_templating">9.1. Fomantic UI templating</h3>
+<div class="paragraph">
+<p>One third Quarkus extension, that will be your real time-saver for building web applications, is a set of Freemarker tags that will allow you to quickly have a nice UI that fits with your Weblith backend code. The archetype you can use to boostrap your application will even offer a primary structure for your own base templates.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fomantic_ui_components">9.2. Fomantic UI components</h3>
+<div class="paragraph">
+<p>Sadly, this documentation draft do not enter into each component details (too early). But take a quick look at the two following example, as they are pretty clear on what they will produce.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@page.app title='User list' selectedIcon='users'<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@layout.title /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@t.table rows=Users align='left' noButtons=true<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@t.column name='role' title='Role' align='center' /<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@t.column name='title' title='Title' /<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@t.column name='email' title='E-mail' interpret='<span class="error">&lt;</span>@layout.mailto value /<span class="error">&gt;</span>' /<span class="error">&gt;</span>
+    <span class="tag">&lt;/</span>@t.table<span class="error">&gt;</span>
+<span class="tag">&lt;/</span>@page.app<span class="error">&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@f.form 'SimpleEntity' SimpleEntity.id<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.text name='name' label='Name' required=true /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.text name='quantity' label='Quantity' type='number' /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.calendar name='date' label='Date' /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.buttonBar<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@f.cancel /<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@f.submit /<span class="error">&gt;</span>
+    <span class="tag">&lt;/</span>@<span class="error">&gt;</span>
+<span class="tag">&lt;/</span>@<span class="error">&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</body>
+</html>

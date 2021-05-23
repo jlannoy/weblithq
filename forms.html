@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Forms Management</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_forms_management">1. Forms Management</a>
+<ul class="sectlevel2">
+<li><a href="#_form_submission">1.1. Form submission</a></li>
+<li><a href="#_form_validation">1.2. Form validation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_forms_management">1. Forms Management</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_form_submission">1.1. Form submission</h3>
+<div class="paragraph">
+<p>While you can use the standard <code>@Form</code> JAX-RS way for getting form information, and the <code>@Valid</code> to throws <code>ConstraintViolationException</code>, Weblith offers a nicer way to manage your forms. Simply embed your form object in a <code>Form</code> parameter like this :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Transactional</span>
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> save(Form&lt;SimpleEntity&gt; form) {
+        SimpleEntity dto = form.getValue();
+        ... map dto field to real entity instance
+        ... save entity
+        <span class="keyword">return</span> <span class="keyword">new</span> Redirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/SimpleEntity/list</span><span class="delimiter">&quot;</span></span>);
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>SimpleEntity</code> object will be filled with your submitted data. It uses a Jackson <code>ObjectMapper</code> underneath that maps a <code>Map</code> of all parameters to the required object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_form_validation">1.2. Form validation</h3>
+<div class="paragraph">
+<p><code>Form</code> will allow you to trigger the validation of the filled object. All validation (but also parameter conversion) error messages will then be available as a list of <code>Violation</code> objects. Welbith UI components will handle those messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Transactional</span>
+    <span class="annotation">@Post</span>
+    <span class="directive">public</span> <span class="predefined-type">Result</span> save(Form&lt;SimpleEntity&gt; form) {
+        <span class="keyword">if</span> (!form.validate()) {
+            <span class="keyword">return</span> formTemplate.render(form);
+        }
+        ...
+    }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</body>
+</html>

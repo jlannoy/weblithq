@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Request Context</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_request_context">1. Request Context</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_request_context">1. Request Context</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While in a controller or any other internal service, you can inject a <code>RequestContext</code> instance. This class is a center piece for all request related concepts, and give you access to the following features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SessionScope</code> (via <code>.session()</code>): a client-side cookie-based session (server-side session not supporter by Weblith)</p>
+</li>
+<li>
+<p><code>FlashScope</code> (via <code>.flash()</code>): a specific cookie-based scope that keep data from one request to an other</p>
+</li>
+<li>
+<p><code>LocaleHandler</code> (via <code>.locale()</code>): a handler that will detect and provide the current user-defined locale</p>
+</li>
+<li>
+<p><code>Messages</code> (via <code>.message()</code>): a handler that will detect and provide the current user-defined locale</p>
+</li>
+<li>
+<p><code>seed()</code>, <code>lookup()</code> and <code>get()</code>: a map for storing some objects (by type) during the whole request execution</p>
+</li>
+<li>
+<p><code>SecurityIdentity</code>, <code>HttpRequest</code> and <code>UriInfo</code>: JAX-RS request scoped concepts</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This class also have some useful shortcuts like <code>getContextPath()</code>, <code>getParameterValue()</code> and <code>getCookieValue()</code>.</p>
+</div>
+<div class="paragraph">
+<p>INFO: The <code>SessionScope</code> is cookie-based and exist from the first received request. It is not linked to the fact of having an authenticated user.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+</body>
+</html>

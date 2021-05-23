@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>How to use it</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_how_to_use_it">1. How to use it</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_how_to_use_it">1. How to use it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Maven archetype exists, so that you can easily bootstrap a Weblith showcase application. Run this method :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">mvn archetype:generate                      \
+  -DarchetypeGroupId=net.zileo              \
+  -DarchetypeArtifactId=weblith-archetype   \
+  -DarchetypeVersion=0.1.1-SNAPSHOT         \
+  -Dversion=1.0.0-SNAPSHOT                  \
+  -DgroupId=org.acme                        \
+  -DartifactId=my-weblith</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you should be able to <code>cd my-weblith</code> and run <code>mvn compile quarkus:dev</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+</body>
+</html>

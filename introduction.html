@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Introduction</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_tldr_what_is_weblith">1.1. TLDR ~ What is Weblith ?</a></li>
+<li><a href="#_a_little_bit_of_history">1.2. A little bit of history</a></li>
+<li><a href="#_weblith_goal">1.3. Weblith goal</a></li>
+<li><a href="#_why_quarkus_powered">1.4. Why <strong>Quarkus powered</strong> ?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_tldr_what_is_weblith">1.1. TLDR ~ What is Weblith ?</h3>
+<div class="paragraph">
+<p>Weblith is a Java framework powered by <a href="https://quarkus.io">Quarkus</a> for quickly developping <strong>server side web applications</strong>. It provides easy routing, responses management, forms handling, application internationalization, multitenancy management, and finally layout templating with server side components.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_little_bit_of_history">1.2. A little bit of history</h3>
+<div class="paragraph">
+<p>At its early stage, Weblith was an internal framework developed at <a href="https://zileo.net">Zileo.net</a> and derived from other frameworks like <a href="http://www.ninjaframework.org">Ninja Framework</a>, <a href="https://github.com/svenkubiak/mangooio">MangooIO</a>, and even <a href="https://spring.io">Spring Boot</a>. The focus was a on rapid (web) application development. Technically, it was based on stable well-known libraries : Google Guice, Lightbend Config, Undertow, Hibernate ORM, Hibernate Validator, Jackson, Freemarker, etc&#8230;&#8203; After one year of production usage, the plan was to open source it (Q3-2020), by creating the missing documentation and archetype, and make it publicly available through <a href="http://weblith.io">a dedicated Weblith.io website</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_weblith_goal">1.3. Weblith goal</h3>
+<div class="paragraph">
+<p>Weblith has been made to offer a quick and easy way to create <strong>Server Side Rendered</strong> web applications, focusing on fast delivery and developer joy. Opinionated decisions have been taken, allowing to minimize the developer tools needed, reduce the boiler plate code, and even offer nice reusable UI components. It uses stable and well-know libraries to avoid a long learning curve. It will produces one single Jar file with an embedded HTTP server that can run with few technical resources. Note that it doesn&#8217;t reinvent the <strong>monolithic</strong> applications ; depending on the size of your project you should still use micro or external services when it makes sense, even with a front-end application made using Weblith.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_quarkus_powered">1.4. Why <strong>Quarkus powered</strong> ?</h3>
+<div class="paragraph">
+<p>Following the news on the Java battlefield, it was very interesting to see <a href="https://quarkus.io">Quakus</a> and <a href="http://micronaut.io">Micronaut</a> emerge. One relevant problem with Weblith was the startup time (mainly slowed by Guice and Hibernate). With the <strong>Quarkus Global Hackathon</strong> launched Q3-2020, there was a good opportunity to try migrating some Weblith layers to Quarkus. With some success, as the Weblith project won the Quarkus Hackathon in the <em>modernize an application</em> category! Now it&#8217;s time for making this project real and open to everyone &#127877;</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+</body>
+</html>

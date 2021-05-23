@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Internationalization</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#i18n">1. Internationalization</a>
+<ul class="sectlevel2">
+<li><a href="#_messages">1.1. Messages</a></li>
+<li><a href="#_locale_handling">1.2. Locale handling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="i18n">1. Internationalization</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_messages">1.1. Messages</h3>
+<div class="paragraph">
+<p>You can define the locales your application supports via the <code>quarkus.locales</code> property ; which will allow you to retrieve translated messages according to the <em>current</em> user language. Next chapter will provide in-depth view of how this language is identified.</p>
+</div>
+<div class="paragraph">
+<p>Each locale will have its own key-value file for managing your translations. The default <code>Messages</code> implementation provided by Weblith is based on standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ResourceBundle.html">ResourceBundle</a> objects. Your application should contain one <code>i18n/messages</code> file per defined locale. That default path can be changed via the <code>quarkus.weblith.messagesPath</code> property. This implementation supports the <a href="http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html">MessageFormat</a> formatting style, that means you can include parameters in your messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">common.format = Message with {<span class="integer">0</span>}
+common.format_date = Dated {<span class="integer">0</span>, date, medium}</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+A downside of MessageFormat is that you have to escape (double) your single quotes.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_locale_handling">1.2. Locale handling</h3>
+<div class="paragraph">
+<p>For each incoming request, Weblith will look at which is the <em>current user language</em> (meaning, the right locale) that should be used for answering that request. This is done by checking successively the following things until one match to your application locales appears :</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A query parameter to switch to a specific language have been given. That parameter is defined through the <code>quarkus.weblith.switchLanguageParam</code> application property.</p>
+</li>
+<li>
+<p>A value defined in the current session (from a previous request).</p>
+</li>
+<li>
+<p>A locale defined in the <code>Accept-Language</code> request header.</p>
+</li>
+<li>
+<p>The default application locale, defined through your <code>quarkus.defaultLocale</code> application property.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In other words, to keep things simpler, remember that you&#8217;ll always have one locale to refer too, and that it can be changed just by calling any URL with an appropriate query parameter.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</body>
+</html>

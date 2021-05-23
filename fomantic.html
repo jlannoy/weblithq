@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Fomantic UI library</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_fomantic_ui_library">1. Fomantic UI library</a>
+<ul class="sectlevel2">
+<li><a href="#_fomantic_ui_templating">1.1. Fomantic UI templating</a></li>
+<li><a href="#_fomantic_ui_components">1.2. Fomantic UI components</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_fomantic_ui_library">1. Fomantic UI library</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_fomantic_ui_templating">1.1. Fomantic UI templating</h3>
+<div class="paragraph">
+<p>One third Quarkus extension, that will be your real time-saver for building web applications, is a set of Freemarker tags that will allow you to quickly have a nice UI that fits with your Weblith backend code. The archetype you can use to boostrap your application will even offer a primary structure for your own base templates.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fomantic_ui_components">1.2. Fomantic UI components</h3>
+<div class="paragraph">
+<p>Sadly, this documentation draft do not enter into each component details (too early). But take a quick look at the two following example, as they are pretty clear on what they will produce.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@page.app title='User list' selectedIcon='users'<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@layout.title /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@t.table rows=Users align='left' noButtons=true<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@t.column name='role' title='Role' align='center' /<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@t.column name='title' title='Title' /<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@t.column name='email' title='E-mail' interpret='<span class="error">&lt;</span>@layout.mailto value /<span class="error">&gt;</span>' /<span class="error">&gt;</span>
+    <span class="tag">&lt;/</span>@t.table<span class="error">&gt;</span>
+<span class="tag">&lt;/</span>@page.app<span class="error">&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@f.form 'SimpleEntity' SimpleEntity.id<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.text name='name' label='Name' required=true /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.text name='quantity' label='Quantity' type='number' /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.calendar name='date' label='Date' /<span class="error">&gt;</span>
+    <span class="error">&lt;</span>@f.buttonBar<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@f.cancel /<span class="error">&gt;</span>
+        <span class="error">&lt;</span>@f.submit /<span class="error">&gt;</span>
+    <span class="tag">&lt;/</span>@<span class="error">&gt;</span>
+<span class="tag">&lt;/</span>@<span class="error">&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.1-SNAPSHOT<br>
+Last updated 2021-05-23 19:21:48 UTC
+</div>
+</div>
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</body>
+</html>
