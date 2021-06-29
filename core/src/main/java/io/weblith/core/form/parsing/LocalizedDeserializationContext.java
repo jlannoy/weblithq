@@ -35,13 +35,23 @@ public class LocalizedDeserializationContext extends DefaultDeserializationConte
         this(BeanDeserializerFactory.instance, context);
     }
 
+    private LocalizedDeserializationContext(DefaultDeserializationContext src,
+            DeserializationConfig config,
+            RequestContext context) {
+        super(src, config);
+        this.context = context;
+    }
+
     private LocalizedDeserializationContext(DeserializerFactory factory, RequestContext context) {
         super(factory, null);
         this.context = context;
     }
 
-    private LocalizedDeserializationContext(DefaultDeserializationContext src, DeserializationConfig config, JsonParser parser,
-            InjectableValues values, RequestContext context) {
+    private LocalizedDeserializationContext(DefaultDeserializationContext src,
+            DeserializationConfig config,
+            JsonParser parser,
+            InjectableValues values,
+            RequestContext context) {
         super(src, config, parser, values);
         this.context = context;
     }
@@ -52,7 +62,8 @@ public class LocalizedDeserializationContext extends DefaultDeserializationConte
     }
 
     @Override
-    public DefaultDeserializationContext createInstance(DeserializationConfig config, JsonParser parser,
+    public DefaultDeserializationContext createInstance(DeserializationConfig config,
+            JsonParser parser,
             InjectableValues values) {
         return new LocalizedDeserializationContext(this, config, parser, values, this.context);
     }
@@ -109,8 +120,8 @@ public class LocalizedDeserializationContext extends DefaultDeserializationConte
         try {
             return LocalDate.parse(value, format);
         } catch (DateTimeParseException e) {
-            LOGGER.debugv("Unable to parse '{0}' as a date, requiring ISO format or {1}",
-                    value, format.toFormat().format(LocalDate.now()));
+            LOGGER.debugv("Unable to parse '{0}' as a date, requiring ISO format or {1}", value,
+                    format.toFormat().format(LocalDate.now()));
             throw e;
         }
     }
@@ -125,8 +136,8 @@ public class LocalizedDeserializationContext extends DefaultDeserializationConte
         try {
             return LocalTime.parse(value, format);
         } catch (DateTimeParseException e) {
-            LOGGER.debugv("Unable to parse '{0}' as a time, requiring ISO format or {1}",
-                    value, format.toFormat().format(LocalTime.now()));
+            LOGGER.debugv("Unable to parse '{0}' as a time, requiring ISO format or {1}", value,
+                    format.toFormat().format(LocalTime.now()));
             throw e;
         }
     }
@@ -142,10 +153,15 @@ public class LocalizedDeserializationContext extends DefaultDeserializationConte
         try {
             return LocalDateTime.parse(value, format);
         } catch (DateTimeParseException e) {
-            LOGGER.debugv("Unable to parse '{0}' as date and time, requiring ISO format or {1}",
-                    value, format.toFormat().format(LocalDateTime.now()));
+            LOGGER.debugv("Unable to parse '{0}' as date and time, requiring ISO format or {1}", value,
+                    format.toFormat().format(LocalDateTime.now()));
             throw e;
         }
+    }
+
+    @Override
+    public DefaultDeserializationContext createDummyInstance(DeserializationConfig config) {
+        return new LocalizedDeserializationContext(this, config, this.context);
     }
 
 }
