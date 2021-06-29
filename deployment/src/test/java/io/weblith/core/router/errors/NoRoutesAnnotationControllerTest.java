@@ -25,7 +25,7 @@ public class NoRoutesAnnotationControllerTest {
                     .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
 
     @Controller
-    public class NoRoutesAnnotationWeblithController {
+    public static class NoRoutesAnnotationWeblithController {
 
         // Explicitly wrong annotation
         @javax.ws.rs.GET

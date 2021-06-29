@@ -1,6 +1,7 @@
 package io.weblith.core.router.errors;
 
 import io.quarkus.test.QuarkusUnitTest;
+import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -24,7 +25,7 @@ public class MissingAnnotationControllerTest {
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                     .addAsResource(new StringAsset("quarkus.http.test-port=0"), "application.properties"));
 
-    public class MissingAnnotationWeblithController {
+    public static class MissingAnnotationWeblithController {
 
         @Get("/ignored")
         public String get() {
