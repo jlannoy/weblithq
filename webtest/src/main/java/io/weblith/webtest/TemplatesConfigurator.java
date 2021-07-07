@@ -11,7 +11,7 @@ public class TemplatesConfigurator {
 
     public void configureFreemarker(@Observes StartupEvent startup, Configuration freemarkerConfiguration) {
 
-        freemarkerConfiguration.addAutoImport("page", "templates/webtest-layouts.ftlh");
+        freemarkerConfiguration.addAutoImport("page", "webtest-layouts.ftlh");
 
     }
 

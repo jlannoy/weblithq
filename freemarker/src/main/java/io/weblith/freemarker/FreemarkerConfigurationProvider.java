@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.interceptor.Interceptor;
 
+import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
@@ -27,6 +30,7 @@ import io.quarkus.runtime.configuration.ProfileManager;
 import io.weblith.freemarker.config.FreemarkerConfig;
 import no.api.freemarker.java8.Java8ObjectWrapper;
 
+@Deprecated
 // @Startup(Interceptor.Priority.PLATFORM_BEFORE)
 // @Singleton
 public class FreemarkerConfigurationProvider {
@@ -42,6 +46,7 @@ public class FreemarkerConfigurationProvider {
     @Inject
     FreemarkerComponentsProvider components;
 
+    // Replaced by quarkiverse extension
 //    @Produces
 //    @DefaultBean
 //    @ApplicationScoped

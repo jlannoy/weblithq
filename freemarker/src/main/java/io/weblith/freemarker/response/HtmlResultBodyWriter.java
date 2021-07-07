@@ -3,6 +3,7 @@ package io.weblith.freemarker.response;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -16,14 +17,18 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import freemarker.template.Template;
 import freemarker.template.TemplateNotFoundException;
 import io.weblith.core.request.RequestContext;
 import io.weblith.freemarker.template.TemplateResolver;
+import org.jboss.logging.Logger;
 
 @Provider
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 public class HtmlResultBodyWriter implements MessageBodyWriter<HtmlResult> {
+
+    private static final Logger LOGGER = Logger.getLogger(HtmlResultBodyWriter.class);
 
     @Inject
     TemplateResolver templateResolver;
@@ -52,13 +57,17 @@ public class HtmlResultBodyWriter implements MessageBodyWriter<HtmlResult> {
         try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, result.getCharset())) {
 
             fillWithCommonParameters(result);
-            templateResolver.resolve(result).process(result.getTemplateParameters(), writer);
+            Template template = templateResolver.resolve(result);
+            LOGGER.debugv("Processing template {0} as HTML result", template.getName());
+            template.process(result.getTemplateParameters(), writer);
             writer.flush();
 
         } catch (TemplateNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
             throw new FreemarkerRenderingException(e);
 
         } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             throw new FreemarkerRenderingException(e);
 
         }

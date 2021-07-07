@@ -9,7 +9,7 @@ import io.quarkus.runtime.StartupEvent;
 @ApplicationScoped
 public class FomanticUIFreemarkerConfigurator {
 
-    public final static String MACRO_PATH = "/templates/macro/";
+    public final static String MACRO_PATH = "/macro/";
 
     public void configureFreemarker(@Observes StartupEvent startup, Configuration freemarker) {
 

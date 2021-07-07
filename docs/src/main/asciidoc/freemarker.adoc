@@ -2,7 +2,7 @@
 
 === Why Freemarker ?
 
-During our migration to Quarkus, we tried to reimplement our Freemarker components with Qute, the template engine proposed by the Quarkus team. But it was lacking some features needed for it. As the Weblith UI components base was already well-defined and stable, the choice have been made to continue using Freemarker, using the https://quarkiverse.github.io/quarkiverse-docs/quarkiverse-freemarker/dev/index.html[Quarkiverse Freemarker extension]. Be sure to check that extension documentation to discover the Freemarker dedicated configuration properties.
+During our migration to Quarkus, we tried to reimplement our Freemarker components with Qute, the template engine proposed by the Quarkus team. But it was lacking some features needed for it. As the Weblith UI components base was already well-defined and stable, the choice have been made to continue using Freemarker, using the https://quarkiverse.github.io/quarkiverse-docs/quarkus-freemarker/dev/index.html[Quarkiverse Freemarker extension]. Be sure to check that extension documentation to discover the Freemarker dedicated configuration properties.
 
 TIP: Refer to the https://freemarker.apache.org/docs/index.html[Freemarker] documentation for more information about how to use this template engine.
 
