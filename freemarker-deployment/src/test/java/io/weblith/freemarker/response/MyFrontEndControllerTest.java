@@ -1,17 +1,17 @@
 package io.weblith.freemarker.response;
 
-import io.quarkus.test.QuarkusUnitTest;
-import io.weblith.test.controllers.MyFrontEndController;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
+
+import java.util.UUID;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.UUID;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.containsString;
+import io.quarkus.test.QuarkusUnitTest;
+import io.weblith.test.controllers.MyFrontEndController;
 
 public class MyFrontEndControllerTest {
 

@@ -2,27 +2,25 @@ package io.weblith.core.results;
 
 import java.util.Date;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response.Status;
-
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.util.DateUtil;
 import org.jboss.resteasy.util.DateUtil.DateParseException;
 
+import io.quarkus.logging.Log;
 import io.weblith.core.config.HttpCacheConfig;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.results.Result.AutomaticCachingPolicy;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response.Status;
+
 /**
  * Useful info taken from Heroku documentation : <br>
  * https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers
  */
 @ApplicationScoped
 public class HttpCacheHelper {
-
-    private static final Logger LOGGER = Logger.getLogger(HttpCacheHelper.class);
 
     private final HttpCacheConfig cacheConfig;
 
@@ -69,7 +67,7 @@ public class HttpCacheHelper {
             try {
                 return DateUtil.parseDate(ifModifiedSince).getTime() < lastModified;
             } catch (DateParseException ex) {
-                LOGGER.warnv("Cannot parse If-Modified-Since date '{0}'", ifModifiedSince);
+                Log.warnv("Cannot parse If-Modified-Since date '{0}'", ifModifiedSince);
             }
         }
 

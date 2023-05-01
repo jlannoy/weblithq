@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.AnnotatedParameter;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import org.jboss.logging.Log.
 
 import io.quarkiverse.freemarker.TemplatePath;
-import org.jboss.logging.Logger;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.AnnotatedParameter;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class FreemarkerTemplateProducer {
 
-    private static final Logger LOGGER = Logger.getLogger(FreemarkerTemplateProducer.class);
+    private static final Log.Log.= Log.getLog.FreemarkerTemplateProducer.class);
 
     @Inject
     TemplateResolver templateResolver;
@@ -35,7 +34,7 @@ public class FreemarkerTemplateProducer {
                 name = parameter.getJavaParameter().getName();
             } else {
                 name = injectionPoint.getMember().getName();
-                LOGGER.warnf("Parameter name not present - using the method name as the template name instead %s", name);
+                Log.warnf("Parameter name not present - using the method name as the template name instead %s", name);
             }
         }
 
@@ -69,7 +68,7 @@ public class FreemarkerTemplateProducer {
         try {
             return new FreemarkerTemplate(templateResolver.resolve(templatePath.value()));
         } catch (IOException e) {
-            LOGGER.error(e);
+            Log.error(e);
             throw new IllegalStateException(e);
         }
 

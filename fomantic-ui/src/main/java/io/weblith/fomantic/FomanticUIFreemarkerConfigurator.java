@@ -1,10 +1,9 @@
 package io.weblith.fomantic;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-
 import freemarker.template.Configuration;
 import io.quarkus.runtime.StartupEvent;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 
 @ApplicationScoped
 public class FomanticUIFreemarkerConfigurator {

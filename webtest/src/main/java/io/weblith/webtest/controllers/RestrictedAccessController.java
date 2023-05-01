@@ -1,8 +1,5 @@
 package io.weblith.webtest.controllers;
 
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.weblith.core.router.annotations.Controller;
@@ -10,6 +7,8 @@ import io.weblith.core.router.annotations.Get;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.template.FreemarkerTemplate;
 import io.weblith.webtest.domains.user.UserRole;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
 
 @Controller
 public class RestrictedAccessController {

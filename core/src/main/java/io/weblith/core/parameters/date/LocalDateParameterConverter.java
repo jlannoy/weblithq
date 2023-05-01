@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.ext.ParamConverter;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.ext.ParamConverter;
 
 public class LocalDateParameterConverter implements ParamConverter<LocalDate> {
 

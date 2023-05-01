@@ -5,15 +5,6 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
-
 import org.jboss.resteasy.spi.util.Types.ResteasyParameterizedType;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -22,6 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.weblith.core.form.Form;
 import io.weblith.core.request.RequestContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.ext.MessageBodyReader;
 
 @SuppressWarnings("rawtypes")
 @ApplicationScoped

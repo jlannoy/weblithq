@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.jboss.logging.Logger;
-
+import io.quarkus.logging.Log;
 import io.weblith.core.config.SessionConfig;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
@@ -17,8 +16,6 @@ import io.weblith.core.results.AbstractResult;
  * Default SessionScope implementation.
  */
 public class SessionScopeHandler implements SessionScope {
-
-    protected final static Logger LOGGER = Logger.getLogger(SessionScopeHandler.class);
 
     protected final static String AUTHENTICITY_KEY = "_auth";
 
@@ -43,7 +40,7 @@ public class SessionScopeHandler implements SessionScope {
                 this.data.putAll(CookieBuilder.decryptMap(v, sessionConfig.secret));
             });
         } catch (Exception e) {
-            LOGGER.warn("Unable to decode session cookie value", e);
+            Log.warn("Unable to decode session cookie value", e);
         }
 
         if (!this.data.containsKey(AUTHENTICITY_KEY)) {
@@ -61,7 +58,7 @@ public class SessionScopeHandler implements SessionScope {
 
             // empty existing cookie, if needed
             if (this.sessionDataChanged) {
-                LOGGER.debugv("Saving empty session cookie");
+                Log.debugv("Saving empty session cookie");
                 result.addCookie(cookieBuilder.remove(sessionConfig.cookieName));
             }
 
@@ -69,14 +66,14 @@ public class SessionScopeHandler implements SessionScope {
 
             // build a cookie with the session data
             try {
-                LOGGER.debugv("Saving new session cookie (size {0})", data.size());
+                Log.debugv("Saving new session cookie (size {0})", data.size());
 
                 put(TIMESTAMP_KEY, Instant.now().toString());
                 String sessionData = CookieBuilder.encryptMap(data, sessionConfig.secret);
 
                 result.addCookie(cookieBuilder.build(sessionConfig.cookieName, sessionData, (int) sessionConfig.expire.toSeconds()));
             } catch (Exception e) {
-                LOGGER.error("Encoding cookie exception - this should never happen", e);
+                Log.error("Encoding cookie exception - this should never happen", e);
             }
 
         }
@@ -88,7 +85,7 @@ public class SessionScopeHandler implements SessionScope {
 
     @Override
     public void put(String key, String value) {
-        if(!data.containsKey(key) || (value != null && !value.equals(data.get(key)))) {
+        if (!data.containsKey(key) || (value != null && !value.equals(data.get(key)))) {
             this.sessionDataChanged = true;
             data.put(key, value);
         }

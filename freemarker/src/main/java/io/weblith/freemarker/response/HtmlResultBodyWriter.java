@@ -3,32 +3,31 @@ package io.weblith.freemarker.response;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyWriter;
-import javax.ws.rs.ext.Provider;
+import org.jboss.logging.Log.
 
 import freemarker.template.Template;
 import freemarker.template.TemplateNotFoundException;
 import io.weblith.core.request.RequestContext;
 import io.weblith.freemarker.template.TemplateResolver;
-import org.jboss.logging.Logger;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.ext.MessageBodyWriter;
+import jakarta.ws.rs.ext.Provider;
 
 @Provider
 @ApplicationScoped
 @Produces(MediaType.TEXT_HTML)
 public class HtmlResultBodyWriter implements MessageBodyWriter<HtmlResult> {
 
-    private static final Logger LOGGER = Logger.getLogger(HtmlResultBodyWriter.class);
+    private static final Log.Log.= Log.getLog.HtmlResultBodyWriter.class);
 
     @Inject
     TemplateResolver templateResolver;
@@ -58,16 +57,16 @@ public class HtmlResultBodyWriter implements MessageBodyWriter<HtmlResult> {
 
             fillWithCommonParameters(result);
             Template template = templateResolver.resolve(result);
-            LOGGER.debugv("Processing template {0} as HTML result", template.getName());
+            Log.debugv("Processing template {0} as HTML result", template.getName());
             template.process(result.getTemplateParameters(), writer);
             writer.flush();
 
         } catch (TemplateNotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
             throw new FreemarkerRenderingException(e);
 
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
             throw new FreemarkerRenderingException(e);
 
         }

@@ -1,10 +1,6 @@
 package io.weblith.webtest.domains.simpleEntity;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-
-import io.weblith.freemarker.template.FreemarkerTemplate;
-import org.jboss.logging.Logger;
+import org.jboss.logging.Log.
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import io.quarkus.security.identity.SecurityIdentity;
@@ -16,14 +12,17 @@ import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
 import io.weblith.freemarker.response.HtmlResult;
+import io.weblith.freemarker.template.FreemarkerTemplate;
 import io.weblith.webtest.DummyDataGenerator;
 import io.weblith.webtest.domains.simpleEntity.SimpleEntitiesForm.NestedForm;
 import io.weblith.webtest.domains.simpleEntity.SimpleEntity.Type;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class SimpleEntityController {
 
-    private final static Logger LOGGER = Logger.getLogger(DummyDataGenerator.class);
+    private final static Log.Log.= Log.getLog.DummyDataGenerator.class);
 
     @Inject
     SecurityIdentity identity;
@@ -105,7 +104,7 @@ public class SimpleEntityController {
         SimpleEntitiesForm dto = form.getValue();
 
         for (NestedForm nested : dto.entities) {
-            LOGGER.info(nested.name + "/" + nested.type + "/" + nested.date);
+            Log.info(nested.name + "/" + nested.type + "/" + nested.date);
         }
 
         return new Redirect("/SimpleEntity/list").withSuccess(dto.entities + " saved");

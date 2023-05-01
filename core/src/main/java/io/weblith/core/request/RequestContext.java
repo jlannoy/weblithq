@@ -4,13 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.CDI;
-import javax.inject.Inject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriInfo;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.spi.HttpRequest;
@@ -21,6 +14,12 @@ import io.weblith.core.i18n.LocaleHandler;
 import io.weblith.core.i18n.Messages;
 import io.weblith.core.scopes.FlashScope;
 import io.weblith.core.scopes.SessionScope;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.UriInfo;
 
 @RequestScoped
 public class RequestContext {

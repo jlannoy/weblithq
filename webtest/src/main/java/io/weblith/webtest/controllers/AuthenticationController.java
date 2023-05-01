@@ -1,8 +1,5 @@
 package io.weblith.webtest.controllers;
 
-import javax.inject.Inject;
-
-import io.weblith.freemarker.template.FreemarkerTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.vertx.core.http.Cookie;
@@ -13,6 +10,8 @@ import io.weblith.core.results.Result;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.core.scopes.SessionScope;
+import io.weblith.freemarker.template.FreemarkerTemplate;
+import jakarta.inject.Inject;
 
 @Controller("/auth")
 public class AuthenticationController {

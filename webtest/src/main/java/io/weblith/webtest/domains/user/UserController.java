@@ -2,14 +2,13 @@ package io.weblith.webtest.domains.user;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import freemarker.template.Template;
 import io.quarkiverse.freemarker.TemplatePath;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.freemarker.response.HtmlResult;
+import jakarta.inject.Inject;
 
 @Controller
 public class UserController {

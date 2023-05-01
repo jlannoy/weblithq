@@ -5,7 +5,7 @@ package ${package}.domains.user;
 
 import java.util.Date;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.router.annotations.Controller;

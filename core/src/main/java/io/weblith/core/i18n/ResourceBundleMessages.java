@@ -8,12 +8,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import io.quarkus.logging.Log;
 import io.weblith.core.config.WeblithConfig;
-import org.jboss.logging.Logger;
 
 public class ResourceBundleMessages implements Messages {
-
-    protected static final Logger LOGGER = Logger.getLogger(ResourceBundleMessages.class);
 
     protected final Map<Locale, ResourceBundle> resourceBundles;
 
@@ -23,7 +21,7 @@ public class ResourceBundleMessages implements Messages {
         this.localeHandler = localeHandler;
         this.resourceBundles = loadResourceBundles(localeHandler, weblithConfig.messagesPath);
 
-        LOGGER.debugv("{0} ResourceBundles loaded", this.resourceBundles.size());
+        Log.debugv("{0} ResourceBundles loaded", this.resourceBundles.size());
     }
 
     private Map<Locale, ResourceBundle> loadResourceBundles(LocaleHandler localeHandler, String path) {

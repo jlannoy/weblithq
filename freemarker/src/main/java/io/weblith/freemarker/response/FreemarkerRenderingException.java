@@ -1,7 +1,7 @@
 package io.weblith.freemarker.response;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 public class FreemarkerRenderingException extends WebApplicationException {
 

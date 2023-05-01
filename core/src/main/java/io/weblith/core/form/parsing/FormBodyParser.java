@@ -10,29 +10,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
-
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.spi.util.Types.ResteasyParameterizedType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.quarkus.logging.Log;
 import io.weblith.core.form.Form;
 import io.weblith.core.request.RequestContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.ext.MessageBodyReader;
 
 @SuppressWarnings("rawtypes")
 @ApplicationScoped
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 public class FormBodyParser implements MessageBodyReader<Form> {
-
-    private final static Logger LOGGER = Logger.getLogger(FormBodyParser.class);
 
     private final RequestContext context;
 
@@ -77,7 +74,7 @@ public class FormBodyParser implements MessageBodyReader<Form> {
 
     public <T> T parse(Class<T> classOfT, Map<String, Object> map) {
 
-        LOGGER.debugv("Converting map : {0}", map);
+        Log.debugv("Converting map : {0}", map);
 
         try {
             return this.objectMapper.convertValue(map, classOfT);

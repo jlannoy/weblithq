@@ -3,9 +3,6 @@ package io.weblith.freemarker.methods;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import org.ocpsoft.prettytime.PrettyTime;
 
 import freemarker.template.SimpleDate;
@@ -14,6 +11,8 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import io.weblith.core.i18n.LocaleHandler;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class PrettyTimeMethod implements TemplateMethodModelEx {

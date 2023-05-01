@@ -1,26 +1,26 @@
 package io.weblith.freemarker.response.exceptions;
 
-import io.weblith.freemarker.response.HtmlResult;
-import org.jboss.logging.Logger;
+import org.jboss.logging.Log.
 
-import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import io.weblith.freemarker.response.HtmlResult;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
 
 @Provider
 @ApplicationScoped
 @Priority(Priorities.USER)
 public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
 
-    private static final Logger LOGGER = Logger.getLogger(WebApplicationExceptionMapper.class);
+    private static final Log.Log.= Log.getLog.WebApplicationExceptionMapper.class);
 
     @Override
     public Response toResponse(WebApplicationException exception) {
-        LOGGER.error(exception.getMessage(), exception);
+        Log.error(exception.getMessage(), exception);
         HtmlResult htmlResult = new HtmlResult("layout", "error", "ftlh").render("message", exception.getMessage());
         return Response.status(exception.getResponse().getStatus()).entity(htmlResult).build();
     }

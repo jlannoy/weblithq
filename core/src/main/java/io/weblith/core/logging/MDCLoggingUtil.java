@@ -1,12 +1,11 @@
 package io.weblith.core.logging;
 
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.core.HttpHeaders;
-
 import org.jboss.logging.MDC;
 import org.jboss.resteasy.spi.HttpRequest;
 
 import io.quarkus.security.identity.SecurityIdentity;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
 public class MDCLoggingUtil {
 

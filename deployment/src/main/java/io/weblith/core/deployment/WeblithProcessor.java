@@ -1,5 +1,18 @@
 package io.weblith.core.deployment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.IndexView;
+import org.jboss.jandex.MethodInfo;
+import org.jboss.resteasy.spi.ResteasyDeployment;
+
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.BeanDefiningAnnotationBuildItem;
@@ -11,14 +24,13 @@ import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceDirectoryBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.RuntimeInitializedClassBuildItem;
+import io.quarkus.jaxrs.spi.deployment.AdditionalJaxRsResourceMethodAnnotationsBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import io.quarkus.resteasy.reactive.spi.DynamicFeatureBuildItem;
 import io.quarkus.resteasy.server.common.deployment.ResteasyDeploymentCustomizerBuildItem;
 import io.quarkus.resteasy.server.common.spi.AdditionalJaxRsResourceDefiningAnnotationBuildItem;
-import io.quarkus.resteasy.server.common.spi.AdditionalJaxRsResourceMethodAnnotationsBuildItem;
 import io.quarkus.runtime.LocalesBuildTimeConfig;
 import io.weblith.core.WeblithResourceBuilder;
-import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.form.parsing.FormBodyParser;
 import io.weblith.core.form.parsing.JsonBodyParser;
 import io.weblith.core.form.validating.RequestContextLocaleResolver;
@@ -27,7 +39,10 @@ import io.weblith.core.i18n.ConfiguredLocalesFilterDynamicFeature;
 import io.weblith.core.i18n.SingleLocaleHandler;
 import io.weblith.core.logging.RequestLoggingDynamicFeature;
 import io.weblith.core.logging.RequestLoggingFilter;
-import io.weblith.core.multitenancy.*;
+import io.weblith.core.multitenancy.TenantCleanerFilter;
+import io.weblith.core.multitenancy.TenantResolverFilter;
+import io.weblith.core.multitenancy.TenantScopeInjectableContext;
+import io.weblith.core.multitenancy.TenantScoped;
 import io.weblith.core.parameters.date.ParametersConverterProvider;
 import io.weblith.core.results.ResultResponseFilter;
 import io.weblith.core.router.annotations.Controller;
@@ -35,14 +50,6 @@ import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
 import io.weblith.core.security.AuthenticityTokenDynamicFeature;
 import io.weblith.core.security.AuthenticityTokenFilter;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.IndexView;
-import org.jboss.jandex.MethodInfo;
-import org.jboss.resteasy.spi.ResteasyDeployment;
-
-import java.util.*;
-import java.util.function.Consumer;
 
 public class WeblithProcessor {
 

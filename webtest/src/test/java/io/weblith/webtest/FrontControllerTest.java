@@ -1,12 +1,10 @@
 package io.weblith.webtest;
 
-import io.quarkus.test.junit.QuarkusTest;
+import static io.restassured.RestAssured.given;
+
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.containsString;
+import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class FrontControllerTest {

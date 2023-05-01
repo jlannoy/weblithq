@@ -2,11 +2,10 @@ package io.weblith.core.results;
 
 import java.net.URL;
 
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response.Status;
-
 import io.weblith.core.request.RequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response.Status;
 
 public class Redirect extends AbstractResult<Redirect> implements AbstractResult.ConfigureResponse {
 

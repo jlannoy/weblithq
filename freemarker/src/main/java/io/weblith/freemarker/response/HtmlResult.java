@@ -1,14 +1,14 @@
 package io.weblith.freemarker.response;
 
-import freemarker.template.Template;
-import io.weblith.core.form.Form;
-import io.weblith.core.results.AbstractResult;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import freemarker.template.Template;
+import io.weblith.core.form.Form;
+import io.weblith.core.results.AbstractResult;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 public class HtmlResult extends AbstractResult<HtmlResult> {
 

@@ -3,22 +3,21 @@ package io.weblith.core.results;
 import java.io.IOException;
 import java.util.Map.Entry;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.ext.Provider;
-
 import org.jboss.resteasy.core.interception.jaxrs.SuspendableContainerResponseContext;
 
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.results.Result.ConfigureResponse;
 import io.weblith.core.results.Result.RenderResponse;
 import io.weblith.core.scopes.CookieBuilder;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.ext.Provider;
 
 @Provider
 @ApplicationScoped

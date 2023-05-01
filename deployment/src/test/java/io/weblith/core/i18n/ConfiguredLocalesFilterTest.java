@@ -1,27 +1,32 @@
 package io.weblith.core.i18n;
 
-import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.weblith.core.config.WeblithConfig;
-import io.weblith.core.request.RequestContext;
-import io.weblith.core.scopes.SessionScope;
-import org.jboss.resteasy.spi.HttpRequest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.aMapWithSize;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.when;
+import org.jboss.resteasy.spi.HttpRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import io.quarkus.runtime.LocalesBuildTimeConfig;
+import io.quarkus.test.junit.QuarkusTest;
+import io.weblith.core.config.WeblithConfig;
+import io.weblith.core.request.RequestContext;
+import io.weblith.core.scopes.SessionScope;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
+
+@QuarkusTest
 public class ConfiguredLocalesFilterTest {
 
     private final static String switchParameter = "my_lang";

@@ -1,20 +1,22 @@
 package io.weblith.core.i18n;
 
-import io.quarkus.test.QuarkusUnitTest;
-import io.weblith.core.config.WeblithConfig;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import test.controllers.RequestContextAwareController;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.Response.Status;
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.is;
 
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import io.weblith.core.config.WeblithConfig;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response.Status;
+import test.controllers.RequestContextAwareController;
+
+@QuarkusTest
 public class MultipleLocalesControllerTest {
 
     private final static int OK = Status.OK.getStatusCode();

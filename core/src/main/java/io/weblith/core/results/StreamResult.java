@@ -8,12 +8,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
-import io.weblith.core.results.Result.RenderResponse;
 import io.weblith.core.results.Result.AutomaticCachingPolicy;
+import io.weblith.core.results.Result.RenderResponse;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * Convenience class for streaming data as a {@link AbstractResult}. Can be build either from a {@link File} or from a

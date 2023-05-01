@@ -1,17 +1,23 @@
 package io.weblith.core.multitenancy;
 
-import io.weblith.core.config.TenantsConfig;
-import io.weblith.core.config.WeblithConfig;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import io.quarkus.test.junit.QuarkusTest;
+import io.weblith.core.config.TenantsConfig;
+import io.weblith.core.config.WeblithConfig;
+
+@QuarkusTest
 public class TenantResolverFilterTest {
 
     WeblithConfig weblithConfig;

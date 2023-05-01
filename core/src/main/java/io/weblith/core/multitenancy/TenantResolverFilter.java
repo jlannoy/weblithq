@@ -1,26 +1,27 @@
 package io.weblith.core.multitenancy;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import io.quarkus.logging.Log;
 import io.weblith.core.config.TenantsConfig;
 import io.weblith.core.config.WeblithConfig;
-import io.weblith.core.i18n.ConfiguredLocalesFilter;
-import org.jboss.logging.Logger;
-
-import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 @Priority(Priorities.AUTHENTICATION - 100)
 public class TenantResolverFilter implements ContainerRequestFilter, TenantHandler {
-
-    protected static final Logger LOGGER = Logger.getLogger(TenantResolverFilter.class);
 
     final Set<String> tenants;
 
@@ -34,7 +35,7 @@ public class TenantResolverFilter implements ContainerRequestFilter, TenantHandl
                 : this.domains.values().stream().collect(Collectors.toUnmodifiableSet());
 
         TenantScopeInjectableContext.init(this.tenants);
-        LOGGER.debugv("Domains map initialized with : {0}", this.domains);
+        Log.debugv("Domains map initialized with : {0}", this.domains);
     }
 
     protected Map<String, String> buildDomainsMapping(TenantsConfig tenantsConfig) {
@@ -85,6 +86,7 @@ public class TenantResolverFilter implements ContainerRequestFilter, TenantHandl
         return requestContext.getUriInfo().getBaseUri().getHost().toLowerCase();
     }
 
+    @Override
     public String validate(String value) {
         value = value.toLowerCase();
         return this.tenants.contains(value) ? value : null;
@@ -94,6 +96,5 @@ public class TenantResolverFilter implements ContainerRequestFilter, TenantHandl
     public Set<String> getApplicationTenants() {
         return this.tenants;
     }
-
 
 }

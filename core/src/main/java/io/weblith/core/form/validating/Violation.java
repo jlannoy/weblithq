@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.validation.Path.Node;
+import jakarta.validation.Path.Node;
 
 public class Violation {
 
@@ -48,7 +48,7 @@ public class Violation {
         return messageParams;
     }
 
-    public static Violation of(javax.validation.ConstraintViolation<?> cv) {
+    public static Violation of(jakarta.validation.ConstraintViolation<?> cv) {
         // return new Violation(cv.getMessageTemplate(), Iterables.getLast(cv.getPropertyPath()).getName(),
         // cv.getMessage(), cv.getExecutableParameters());
 
@@ -60,8 +60,7 @@ public class Violation {
             nodes = nodes.subList(2, nodes.size());
         }
 
-        return new Violation(cv.getMessageTemplate(), nodes.stream().map(Node::getName).collect(Collectors.joining(".")),
-                cv.getMessage(), cv.getExecutableParameters());
+        return new Violation(cv.getMessageTemplate(), nodes.stream().map(Node::getName).collect(Collectors.joining(".")), cv.getMessage(), cv.getExecutableParameters());
     }
 
     protected static final String escapeKey(String key) {

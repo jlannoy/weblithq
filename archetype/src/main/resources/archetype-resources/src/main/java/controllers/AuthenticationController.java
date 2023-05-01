@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.controllers;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

@@ -1,12 +1,11 @@
 package test.controllers;
 
-import javax.ws.rs.DefaultValue;
-
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.jboss.resteasy.annotations.jaxrs.QueryParam;
 
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
+import jakarta.ws.rs.DefaultValue;
 
 @Controller("/params")
 public class MethodParametersController {

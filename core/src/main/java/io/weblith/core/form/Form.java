@@ -3,11 +3,10 @@ package io.weblith.core.form;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-import javax.enterprise.inject.spi.CDI;
-import javax.validation.Validator;
-
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.weblith.core.form.validating.ViolationsHolder;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.validation.Validator;
 
 /**
  * Holder for Class form and value.

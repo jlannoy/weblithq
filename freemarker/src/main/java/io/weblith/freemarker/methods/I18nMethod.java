@@ -3,7 +3,7 @@ package io.weblith.freemarker.methods;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.jboss.logging.Log.
 
 import freemarker.ext.beans.StringModel;
 import freemarker.template.SimpleNumber;
@@ -16,7 +16,7 @@ import io.weblith.core.i18n.Messages;
 
 public class I18nMethod implements TemplateMethodModelEx {
 
-    private final static Logger LOGGER = Logger.getLogger(I18nMethod.class);
+    private final static Log.Log.= Log.getLog.I18nMethod.class);
 
     private final Messages messages;
 
@@ -81,7 +81,7 @@ public class I18nMethod implements TemplateMethodModelEx {
     public void logIfMessageKeyIsMissing(String messageKey, String messageValue) {
 
         if (messageKey.equals(messageValue)) {
-            LOGGER.warnv("Message key {0} missing ; using the key as value instead", messageKey);
+            Log.warnv("Message key {0} missing ; using the key as value instead", messageKey);
         }
 
     }

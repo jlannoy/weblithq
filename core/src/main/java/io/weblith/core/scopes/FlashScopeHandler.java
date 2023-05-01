@@ -4,16 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.quarkus.logging.Log;
 import io.weblith.core.config.FlashConfig;
-import org.jboss.logging.Logger;
-
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
 import io.weblith.core.results.AbstractResult;
 
 public class FlashScopeHandler implements FlashScope {
-
-    private final static Logger LOGGER = Logger.getLogger(FlashScopeHandler.class);
 
     protected final Map<String, String> currentRequestData;
 
@@ -39,7 +36,7 @@ public class FlashScopeHandler implements FlashScope {
                 this.currentRequestData.putAll(CookieBuilder.decodeMap(v));
             });
         } catch (Exception e) {
-            LOGGER.warn("Unable to decode flash cookie value", e);
+            Log.warn("Unable to decode flash cookie value", e);
         }
     }
 
@@ -60,7 +57,7 @@ public class FlashScopeHandler implements FlashScope {
                 String flashData = CookieBuilder.encodeMap(nextRequestData);
                 result.addCookie(cookieBuilder.build(flashConfig.cookieName, flashData, -1));
             } catch (Exception e) {
-                LOGGER.error("Encoding cookie exception - this should never happen", e);
+                Log.error("Encoding cookie exception - this should never happen", e);
             }
 
         }

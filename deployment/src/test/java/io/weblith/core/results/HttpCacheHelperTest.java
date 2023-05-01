@@ -1,20 +1,25 @@
 package io.weblith.core.results;
 
-import io.weblith.core.config.HttpCacheConfig;
-import io.weblith.core.config.WeblithConfig;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.Duration;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.HttpHeaders;
-import java.time.Duration;
+import io.quarkus.test.junit.QuarkusTest;
+import io.weblith.core.config.HttpCacheConfig;
+import io.weblith.core.config.WeblithConfig;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
-
+@QuarkusTest
 public class HttpCacheHelperTest {
 
     @Mock

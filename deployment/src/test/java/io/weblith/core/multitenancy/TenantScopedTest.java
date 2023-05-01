@@ -1,20 +1,22 @@
 package io.weblith.core.multitenancy;
 
-import io.quarkus.test.QuarkusUnitTest;
-import io.weblith.core.router.annotations.Controller;
-import io.weblith.core.router.annotations.Get;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
+
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import io.weblith.core.router.annotations.Controller;
+import io.weblith.core.router.annotations.Get;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-
+@QuarkusTest
 public class TenantScopedTest {
 
     private final static int OK = Response.Status.OK.getStatusCode();

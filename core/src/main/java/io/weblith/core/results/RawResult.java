@@ -2,9 +2,8 @@ package io.weblith.core.results;
 
 import java.io.OutputStream;
 
-import javax.ws.rs.core.Response.Status;
-
 import io.weblith.core.results.Result.RenderResponse;
+import jakarta.ws.rs.core.Response.Status;
 
 public class RawResult extends AbstractResult<RawResult> implements RenderResponse {
 

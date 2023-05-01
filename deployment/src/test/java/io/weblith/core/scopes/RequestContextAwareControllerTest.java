@@ -1,18 +1,22 @@
 package io.weblith.core.scopes;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.Response.Status;
 import test.controllers.RequestContextAwareController;
 
-import javax.ws.rs.core.Response.Status;
-
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.*;
-
+@QuarkusTest
 public class RequestContextAwareControllerTest {
 
     private final static int OK = Status.OK.getStatusCode();

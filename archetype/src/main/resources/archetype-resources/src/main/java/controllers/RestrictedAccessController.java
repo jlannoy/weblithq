@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package}.controllers;
 
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
 
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;

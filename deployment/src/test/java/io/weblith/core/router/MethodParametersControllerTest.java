@@ -1,16 +1,19 @@
 package io.weblith.core.router;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.is;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
 import test.controllers.MethodParametersController;
 
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.is;
-
+@QuarkusTest
 public class MethodParametersControllerTest {
 
     @RegisterExtension
@@ -42,7 +45,6 @@ public class MethodParametersControllerTest {
         when().get("/params/named/queryParam?value=").then().body(is("get "));
         when().get("/params/named/queryParam").then().body(is("get null"));
     }
-
 
     @Test
     public void testOptionalQueryParam() {

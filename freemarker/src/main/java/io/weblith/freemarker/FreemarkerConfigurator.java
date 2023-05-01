@@ -1,22 +1,13 @@
 package io.weblith.freemarker;
 
-import freemarker.cache.*;
-import freemarker.ext.beans.BeansWrapper;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import freemarker.template.Configuration;
-import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.TemplateModelException;
 import io.quarkus.runtime.StartupEvent;
-import io.quarkus.runtime.configuration.ProfileManager;
-import io.weblith.freemarker.config.FreemarkerConfig;
-import no.api.freemarker.java8.Java8ObjectWrapper;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
-
-import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 
 @Dependent
 public class FreemarkerConfigurator {

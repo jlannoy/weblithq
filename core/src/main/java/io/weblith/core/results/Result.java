@@ -2,9 +2,8 @@ package io.weblith.core.results;
 
 import java.io.OutputStream;
 
-import javax.ws.rs.container.ContainerResponseContext;
-
 import io.weblith.core.request.RequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
 
 /**
  * This is a marker only interface for representing a Weblith result ; extends {@link AbstractResult} if you need to

@@ -3,13 +3,12 @@ package test.controllers;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
 import io.weblith.core.results.Result;
 import io.weblith.core.results.TextResult;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 @Controller
 public class TextResultsController {

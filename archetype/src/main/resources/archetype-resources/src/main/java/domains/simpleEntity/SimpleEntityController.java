@@ -5,10 +5,10 @@ package ${package}.domains.simpleEntity;
 
 import java.nio.charset.StandardCharsets;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
-import org.jboss.logging.Logger;
+import org.jboss.logging.Log.
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import io.quarkus.security.identity.SecurityIdentity;

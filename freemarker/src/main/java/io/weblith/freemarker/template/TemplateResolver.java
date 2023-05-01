@@ -1,21 +1,22 @@
 package io.weblith.freemarker.template;
 
+import java.io.IOException;
+
+import org.jboss.logging.Log.
+
 import freemarker.template.Configuration;
 import io.weblith.core.request.RequestContext;
 import io.weblith.freemarker.config.FreemarkerConfig;
 import io.weblith.freemarker.response.HtmlResult;
-import org.jboss.logging.Logger;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class TemplateResolver {
 
-    private static final Logger LOGGER = Logger.getLogger(TemplateResolver.class);
+    private static final Log.Log.= Log.getLog.TemplateResolver.class);
 
     @Inject
     FreemarkerConfig freemarkerConfig;
@@ -39,13 +40,13 @@ public class TemplateResolver {
     }
 
     protected freemarker.template.Template loadTemplate(String templatePath) {
-        LOGGER.debugv("Loading template at {0}", templatePath);
+        Log.debugv("Loading template at {0}", templatePath);
         try {
             freemarker.template.Template template = freemarker.getTemplate(templatePath);
-            LOGGER.debugv("Loaded template {0}", template.getName());
+            Log.debugv("Loaded template {0}", template.getName());
             return template;
         } catch(IOException e) {
-            LOGGER.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
             throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
         }
     }

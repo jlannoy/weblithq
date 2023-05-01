@@ -4,29 +4,25 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-
-import org.jboss.logging.Logger;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.quarkus.logging.Log;
 import io.weblith.core.config.WeblithConfig;
 import io.weblith.core.request.RequestContext;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 @ApplicationScoped
 @Priority(Priorities.USER + 1000)
 public class RequestLoggingFilter implements ContainerResponseFilter {
-
-    private final static Logger LOGGER = Logger.getLogger(RequestLoggingFilter.class);
 
     @Inject
     private ObjectMapper jsonMapper;
@@ -56,19 +52,16 @@ public class RequestLoggingFilter implements ContainerResponseFilter {
             }
 
             if (config.requestLogs.requestParameters) {
-                // LOGGER.infov("{0}.{1}() {2}", context.controller(), null,
-                LOGGER.infov("{0} {1} {2}", context.request().getHttpMethod(), context.request().getUri().getPath(),
-                        jsonMapper.writeValueAsString(getParameters()));
+                // Log.infov("{0}.{1}() {2}", context.controller(), null,
+                Log.infov("{0} {1} {2}", context.request().getHttpMethod(), context.request().getUri().getPath(), jsonMapper.writeValueAsString(getParameters()));
             } else {
-                // LOGGER.infov("{0}.{1}() - {2}", context.controller(), null,
-                LOGGER.infov("{0} {1} {2}", context.request().getHttpMethod(), context.request().getUri().getPath(),
-                        responseContext.getStatus());
+                // Log.infov("{0}.{1}() - {2}", context.controller(), null,
+                Log.infov("{0} {1} {2}", context.request().getHttpMethod(), context.request().getUri().getPath(), responseContext.getStatus());
             }
 
         } catch (JsonProcessingException e) {
-            //LOGGER.infov("{0}.{1}() *** {2}", context.controller(), null, 
-            LOGGER.infov("{0} {1} *** {2}", context.request().getHttpMethod(), context.request().getUri().getPath(),
-                    e.getMessage());
+            //Log.infov("{0}.{1}() *** {2}", context.controller(), null, 
+            Log.infov("{0} {1} *** {2}", context.request().getHttpMethod(), context.request().getUri().getPath(), e.getMessage());
         }
 
     }

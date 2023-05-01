@@ -3,8 +3,6 @@ package io.weblith.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import javax.ws.rs.core.MediaType;
-
 import org.jboss.resteasy.spi.metadata.MethodParameter;
 import org.jboss.resteasy.spi.metadata.Parameter;
 import org.jboss.resteasy.spi.metadata.Parameter.ParamType;
@@ -13,6 +11,7 @@ import org.jboss.resteasy.spi.metadata.ResourceBuilder;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
+import jakarta.ws.rs.core.MediaType;
 
 public class WeblithResourceBuilder extends ResourceBuilder {
 

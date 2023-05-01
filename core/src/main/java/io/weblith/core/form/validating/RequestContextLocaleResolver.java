@@ -2,14 +2,13 @@ package io.weblith.core.form.validating;
 
 import java.util.Locale;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.spi.messageinterpolation.LocaleResolver;
 import org.hibernate.validator.spi.messageinterpolation.LocaleResolverContext;
 
 import io.weblith.core.request.RequestContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 /**
  * Used by {@link HibernateValidator} to retrieve the Locale to use for translating constraint violation messages.

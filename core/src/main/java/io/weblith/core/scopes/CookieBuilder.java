@@ -1,17 +1,20 @@
 package io.weblith.core.scopes;
 
-import static javax.ws.rs.core.Cookie.DEFAULT_VERSION;
+import static jakarta.ws.rs.core.Cookie.DEFAULT_VERSION;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.NewCookie;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.NewCookie;
 
 public class CookieBuilder {
 
@@ -44,7 +47,7 @@ public class CookieBuilder {
     //            this.textEncryptor = new BasicTextEncryptor();
     //            this.textEncryptor.setPassword(this.secretKey.get());
     //        } else {
-    //            logger.warn("No secret key configured for cookie encryption ; therefore session cookie will not be encrypted");
+    //            Log.warn("No secret key configured for cookie encryption ; therefore session cookie will not be encrypted");
     //            this.textEncryptor = null;
     //        }
 
@@ -53,13 +56,11 @@ public class CookieBuilder {
     }
 
     public NewCookie build(String name, String value, int maxAge) {
-        return new NewCookie(this.cookieName, value, this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null,
-                maxAge, null, this.cookieSecure, this.cookieHttpsOnly);
+        return new NewCookie(this.cookieName, value, this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null, maxAge, null, this.cookieSecure, this.cookieHttpsOnly);
     }
 
     public NewCookie build(String name, String value, int maxAge, Date expiry) {
-        return new NewCookie(this.cookieName, value, this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null,
-                maxAge, expiry, this.cookieSecure, this.cookieHttpsOnly);
+        return new NewCookie(this.cookieName, value, this.cookiePath, this.cookieDomain, DEFAULT_VERSION, null, maxAge, expiry, this.cookieSecure, this.cookieHttpsOnly);
     }
 
     public static Map<String, String> decodeMap(String value) {

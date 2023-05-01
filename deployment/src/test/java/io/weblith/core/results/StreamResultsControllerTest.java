@@ -1,25 +1,30 @@
 package io.weblith.core.results;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
+import static test.controllers.StreamResultsController.MY_TXT_FILE;
+import static test.controllers.StreamResultsController.MY_UNKNOWN_TYPE_FILE;
+
+import java.util.Date;
+
 import org.apache.http.client.utils.DateUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 import test.controllers.StreamResultsController;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-import java.util.Date;
-
-import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.*;
-import static test.controllers.StreamResultsController.MY_TXT_FILE;
-import static test.controllers.StreamResultsController.MY_UNKNOWN_TYPE_FILE;
-
+@QuarkusTest
 public class StreamResultsControllerTest {
 
     @RegisterExtension

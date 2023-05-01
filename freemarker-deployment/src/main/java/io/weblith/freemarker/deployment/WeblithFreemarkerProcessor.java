@@ -1,6 +1,5 @@
 package io.weblith.freemarker.deployment;
 
-import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.DotName;
 import org.jboss.jandex.Type;
 
@@ -8,9 +7,6 @@ import freemarker.ext.jython.JythonModel;
 import freemarker.ext.jython.JythonWrapper;
 import freemarker.template.Template;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
-import io.quarkus.arc.deployment.ValidationPhaseBuildItem;
-import io.quarkus.arc.deployment.ValidationPhaseBuildItem.ValidationErrorBuildItem;
-import io.quarkus.arc.processor.BuildExtension;
 import io.quarkus.arc.processor.InjectionPointInfo;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -23,7 +19,6 @@ import io.quarkus.deployment.builditem.nativeimage.ReflectiveHierarchyIgnoreWarn
 import io.quarkus.deployment.builditem.nativeimage.RuntimeInitializedClassBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import io.weblith.freemarker.FreemarkerConfigurationProvider;
-import io.weblith.freemarker.config.FreemarkerConfig;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.response.HtmlResultBodyWriter;
 import io.weblith.freemarker.template.TemplateResolver;

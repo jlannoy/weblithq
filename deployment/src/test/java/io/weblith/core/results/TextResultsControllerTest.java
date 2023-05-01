@@ -1,21 +1,23 @@
 package io.weblith.core.results;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 import test.controllers.TextResultsController;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
+@QuarkusTest
 public class TextResultsControllerTest {
 
     private final static int OK = Status.OK.getStatusCode();

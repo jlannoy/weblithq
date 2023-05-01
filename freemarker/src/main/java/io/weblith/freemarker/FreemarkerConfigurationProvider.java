@@ -3,17 +3,8 @@ package io.weblith.freemarker;
 import java.io.File;
 import java.io.IOException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.interceptor.Interceptor;
-
-import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
+import org.jboss.logging.Log.
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
@@ -24,10 +15,9 @@ import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.TemplateModelException;
-import io.quarkus.arc.DefaultBean;
-import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.weblith.freemarker.config.FreemarkerConfig;
+import jakarta.inject.Inject;
 import no.api.freemarker.java8.Java8ObjectWrapper;
 
 @Deprecated
@@ -35,7 +25,7 @@ import no.api.freemarker.java8.Java8ObjectWrapper;
 // @Singleton
 public class FreemarkerConfigurationProvider {
 
-    private final static Logger LOGGER = Logger.getLogger(FreemarkerConfigurationProvider.class);
+    private final static Log.Log.= Log.getLog.FreemarkerConfigurationProvider.class);
 
     @Inject
     FreemarkerConfig config;
@@ -102,7 +92,7 @@ public class FreemarkerConfigurationProvider {
                 freemarker.setTemplateLoader(new MultiTemplateLoader(new TemplateLoader[] { srcLoader, cpLoader }));
 
             } catch (IOException e) {
-                LOGGER.error("Error loading Freemarker Template directory " + srcDir, e);
+                Log.error("Error loading Freemarker Template directory " + srcDir, e);
             }
 
             freemarker.setCacheStorage(new MruCacheStorage(0, Integer.MAX_VALUE));

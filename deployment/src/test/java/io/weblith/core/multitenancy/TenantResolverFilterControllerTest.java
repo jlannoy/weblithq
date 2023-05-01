@@ -1,17 +1,19 @@
 package io.weblith.core.multitenancy;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.Response.Status;
 import test.controllers.MultiTenantController;
 
-import javax.ws.rs.core.Response.Status;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-
+@QuarkusTest
 public class TenantResolverFilterControllerTest {
 
     private final static int OK = Status.OK.getStatusCode();

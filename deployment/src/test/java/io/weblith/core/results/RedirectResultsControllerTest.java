@@ -1,25 +1,27 @@
 package io.weblith.core.results;
 
-import io.quarkus.test.QuarkusUnitTest;
-import io.restassured.RestAssured;
-import io.weblith.core.config.WeblithConfig;
-import io.weblith.core.scopes.CookieBuilder;
+import static io.restassured.RestAssured.given;
+import static io.restassured.config.RedirectConfig.redirectConfig;
+import static jakarta.ws.rs.core.HttpHeaders.LOCATION;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
+import io.weblith.core.config.WeblithConfig;
+import io.weblith.core.scopes.CookieBuilder;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response.Status;
 import test.controllers.RedirectResultsController;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response.Status;
-
-import static io.restassured.RestAssured.given;
-import static io.restassured.config.RedirectConfig.redirectConfig;
-import static javax.ws.rs.core.HttpHeaders.LOCATION;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
+@QuarkusTest
 public class RedirectResultsControllerTest {
 
     private final static int SEE_OTHER = Status.SEE_OTHER.getStatusCode();

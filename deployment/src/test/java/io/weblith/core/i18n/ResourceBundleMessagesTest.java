@@ -1,10 +1,8 @@
 package io.weblith.core.i18n;
 
-import io.weblith.core.config.WeblithConfig;
-import io.weblith.core.request.RequestContext;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -13,10 +11,15 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import io.quarkus.test.junit.QuarkusTest;
+import io.weblith.core.config.WeblithConfig;
+import io.weblith.core.request.RequestContext;
+
+@QuarkusTest
 public class ResourceBundleMessagesTest {
 
     LocaleHandler localeHandler;

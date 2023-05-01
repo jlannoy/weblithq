@@ -1,12 +1,11 @@
 package test.controllers;
 
-import javax.ws.rs.core.Response.Status;
-
 import io.weblith.core.results.Redirect;
 import io.weblith.core.results.Result;
 import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.core.router.annotations.Post;
+import jakarta.ws.rs.core.Response.Status;
 
 @Controller
 public class RedirectResultsController {

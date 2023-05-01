@@ -2,14 +2,13 @@ package io.weblith.webtest.security;
 
 import java.util.function.Supplier;
 
-import javax.enterprise.context.ApplicationScoped;
-
 import io.quarkus.security.identity.AuthenticationRequestContext;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.identity.SecurityIdentityAugmentor;
 import io.quarkus.security.runtime.QuarkusSecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import io.weblith.webtest.domains.user.UserRole;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class RolesAugmentor implements SecurityIdentityAugmentor {

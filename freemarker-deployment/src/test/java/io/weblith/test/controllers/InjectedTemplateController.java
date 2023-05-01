@@ -1,8 +1,5 @@
 package io.weblith.test.controllers;
 
-import javax.inject.Inject;
-import javax.ws.rs.QueryParam;
-
 import freemarker.template.Template;
 import io.quarkiverse.freemarker.TemplatePath;
 import io.weblith.core.logging.NotLogged;
@@ -10,6 +7,8 @@ import io.weblith.core.router.annotations.Controller;
 import io.weblith.core.router.annotations.Get;
 import io.weblith.freemarker.response.HtmlResult;
 import io.weblith.freemarker.template.FreemarkerTemplate;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.QueryParam;
 
 @Controller("/Front")
 @NotLogged

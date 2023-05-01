@@ -4,10 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
 import io.weblith.core.results.Result.RenderResponse;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 public class TextResult extends AbstractResult<TextResult> implements RenderResponse {
 

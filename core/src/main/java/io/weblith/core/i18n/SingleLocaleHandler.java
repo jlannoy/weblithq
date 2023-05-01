@@ -1,14 +1,10 @@
 package io.weblith.core.i18n;
 
-import io.quarkus.runtime.LocalesBuildTimeConfig;
-import io.weblith.core.results.AbstractResult;
-
-import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Priorities;
 import java.util.Locale;
 import java.util.Set;
+
+import io.quarkus.runtime.LocalesBuildTimeConfig;
+import jakarta.inject.Inject;
 
 public class SingleLocaleHandler implements LocaleHandler {
 
